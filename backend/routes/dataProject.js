@@ -1,0 +1,36 @@
+const express=require('express');
+const Router = express.Router();
+const dataproject = require('../Services/dataproject');
+
+Router.get('/projectmanager/:id',dataproject.getproject)
+Router.get('/projectleader/:id',dataproject.projectleader)
+Router.get('/fiscalyear',dataproject.fiscalyear)
+Router.get('/project',dataproject.project)
+Router.get('/fiscalyearandplannameproject/:id',dataproject.fiscalyearandplannameproject)
+Router.get('/sectionproject/:id',dataproject.sectionproject)
+Router.get('/userproject/:id',dataproject.userproject)
+Router.get('/strategicproject/:id',dataproject.strategicproject)
+Router.get('/goalproject/:id',dataproject.goalproject)
+Router.get('/tacticproject/:id',dataproject.tacticproject)
+Router.get('/integrationproject/:id',dataproject.integrationproject)
+Router.get('/objectiveproject/:id',dataproject.objectiveproject)
+Router.get('/indicproject/:id',dataproject.indicproject)
+Router.get('/stepproject/:id',dataproject.stepproject)
+Router.get('/workplanproject/:id',dataproject.workplanproject)
+Router.get('/chargesproject/:id',dataproject.chargesproject)
+Router.get('/benefitproject/:id',dataproject.benefitproject)
+Router.get('/commentproject/:id',dataproject.commentproject)
+Router.put('/confirmproject/:id',dataproject.confirmproject)
+Router.put('/noconfirmproject/:id',dataproject.noconfirmproject)
+Router.post('/comment',dataproject.comment)
+Router.get('/Strategicpro',dataproject.strategicpro)
+Router.put('/updatestrategicpro/:id',dataproject.updatestrategicpro)
+Router.get('/goalpro',dataproject.goalpro)
+Router.put('/updategoalpro/:id',dataproject.updategoalpro)
+Router.get('/tacticpro',dataproject.tacticpro)
+Router.put('/updatetacticpro/:id',dataproject.updatetacticpro)
+Router.get('/projecttor',dataproject.projecttor)
+Router.get('/deleteprojectid',dataproject.deleteprojectid)
+Router.delete("/deleteproject/:ID",dataproject.deleteproject)
+
+module.exports = Router
