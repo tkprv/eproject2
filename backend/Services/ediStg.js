@@ -179,7 +179,7 @@ const showtactic = (req,res)=> {
     } else {
       res.send(result);
     }
-  })
+  });
 }
 
 const updatetactic = (req,res)=> {
