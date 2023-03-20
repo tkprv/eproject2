@@ -13,20 +13,30 @@ import { Tag } from 'primereact/tag';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { Card } from "primereact/card";
+import { Toolbar } from 'primereact/toolbar';
+import { Dialog } from 'primereact/dialog';
 
 const Datadirector = () => {
-  const [fiscalyear, setFiscalyear] = useState([])
-  const [section, setSection] = useState([])
-  const [project, setProject] = useState([])
+  const [fiscalyear, setFiscalyear] = useState([]);
+  const [section, setSection] = useState([]);
+  const [project, setProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [selectedfiscalyear, setSelectedFiscalyear] = useState(null);
   const [selectedsection, setSelectedSection] = useState(null);
-  const [userproject, setUserproject] = useState([])
-  const [value3, setValue3] = useState('')
-  const [menu, setMenu] = useState(false)
+  const [value3, setValue3] = useState('');
+  const [menu, setMenu] = useState(false);
+  const [datastatus, setDatastatus] = useState();
+  const [statusid, setStatusid] = useState();
+  const [editstatus, setEditstatus] = useState();
+  const [visible1, setVisible1] = useState(false);
   let history = useHistory();
 
   const toggleMobileMenu = () => {
     setMenu(!menu)
+  }
+
+  const onHide = () => {
+    setVisible1(false)
   }
 
   const detailproject = (node, column) => {
@@ -52,6 +62,14 @@ const Datadirector = () => {
       return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
     } else if (node.status === 5) {
       return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+    } else if (node.status === 6) {
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 7) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 8) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+    } else if (node.status === 9) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
     } else {
       return node.status
     }
@@ -92,12 +110,25 @@ const Datadirector = () => {
     }
   }
 
-  const report4 = (node, column) => {
+  const report4 = (node) => {
     if (node.report_four === 0) {
       return <Button type="button" icon="pi pi-search" className="p-button-secondary" disabled />
     } else {
       return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/reportfour", state: node })} />
     }
+  }
+
+  const rightToolbarTemplate = (node) => {
+    return <Button label="อนุมัติโครงการ" icon="pi pi-upload" onClick={() => showproject(node)} className="p-button-help" />;
+  };
+
+  const renderFooter1 = (id) => {
+    return (
+      <div>
+        <Button label="ยกเลิก" icon="pi pi-times" outlined onClick={onHide} />
+        <Button label="อนุมัติ" icon="pi pi-check" severity="danger" onClick={() => confirmproject(id)} />
+      </div>
+    )
   }
 
   useEffect(() => {
@@ -134,30 +165,40 @@ const Datadirector = () => {
     Project()
     getsection()
   }, []);
+
   const Project = () => {
     axios
       .get("http://localhost:3001/dataproject/project", {})
       .then((res) => {
         setProject(res.data)
-        console.log('log', res)
       })
       .catch((error) => {
         console.log(error)
       });
   }
 
-  useEffect(() => {
+  const showproject = (item) => {
+    setStatusid(item.project_id)
+    console.log('item'.item)
     axios
-      .get(`http://localhost:3001/dataproject/userproject`, {})
+      .get(`http://localhost:3001/dataproject/showproject/${item.project_id}`, {})
       .then((res) => {
-        console.log(res.data)
-        setUserproject(res.data)
-      }).catch((error) => {
+        setDatastatus(res.data.project_id)
+      })
+      .catch((error) => {
         console.log(error)
       });
-  }, []);
-  console.log('22', userproject)
-  console.log("11111", fiscalyear)
+    setVisible1(true)
+  };
+
+  const confirmproject = (id) => {
+    console.log('tt', id)
+    axios
+      .put(`http://localhost:3001/dataproject/confirmproject/${statusid}`, {
+        status: 4
+      })
+    alert(`อนุมัติ id${id} sucessful`)
+  }
 
   return (
     <>
@@ -165,7 +206,9 @@ const Datadirector = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <h3>จัดการข้อมูลโครงการ</h3>
+          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
+            <h3>ข้อมูลโครงการ</h3>
+          </div>
           <Card>
             <div className="text-left">
               <div className="fit">
@@ -178,7 +221,9 @@ const Datadirector = () => {
                 <Button label="ค้นหา" className="p-button-success" style={{ marginLeft: '.8em' }} />
               </div>
               <div style={{ marginTop: "2.5em" }}>
-                <DataTable value={project} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
+                <Toolbar className="mb-4" right={rightToolbarTemplate}></Toolbar>
+                <DataTable value={project} selection={selectedProject} onSelectionChange={(e) => setSelectedProject(e.value)} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
+                  <Column selectionMode="multiple" exportable={false} style={{ textAlign: 'center' }}></Column>
                   <Column field="project_name" header="ชื่อโครงการ" />
                   <Column body={detailproject} header="รายละเอียดโครงการ" style={{ textAlign: 'center', width: "8%" }} />
                   <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "9.5%" }} />
@@ -192,6 +237,17 @@ const Datadirector = () => {
               </div>
             </div>
           </Card>
+
+          <Dialog visible={visible1} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={renderFooter1} onHide={onHide}>
+            <div className="confirmation-content">
+              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+              {project && (
+                <span>
+                  Are you sure you want to delete <b>{project.project_id}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
         </div>
       </div>
     </>

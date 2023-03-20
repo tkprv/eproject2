@@ -77,7 +77,7 @@ function Signin() {
           
         }, 500)
         if(data){
-          setLocalUser(data[0].user_id,data[0].displayname,data[0].section_id            )
+          setLocalUser(data[0].user_id, data[0].displayname, data[0].section_id, data[0].director, data[0].manager, data[0].supervisor, data[0].supplies, data[0].responsible, data[0].admin)
         }
 
          })

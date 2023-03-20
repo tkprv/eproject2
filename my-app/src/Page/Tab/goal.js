@@ -116,6 +116,7 @@ const DataGoal = ({ id }) => {
       .get(`http://localhost:3001/stg/showgoal/${item.goal_id}`, {})
       .then((res) => {
         setGoal(res.data[0].tactic_id)
+        setDatagoal(res.data[0].goal_name)
       })
       .catch((error) => {
         console.log(error)
@@ -129,8 +130,9 @@ const DataGoal = ({ id }) => {
       goal_name: datagoal
     }
     )
+    alert(`ต้องการแก้ไขเป้าประสงค์ใช่มั้ย?`)
+    onHide(false)
     showgoal()
-    onHide()
   };
 
   const showindic = (item) => {
@@ -140,6 +142,9 @@ const DataGoal = ({ id }) => {
       .get(`http://localhost:3001/stg/showindic/${item.indic_goal_id}`, {})
       .then((res) => {
         setIndic(res.data[0].indic_goal_id)
+        setDataindic(res.data[0].indic_goal)
+        setDataunit(res.data[0].unit)
+        setDatacost(res.data[0].cost)
       })
       .catch((error) => {
         console.log(error)
@@ -155,16 +160,19 @@ const DataGoal = ({ id }) => {
       cost: datacost
     }
     )
+    alert(`ต้องการแก้ไขตัวชี้วัด หน่วยนับ และค่าเป้าหมายใช่มั้ย?`)
+    onHide(false)
     showindic()
-    onHide()
   };
-  const showtactic = (item) => {
+
+    const showtactic = (item) => {
     console.log('111', item)
     setTacticid(item.tactic_id)
     axios
       .get(`http://localhost:3001/stg/showtactic/${item.tactic_id}`, {})
       .then((res) => {
         setTactic(res.data[0].tactic_id)
+        setDatatactic(res.data[0].tactic_name)
       })
       .catch((error) => {
         console.log(error)
@@ -178,10 +186,10 @@ const DataGoal = ({ id }) => {
       tactic_name: datatactic
     }
     )
+    alert(`ต้องการแก้ไขกลยุทธ์ใช่มั้ย?`)
+    onHide(false)
     showtactic()
-    onHide()
   };
-
 
   const actionTemplate = (node) => {
     return (
@@ -351,19 +359,19 @@ const DataGoal = ({ id }) => {
         footer={renderFooter3}
         onHide={onHide}
       >
-        <h3> ตัวชี้วัด</h3>
+        <h4> ตัวชี้วัด</h4>
         <InputText
           value={dataindic}
           onChange={(e) => setDataindic(e.target.value)}
           placeholder="ชื่อตัวชี้วัด"
         />
-        <h3> หน่วยนับ</h3>
+        <h4 style={{ marginTop: '.5em'}}> หน่วยนับ</h4>
         <InputText
           value={dataunit}
           onChange={(e) => setDataunit(e.target.value)}
           placeholder="ชื่อหน่วยนับ"
         />
-        <h3> ค่าเป้าหมาย</h3>
+        <h4 style={{ marginTop: '.5em'}}> ค่าเป้าหมาย</h4>
         <InputText
           value={datacost}
           onChange={(e) => setDatacost(e.target.value)}

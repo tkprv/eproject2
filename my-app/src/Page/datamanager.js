@@ -48,6 +48,14 @@ const Datamanager = () => {
       return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
     } else if (node.status === 5) {
       return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+    } else if (node.status === 6) {
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 7) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 8) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+    } else if (node.status === 9) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
     } else {
       return node.status
     }
@@ -65,34 +73,42 @@ const Datamanager = () => {
   }
 
   const report1 = (node) => {
-    if (node.report_one === 0) {
+    if (node.report_one === 0 && node.status !== 4) {
       return <Button type="button" icon="pi pi-search" className="p-button-secondary" disabled />
+    } else if(node.status === 4 && node.report_one === 0) {
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreportone", state: node })} />
     } else {
-      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/reportone", state: node })} />
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreportone", state: node })} />
     }
   }
 
   const report2 = (node) => {
-    if (node.report_two === 0) {
+    if (node.report_two === 0 && node.status !== 4) {
       return <Button type="button" icon="pi pi-search" className="p-button-secondary" disabled />
-    } else {
-      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/reporttwo", state: node })} />
-    }
+    } else if(node.status === 4 && node.report_two === 0) {
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreporttwo", state: node })} />
+     } else {
+    }  return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreporttwo", state: node })} />
+    
   }
 
   const report3 = (node) => {
-    if (node.report_three === 0) {
+    if (node.report_three === 0 && node.status !== 4) {
       return <Button type="button" icon="pi pi-search" className="p-button-secondary" disabled />
+    } else if(node.status === 4 && node.report_three === 0) {
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreportthree", state: node })} />
     } else {
-      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/reportthree", state: node })} />
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreportthree", state: node })} />
     }
   }
 
   const report4 = (node) => {
-    if (node.report_four === 0) {
+    if (node.report_four === 0 && node.status !== 4) {
       return <Button type="button" icon="pi pi-search" className="p-button-secondary" disabled />
+    } else if(node.status === 4 && node.report_four === 0) {
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreportfour", state: node })} />
     } else {
-      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/reportfour", state: node })} />
+      return <Button type="button" icon="pi pi-search" className="p-button-secondary" onClick={() => history.push({ pathname: "/home/managerreportfour", state: node })} />
     }
   }
 
@@ -133,7 +149,9 @@ const Datamanager = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <h3>จัดการข้อมูลโครงการ</h3>
+          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
+            <h3>จัดการข้อมูลโครงการ</h3>
+          </div>
           <Card>
             <div className="text-left">
               <div className="fit">

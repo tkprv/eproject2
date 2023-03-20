@@ -283,155 +283,155 @@ export default function Editdatastg() {
 
   return (
     <>
-     <Header onMenuClick={(value) => toggleMobileMenu()} />
-    <Sidebar /> 
-    <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
-    <div className="page-wrapper">
-    <h3>กำหนดสิทธิผู้ใช้งาน</h3>
-    <Card>
-     
-        <h2>สร้างเป้าประสงค์ใหม่</h2>
-        <div >
+      <Header onMenuClick={(value) => toggleMobileMenu()} />
+      <Sidebar />
+      <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
+        <div className="page-wrapper">
+          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
+            <h3>สร้างเป้าประสงค์ ตัวชี้วัด หน่วยนับ ค่าเป้าหมาย กลยุทธ์</h3>
+          </div>
           <Card>
-            <div className="fit">
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-2">
-                  <h3>เป้าประสงค์ :</h3>
-                </div>
+            <div >
+              <Card>
+                <div className="fit">
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-2">
+                      <h4>เป้าประสงค์ :</h4>
+                    </div>
 
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                    <InputText
-                      value={goaldata}
-                      onChange={(e) => setGoaldata(e.target.value)}
-                      placeholder="เป้าประสงค์"
-                    ></InputText>
-                  </div>
-                </div>
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                          <InputText
+                            value={goaldata}
+                            onChange={(e) => setGoaldata(e.target.value)}
+                            placeholder="เป้าประสงค์"
+                          ></InputText>
+                      </div>
+                    </div>
 
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                    {/* <Muli/> */}
-                    {/* <Button
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                        {/* <Muli/> */}
+                        {/* <Button
                     type="button" onClick={handleAdd1}
                   /> */}
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <div className="fit">
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-2">
+                      <h4>ตัวชี้วัด :</h4>
+                    </div>
+
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                        <InputText
+                          value={indicator}
+                          onChange={(e) => setIndicator(e.target.value)}
+                          placeholder="ตัวชี้วัด"
+                        ></InputText>
+                      </div>
+                    </div>
+                    <div className="col-12 md:col-1">
+                      <div className="p-inputgroup">
+                        <Button type="button" onClick={handleAdd} >+</Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="fit">
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-2">
+                      <h4>หน่วยนับ :</h4>
+                    </div>
+
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                        <InputText
+                          value={countdata}
+                          onChange={(e) => setCountdata(e.target.value)}
+                          placeholder="หน่วยนับ"
+                        ></InputText>
+                      </div>
+                    </div>
+
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="fit">
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-2">
+                      <h4>ค่าเป้าหมาย : </h4>
+                    </div>
+
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                        <InputText
+                          value={goaldetail}
+                          onChange={(e) => setGoaldetail(e.target.value)}
+                          placeholder="ค่าเป้าหมาย"
+                        ></InputText>
+                      </div>
+                      <Tabindicator rowsData={inputValues1} deleteTableRows={handleRemove} handleChange={handleChange2} style={{ marginRight: "10px" }} />
+
+                    </div>
+                    <div className="col-12 md:col-5">
+                    </div>
+                  </div>
+                </div>
+                <div className="fit">
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-2">
+                      <h4>กลยุทธ์ :</h4>
+                    </div>
+
+                    <div className="col-12 md:col-5">
+                      <div className="p-inputgroup">
+                        <InputText
+                          value={starg}
+                          onChange={(e) => setStarg(e.target.value)}
+                          placeholder="กลยุทธ์"
+                        ></InputText>
+
+                      </div>
+
+
+                      <Tabstra rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
+
+                    </div>
+                    <div className="col-12 md:col-1">
+                      <div className="p-inputgroup">
+                        <Button className="btn btn-outline-success" onClick={addTableRows} >+</Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                </div>
+                <div className="col-12 md:col-5"></div>
+                <div className="col-12 md:col-5"></div>
+                <div className="col-12 md:col-2" >
+                  <Button label="เพิ่ม" icon="pi pi-plus" className="p-button-success" onClick={addAalldata} />
+                </div>
+
+              </Card>
+
+              <div style={{ marginTop: "3px" }} >
+                < Tablegoal id={location.state.strategic_id} />
               </div>
-            </div>
-            <div className="fit">
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-2">
-                  <h3>ตัวชี้วัด :</h3>
-                </div>
 
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                    <InputText
-                      value={indicator}
-                      onChange={(e) => setIndicator(e.target.value)}
-                      placeholder="ตัวชี้วัด"
-                    ></InputText>
-                  </div>
-                </div>
-                <div className="col-12 md:col-1">
-                  <div className="p-inputgroup">
-                    <Button type="button" onClick={handleAdd} >+</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="fit">
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-2">
-                  <h3>หน่วยนับ :</h3>
-                </div>
-
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                    <InputText
-                      value={countdata}
-                      onChange={(e) => setCountdata(e.target.value)}
-                      placeholder="หน่วยนับ"
-                    ></InputText>
-                  </div>
-                </div>
-
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="fit">
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-2">
-                  <h3>ค่าเป้าหมาย : </h3>
-                </div>
-
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                    <InputText
-                      value={goaldetail}
-                      onChange={(e) => setGoaldetail(e.target.value)}
-                      placeholder="ค่าเป้าหมาย"
-                    ></InputText>
-                  </div>
-                  <Tabindicator rowsData={inputValues1} deleteTableRows={handleRemove} handleChange={handleChange2} style={{ marginRight: "10px" }} />
-
-                </div>
-                <div className="col-12 md:col-5">
-                </div>
-              </div>
-            </div>
-            <div className="fit">
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-2">
-                  <h3>กลยุทธ์ :</h3>
-                </div>
-
-                <div className="col-12 md:col-5">
-                  <div className="p-inputgroup">
-                    <InputText
-                      value={starg}
-                      onChange={(e) => setStarg(e.target.value)}
-                      placeholder="กลยุทธ์"
-                    ></InputText>
-
-                  </div>
-
-
-                  <Tabstra rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} />
-
-                </div>
-                <div className="col-12 md:col-1">
-                  <div className="p-inputgroup">
-                    <Button className="btn btn-outline-success" onClick={addTableRows} >+</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-            </div>
-            <div className="col-12 md:col-5"></div>
-            <div className="col-12 md:col-5"></div>
-            <div className="col-12 md:col-2" >
-              <Button label="เพิ่ม" icon="pi pi-plus" className="p-button-success" onClick={addAalldata} />
             </div>
 
           </Card>
-
-          <div style={{ marginTop: "3px" }} >
-            < Tablegoal id={location.state.strategic_id} />
-          </div>
-
         </div>
-      
-    </Card>
-    </div>
-    </div>
+      </div>
     </>
   )
 

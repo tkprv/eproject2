@@ -2,9 +2,9 @@ const db = require('../config/dbConfig')
 const request = require('request')
 
 const showeditreport = (req, res) => {
-    const ID = req.params.id
+  const ID = req.params.id
   console.log('id', ID)
-  db.query("SELECT * FROM tbl_report WHERE report_id =?", [ID], (err, result) => {
+  db.query("SELECT * FROM tbl_report WHERE report_id = ?", [ID], (err, result) => {
     if (err) {
       console.log(err);
     } else {

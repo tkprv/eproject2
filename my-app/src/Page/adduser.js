@@ -155,8 +155,8 @@ const handerUser =(e) =>{
 
     const productDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+            <Button label="ยกเลิก" icon="pi pi-times" severity="danger" onClick={hideDialog} />
+            <Button label="เพิ่ม" icon="pi pi-check" severity="success" style={{width: '7em'}}onClick={saveProduct} />
         </React.Fragment>
     )
     return (
@@ -172,7 +172,7 @@ const handerUser =(e) =>{
                  <div className="field">
                     <label htmlFor="name">Username</label>
                      <InputText  value={user} onChange={(e) => setUser(e.target.value)} />
-                    <Button onClick={handerUser}></Button>
+                    <Button  label= 'ค้นหารายชื่อ'style={{ marginTop: '1em'}} onClick={handerUser}></Button>
                       </div>
                 
             

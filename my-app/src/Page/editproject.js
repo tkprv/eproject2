@@ -762,12 +762,12 @@ const Editproject = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div align="left">
-            <h2 style={{ marginTop: '2em', marginLeft: '1em' }}>รายละเอียดโครงการ</h2>
+            <h3 style={{ marginTop: '2em', marginLeft: '1em' }}>รายละเอียดโครงการ</h3>
             <Card>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ปีงบประมาณ :</h3>
+                    <h4>ปีงบประมาณ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <Dropdown value={year} options={stopen} onChange={onFiscalyear} style={{ width: '10em' }} optionLabel="fiscalyear" placeholder="ปีงบประมาณ" />
@@ -777,7 +777,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ชื่อโครงการ :</h3>
+                    <h4>ชื่อโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.project_name} </h4>
@@ -787,7 +787,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>หน่วยงานที่รับผิดชอบโครงการ :</h3>
+                    <h4>หน่วยงานที่รับผิดชอบโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <Dropdown value={Selectedsection} options={section} style={{ width: '30em' }} onChange={onsetSection} optionLabel="section_name" placeholder="หน่วยงานที่รับผิดชอบโครงการ" />
@@ -797,7 +797,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผู้รับผิดชอบโครงการ :</h3>
+                    <h4>ผู้รับผิดชอบโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <DataTable value={userproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
@@ -811,7 +811,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ชื่อแผนยุทธ์ศาสตร์ :</h3>
+                    <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -822,30 +822,30 @@ const Editproject = () => {
               </div>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h3 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h3>
+                  <div className="col-12 md:col-4">
+                    <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
                   </div>
-                  <div className="col-12 md:col-9">
+                  <div className="col-12 md:col-8">
                     <Dropdown value={selectstrategic} options={stselectfill} style={{ width: '30em' }} onChange={onStrategic} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
                   </div>
                 </div>
               </div>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h3 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h3>
+                  <div className="col-12 md:col-4">
+                    <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
                   </div>
-                  <div className="col-12 md:col-9">
+                  <div className="col-12 md:col-8">
                     <Dropdown value={selectgoal} options={datagoal} style={{ width: '30em' }} onChange={onGoal} optionLabel="goal_name" placeholder="เป้าประสงค์" />
                   </div>
                 </div>
               </div>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h3 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h3>
+                  <div className="col-12 md:col-4">
+                    <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
                   </div>
-                  <div className="col-12 md:col-9">
+                  <div className="col-12 md:col-8">
                     <Dropdown value={selecttactic} options={datatactic} style={{ width: '30em' }} onChange={(e) => setSelecttactic(e.value)} optionLabel="tactic_name" placeholder="กลยุทธ์" />
                   </div>
                 </div>
@@ -853,7 +853,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ประเภทของโครงการ :</h3>
+                    <h4>ประเภทของโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -865,7 +865,7 @@ const Editproject = () => {
                         checked={edittype === "โครงการในแผน"}
                         style={{ marginRight: '.5em' }}
                       />
-                      <label htmlFor="edittype1" style={{ marginRight: '2em' }}>โครงการในแผน</label>
+                      <label htmlFor="edittype1" style={{ marginRight: '1em' }}>โครงการในแผน</label>
                       <RadioButton
                         inputId="edittype2"
                         name="edittype"
@@ -882,7 +882,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ลักษณะโครงการ :</h3>
+                    <h4>ลักษณะโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -929,7 +929,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>การบูรณาการโครงการ :</h3>
+                    <h4>การบูรณาการโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -942,7 +942,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>หลักการและเหตุผล :</h3>
+                    <h4>หลักการและเหตุผล :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <InputTextarea value={editrationale} onChange={(e) => setEditrationale(e.target.value)} placeholder='หลักการและเหตุผล' rows={8} cols={50} />
@@ -952,7 +952,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>วัตถุประสงค์ :</h3>
+                    <h4>วัตถุประสงค์ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -967,7 +967,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ตัวชี้วัดความสำเร็จระดับโครงการ :</h3>
+                    <h4>ตัวชี้วัดความสำเร็จระดับโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -984,7 +984,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>กลุ่มเป้าหมาย :</h3>
+                    <h4>กลุ่มเป้าหมาย :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <InputText value={edittargetgroup} onChange={(e) => setEdittargetgroup(e.target.value)} style={{ width: '35em' }} placeholder="กลุ่มเป้าหมาย" />
@@ -994,7 +994,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ขั้นตอนการดำเนินการ :</h3>
+                    <h4>ขั้นตอนการดำเนินการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -1011,7 +1011,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>แหล่งเงิน/ประเภทงบประมาณที่ใช้ :</h3>
+                    <h4>แหล่งเงิน/ประเภทงบประมาณที่ใช้ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <Dropdown value={selectedbutget} onChange={(e) => setSelectedbutget(e.target.value)} options={butget} optionLabel="name" placeholder="แหล่งเงิน/ประเภทงบประมาณที่ใช้" style={{ width: '30em' }} />
@@ -1021,7 +1021,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ปริมาณการงบประมาณที่ใช้ :</h3>
+                    <h4>ปริมาณการงบประมาณที่ใช้ :</h4>
                   </div>
                   <div className="col-12 md:col-3">
                     <InputText value={editmoney} onChange={handleMoney} style={{ width: '20em' }} placeholder="ปริมาณการงบประมาณที่ใช้ " />
@@ -1036,7 +1036,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>แผนงาน :</h3>
+                    <h4>แผนงาน :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <Dropdown value={Selectedworkplan} options={workplan} style={{ width: '30em' }} onChange={onsetWorkolan} optionLabel="workplan_name" placeholder="แผนงาน" />
@@ -1046,7 +1046,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ประเภทการใช้จ่าย :</h3>
+                    <h4>ประเภทการใช้จ่าย :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -1071,7 +1071,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ประโยชน์ที่คาดว่าจะได้รับ :</h3>
+                    <h4>ประโยชน์ที่คาดว่าจะได้รับ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -1086,7 +1086,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>เอกสาร TOR :</h3>
+                    <h4>เอกสาร TOR :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -1126,7 +1126,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-5">
-                    <h3>ชื่อผู้รับผิดชอบโครงการ :</h3>
+                    <h4>ชื่อผู้รับผิดชอบโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-1">
                     <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="fname" placeholder="ชื่อผู้รับผิดชอบโครงการ" />
@@ -1136,7 +1136,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-5">
-                    <h3>นามสกุลผู้รับผิดชอบโครงการ :</h3>
+                    <h4>นามสกุลผู้รับผิดชอบโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-1">
                     <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="lname" placeholder="นามสกุลผู้รับผิดชอบโครงการ" />
@@ -1154,9 +1154,9 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>วัตถุประสงค์ :</h3>
+                    <h4>วัตถุประสงค์ :</h4>
                   </div>
-                  <div className="col-12 md:col-1">
+                  <div className="col-12 md:col-5">
                     <InputText
                       value={editobjective}
                       onChange={(e) => setEditobjective(e.target.value)}
@@ -1177,7 +1177,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>ตัวชี้วัดความสำเร็จ :</h3>
+                    <h4>ตัวชี้วัดความสำเร็จ :</h4>
                   </div>
                   <div className="col-10 md:col-1">
                     <InputText
@@ -1192,7 +1192,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>หน่วยนับ :</h3>
+                    <h4>หน่วยนับ :</h4>
                   </div>
                   <div className="col-10 md:col-1">
                     <InputText
@@ -1207,7 +1207,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>ค่าเป้าหมาย :</h3>
+                    <h4>ค่าเป้าหมาย :</h4>
                   </div>
                   <div className="col-10 md:col-1">
                     <InputText
@@ -1230,7 +1230,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>ขั้นตอนการดำเนินการ :</h3>
+                    <h4>ขั้นตอนการดำเนินการ :</h4>
                   </div>
                   <div className="col-10 md:col-1">
                     <InputText
@@ -1245,7 +1245,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>เริ่มต้น :</h3>
+                    <h4>เริ่มต้น :</h4>
                   </div>
                   <div className="col-12 md:col-8">
                     <Calendar
@@ -1261,7 +1261,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>สิ้นสุด :</h3>
+                    <h4>สิ้นสุด :</h4>
                   </div>
                   <div className="col-12 md:col-8">
                     <Calendar
@@ -1285,7 +1285,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>หัวข้อค่าใช้จ่าย :</h3>
+                    <h4>หัวข้อค่าใช้จ่าย :</h4>
                   </div>
                   <div className="col-12 md:col-1">
                     <InputText
@@ -1308,7 +1308,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>ประโยช์ที่คาดว่าจะได้รับ :</h3>
+                    <h4>ประโยช์ที่คาดว่าจะได้รับ :</h4>
                   </div>
                   <div className="col-12 md:col-1">
                     <InputText
@@ -1331,7 +1331,7 @@ const Editproject = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>ประเภทค่าใช้จ่าย :</h3>
+                    <h4>ประเภทค่าใช้จ่าย :</h4>
                   </div>
                   <div className="col-10 md:col-1">
                     <InputText

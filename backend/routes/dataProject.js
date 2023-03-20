@@ -31,6 +31,12 @@ Router.get('/tacticpro',dataproject.tacticpro)
 Router.put('/updatetacticpro/:id',dataproject.updatetacticpro)
 Router.get('/projecttor',dataproject.projecttor)
 Router.get('/deleteprojectid',dataproject.deleteprojectid)
-Router.delete("/deleteproject/:ID",dataproject.deleteproject)
+Router.delete('/deleteproject/:ID',dataproject.deleteproject)
+Router.get('/showproject/:id',dataproject.showproject)
+Router.put('/openreportone/:id',dataproject.openreportone)
+Router.put('/openreporttwo/:id',dataproject.openreporttwo)
+Router.put('/openreportthree/:id',dataproject.openreportthree)
+Router.put('/openreportfour/:id',dataproject.openreportfour)
+Router.put('/closeproject/:id',dataproject.closeproject)
 
 module.exports = Router

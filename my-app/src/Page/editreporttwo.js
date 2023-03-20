@@ -213,7 +213,7 @@ const Editreporttwo = () => {
       }).then((res) => {
 
       })
-      alert(`ต้องการแก้ไขผลการใช้จ่ายใช่มั้ย?`)
+    alert(`ต้องการแก้ไขผลการใช้จ่ายใช่มั้ย?`)
   }
 
   const showresult = (item) => {
@@ -293,203 +293,203 @@ const Editreporttwo = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-    <div align="left">
-      <h2 style={{ marginTop: '2em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 2</h2>
-      <Card>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>ชื่อโครงการ :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4> {location.state.project_name} </h4>
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>งบประมาณที่จัดสรร :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4> {location.state.butget} บาท</h4>
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>ผลการใช้จ่าย :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <InputText value={editquartercharges} onChange={(e) => setEditquartercharges(e.target.value)} style={{ width: '35em' }} placeholder="งบไตรมาสที่ 2" />
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>ผลตามตัวชี้วัด :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4>
-                <DataTable value={indic} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                  <Column field="indic_project" header="ตัวชี้วัด" />
-                  <Column field="cost" header="เป้าหมาย" style={{ textAlign: 'center', width: '6.5em' }} />
-                  <Column field="result" header="ผลตามตัวชี้วัด" style={{ textAlign: 'center', width: '8.5em' }} />
-                  <Column body={achieve} header="บรรลุตามตัวชี้วัด" style={{ textAlign: 'center', width: '9.5em' }} />
-                  <Column body={editdataresult} header="จัดการ" style={{ textAlign: 'center', width: '25em' }} />
-                </DataTable>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>ขั้นตอนการดำเนินการ :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4>
-                <DataTable value={step} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                  <Column field="step_name" header="ขั้นตอนการดำเนินการ/รายการกิจกรรม" />
-                  <Column field="start" header="เริ่มต้น" />
-                  <Column field="stop" header="สิ้นสุด" />
-                </DataTable>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4>
-                <Checkbox onChange={e => setChecked(e.checked)} checked={checked} />
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>รายละเอียดความก้าวหน้า :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4>
-              <DataTable value={detail} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                  <Column field="detail" header="รายละเอียดความก้าวหน้า" />
-                  <Column body={editdatadetail} header="จัดการ" style={{ textAlign: 'center', width: '17em' }} />
-                </DataTable>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>ปัญหา/อุปสรรค :</h3>
-            </div>
-            <div className="col-12 md:col-9">
-              <h4>
-              <DataTable value={problem} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                  <Column field="problem" header="ปัญหา/อุปสรรค" />
-                  <Column body={editdataproblem} header="จัดการ" style={{ textAlign: 'center', width: '16em' }} />
-                </DataTable>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div style={{ marginTop: '2em', marginLeft: '65em' }} >
-          <Button label="บันทึก" className="p-button-success" onClick={() => updatequartercharges(quartercharges[0].report_id, editquartercharges, checked)} />
-        </div>
-      </Card>
+          <div align="left">
+            <h3 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 2</h3>
+            <Card>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ชื่อโครงการ :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4> {location.state.project_name} </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>งบประมาณที่จัดสรร :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4> {location.state.butget} บาท</h4>
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ผลการใช้จ่าย :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <InputText value={editquartercharges} onChange={(e) => setEditquartercharges(e.target.value)} style={{ width: '35em' }} placeholder="งบไตรมาสที่ 2" />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ผลตามตัวชี้วัด :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4>
+                      <DataTable value={indic} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                        <Column field="indic_project" header="ตัวชี้วัด" />
+                        <Column field="cost" header="เป้าหมาย" style={{ textAlign: 'center', width: '6.5em' }} />
+                        <Column field="result" header="ผลตามตัวชี้วัด" style={{ textAlign: 'center', width: '8.5em' }} />
+                        <Column body={achieve} header="บรรลุตามตัวชี้วัด" style={{ textAlign: 'center', width: '9.5em' }} />
+                        <Column body={editdataresult} header="จัดการ" style={{ textAlign: 'center', width: '25em' }} />
+                      </DataTable>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ขั้นตอนการดำเนินการ :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4>
+                      <DataTable value={step} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                        <Column field="step_name" header="ขั้นตอนการดำเนินการ/รายการกิจกรรม" />
+                        <Column field="start" header="เริ่มต้น" />
+                        <Column field="stop" header="สิ้นสุด" />
+                      </DataTable>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4>
+                      <Checkbox onChange={e => setChecked(e.checked)} checked={checked} />
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>รายละเอียดความก้าวหน้า :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4>
+                      <DataTable value={detail} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                        <Column field="detail" header="รายละเอียดความก้าวหน้า" />
+                        <Column body={editdatadetail} header="จัดการ" style={{ textAlign: 'center', width: '17em' }} />
+                      </DataTable>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ปัญหา/อุปสรรค :</h4>
+                  </div>
+                  <div className="col-12 md:col-9">
+                    <h4>
+                      <DataTable value={problem} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                        <Column field="problem" header="ปัญหา/อุปสรรค" />
+                        <Column body={editdataproblem} header="จัดการ" style={{ textAlign: 'center', width: '16em' }} />
+                      </DataTable>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div style={{ marginTop: '2em', marginLeft: '72.5em' }} >
+                <Button label="บันทึก" className="p-button-success" onClick={() => updatequartercharges(quartercharges[0].report_id, editquartercharges, checked)} />
+              </div>
+            </Card>
 
-      <Dialog
-        style={{ width: '450px', width: "50vw" }} header="แก้ไขผลตามตัวชี้วัด และบรรลุตามตัวชี้วัด" modal className="p-fluid"
-        visible={visible1}
-        footer={renderFooter1}
-        onHide={onHide}
-      >
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>ผลตามตัวชี้วัด :</h3>
-            </div>
-            <div className="col-12 md:col-3">
-              <InputText
-                value={editresult}
-                onChange={(e) => setEditresult(e.target.value)}
-                style={{ width: '30em' }}
-                placeholder="ผลตามตัวชี้วัด"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h3>บรรลุตามตัวชี้วัด :</h3>
-            </div>
-            <div className="col-12 md:col-3">
-              <h4>
-                <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
-              </h4>
-            </div>
-          </div>
-        </div>
-      </Dialog>
+            <Dialog
+              style={{ width: '450px', width: "50vw" }} header="แก้ไขผลตามตัวชี้วัด และบรรลุตามตัวชี้วัด" modal className="p-fluid"
+              visible={visible1}
+              footer={renderFooter1}
+              onHide={onHide}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ผลตามตัวชี้วัด :</h4>
+                  </div>
+                  <div className="col-12 md:col-3">
+                    <InputText
+                      value={editresult}
+                      onChange={(e) => setEditresult(e.target.value)}
+                      style={{ width: '30em' }}
+                      placeholder="ผลตามตัวชี้วัด"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>บรรลุตามตัวชี้วัด :</h4>
+                  </div>
+                  <div className="col-12 md:col-3">
+                    <h4>
+                      <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </Dialog>
 
-      <Dialog
-        style={{ width: '450px', width: "50vw" }} header="เแก้ไขรายละเอียดความก้าวหน้า" modal className="p-fluid"
-        visible={visible2}
-        footer={renderFooter2}
-        onHide={onHide}
-      >
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-4">
-              <h3>รายละเอียดความก้าวหน้า :</h3>
-            </div>
-            <div className="col-12 md:col-5">
-              <InputText
-                value={editdetail}
-                onChange={(e) => setEditdetail(e.target.value)}
-                style={{ width: '26em' }}
-                placeholder="รายละเอียดความก้าวหน้า"
-              />
-            </div>
-          </div>
-        </div>
-      </Dialog>
+            <Dialog
+              style={{ width: '450px', width: "50vw" }} header="เแก้ไขรายละเอียดความก้าวหน้า" modal className="p-fluid"
+              visible={visible2}
+              footer={renderFooter2}
+              onHide={onHide}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>รายละเอียดความก้าวหน้า :</h4>
+                  </div>
+                  <div className="col-12 md:col-5">
+                    <InputText
+                      value={editdetail}
+                      onChange={(e) => setEditdetail(e.target.value)}
+                      style={{ width: '26em' }}
+                      placeholder="รายละเอียดความก้าวหน้า"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Dialog>
 
-      <Dialog
-        style={{ width: '450px', width: "50vw" }} header="เแก้ไขปัญหา/อุปสรรค" modal className="p-fluid"
-        visible={visible3}
-        footer={renderFooter3}
-        onHide={onHide}
-      >
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-4">
-              <h3>ปัญหา/อุปสรรค :</h3>
-            </div>
-            <div className="col-12 md:col-5">
-              <InputText
-                value={editproblem}
-                onChange={(e) => setEditproblem(e.target.value)}
-                style={{ width: '26em' }}
-                placeholder="ปัญหา/อุปสรรค"
-              />
-            </div>
+            <Dialog
+              style={{ width: '450px', width: "50vw" }} header="เแก้ไขปัญหา/อุปสรรค" modal className="p-fluid"
+              visible={visible3}
+              footer={renderFooter3}
+              onHide={onHide}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ปัญหา/อุปสรรค :</h4>
+                  </div>
+                  <div className="col-12 md:col-3">
+                    <InputText
+                      value={editproblem}
+                      onChange={(e) => setEditproblem(e.target.value)}
+                      style={{ width: '26em' }}
+                      placeholder="ปัญหา/อุปสรรค"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Dialog>
           </div>
         </div>
-      </Dialog>
-    </div>
-    </div>
-    </div>
+      </div>
     </>
   );
 }

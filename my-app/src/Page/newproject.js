@@ -292,7 +292,7 @@ const Newproject = () => {
                 target_group: alldata.targetgroup,
                 butget: money,
                 butget_char: moneyText,
-                tor: alldata.radioTor === 'มี' ? 1 : 0,
+                tor: (alldata.radioTor === 'มี') ? 1 : 0,
                 //  // source: ,
                 source_name: alldata.selectedbudget.name === 'ไม่ได้ใช้งบประมาณ' ? null : alldata.selectedbudget.name,
                 status: 0, //1
@@ -491,96 +491,98 @@ const Newproject = () => {
             <Sidebar />
             <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
                 <div className="page-wrapper">
-                    <Toast ref={toast} />
+                    <div align="left">
+                        <h2 style={{ marginTop: '.5em', marginLeft: '1em' }}>สร้างโครงการใหม่</h2>
+                        <Toast ref={toast} />
 
-                    <Form
-                        form={form}
-                        onFinish={onFinish}
-                        name="dynamic_rule"
-                        style={{
-                            maxWidth: "100%",
-                        }}
-                    >
-                        <Form.Item
-                            {...formItemLayout}
-                            name="selectyear"
-                            label="ปีงบประมาณ"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
+                        <Form
+                            form={form}
+                            onFinish={onFinish}
+                            name="dynamic_rule"
+                            style={{
+                                maxWidth: "100%",
+                            }}
                         >
-                            <Dropdown options={stopen} onChange={onStrategic} optionLabel="fiscalyear" placeholder="fiscalyear" className="w-full md:w-14rem" />
-                        </Form.Item>
-                        <Form.Item
-                            {...formItemLayout}
-                            name="projectname"
-                            label="ชื่อโครงการ"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your projectname',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Please input your name" />
-                        </Form.Item>
-                        <Form.Item
-                            {...formItemLayout}
-                            name="Agency"
-                            label="หน่วยงานที่รับผิดชอบโครงการ"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Please input your name" disabled />
-                        </Form.Item>
-                        <Form.Item
-                            {...formItemLayout}
-                            name="headproject"
-                            label="ผู้รับผิดชอบโครงการ"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="headproject" disabled />
-                        </Form.Item>
-                        <Form.List
-                            name="nameheadpj"
-                            {...formItemLayout}
-                        >
-                            {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                        <Form.Item
-                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            label={index === 0 ? 'ชื่อผู้รับผิดชอบโครงการ ' : ''}
-                                            required={false}
-                                            key={field.key}
-                                        >
+                            <Form.Item
+                                {...formItemLayout}
+                                name="selectyear"
+                                label="ปีงบประมาณ"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Dropdown options={stopen} onChange={onStrategic} optionLabel="fiscalyear" placeholder="ปีงบประมาณ" className="w-full md:w-14rem" />
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemLayout}
+                                name="projectname"
+                                label="ชื่อโครงการ"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your projectname',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="ชื่อโครงการ" style={{ width: '45em' }} />
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemLayout}
+                                name="Agency"
+                                label="หน่วยงานที่รับผิดชอบโครงการ"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Input style={{ width: '45em' }} placeholder="Please input your name" disabled />
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemLayout}
+                                name="headproject"
+                                label="ผู้รับผิดชอบโครงการ"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="headproject" disabled style={{ width: '45em' }} />
+                            </Form.Item>
+                            <Form.List
+                                name="nameheadpj"
+                                {...formItemLayout}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
                                             <Form.Item
-                                                {...field}
-                                                //  validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        // whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
+                                                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                                label={index === 0 ? 'ชื่อผู้รับผิดชอบโครงการ ' : ''}
+                                                required={false}
+                                                key={field.key}
                                             >
-                                                <Dropdown options={person} optionLabel="displayname"
-                                                    placeholder="Select " style={{ width: 400 }} />
-                                                {/* <Select //defaultValue={null}
+                                                <Form.Item
+                                                    {...field}
+                                                    //  validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            // whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Dropdown options={person} optionLabel="displayname"
+                                                        placeholder="ชื่อผู้รับผิดชอบโครงการ " style={{ width: 400 }} />
+                                                    {/* <Select //defaultValue={null}
                                 
                             >
                                 <Option value={null}></Option>
@@ -589,23 +591,23 @@ const Newproject = () => {
                                 )}
 
                             </Select> */}
+                                                </Form.Item>
+
+                                                <MinusCircleOutlined
+                                                    className="dynamic-delete-button"
+                                                    onClick={() => remove(field.name)}
+                                                />
                                             </Form.Item>
-
-                                            <MinusCircleOutlined
-                                                className="dynamic-delete-button"
-                                                onClick={() => remove(field.name)}
-                                            />
+                                        ))}
+                                        <Form.Item {...formItemLayoutWithOutLabel2} >
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                เพิ่มผู้รับผิดชอบโครงการ
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
                                         </Form.Item>
-                                    ))}
-                                    <Form.Item {...formItemLayoutWithOutLabel2} >
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add sights
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
+                                    </>
+                                )}
+                            </Form.List>
 
 
 
@@ -618,7 +620,7 @@ const Newproject = () => {
 
 
 
-                        {/* <Form.List
+                            {/* <Form.List
                     name="selectissue"
                     {...formItemLayout}
                 >
@@ -713,624 +715,627 @@ const Newproject = () => {
                     )}
                 </Form.List>
          */}
-                        <Form.Item {...formItemLayout}
-                            name="radiogroup"
-                            label="ประเภทโครงการ"
-                            rules={[{
-                                required: true,
-                                message: 'Please pick an item!'
-                            }]}
-                        >
-                            <Radio.Group>
-                                <Radio value="1">โครงการในแผน</Radio>
-                                <Radio value="0">โครงการนอกแผน</Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item {...formItemLayout} name="radio" label="ลักษณะโครงการ"
-                            rules={[{ required: true, message: 'Please pick an item!' }]}>
-                            <Radio.Group>
-                                <Radio value="0">โครงการใหม่</Radio>
-                                <Radio value="1">โครงการต่อเนื่อง</Radio>
-                                <Radio value="2">งานประจำ</Radio>
-                                <Radio value="3">งานพัฒนา</Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item
-                            {...formItemLayout}
-                            name="selectintegration"
-                            label="การบูรณาการโครงการ"
-                            rules={[
-                                {
+                            <Form.Item {...formItemLayout}
+                                name="radiogroup"
+                                label="ประเภทโครงการ"
+                                rules={[{
                                     required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Dropdown
-                                options={integration}
-                                optionLabel="integration_name"
-                                onChange={(e) => setSelectintegration(e.value)}
-                                placeholder="select"
-                            />
-                        </Form.Item>
-                        {selectintegration.integration_name === 'อื่นๆ' ?
+                                    message: 'Please pick an item!'
+                                }]}
+                            >
+                                <Radio.Group>
+                                    <Radio value="1">โครงการในแผน</Radio>
+                                    <Radio value="0">โครงการนอกแผน</Radio>
+                                </Radio.Group>
+                            </Form.Item>
+                            <Form.Item {...formItemLayout} name="radio" label="ลักษณะโครงการ"
+                                rules={[{ required: true, message: 'Please pick an item!' }]}>
+                                <Radio.Group>
+                                    <Radio value="0">โครงการใหม่</Radio>
+                                    <Radio value="1">โครงการต่อเนื่อง</Radio>
+                                    <Radio value="2">งานประจำ</Radio>
+                                    <Radio value="3">งานพัฒนา</Radio>
+                                </Radio.Group>
+                            </Form.Item>
                             <Form.Item
                                 {...formItemLayout}
-                                name="newintegration"
-                                label="ชื่อบูรณาการ"
+                                name="selectintegration"
+                                label="การบูรณาการโครงการ"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input your projectname',
+                                        message: 'Please input your name',
                                     },
                                 ]}
                             >
-                                <Input placeholder="Please input your name" />
+                                <Dropdown
+                                    options={integration}
+                                    optionLabel="integration_name"
+                                    onChange={(e) => setSelectintegration(e.value)}
+                                    placeholder="การบูรณาการโครงการ"
+                                    style={{ width: '25em' }}
+                                />
                             </Form.Item>
-                            : null}
+                            {selectintegration.integration_name === 'อื่นๆ' ?
+                                <Form.Item
+                                    {...formItemLayout}
+                                    name="newintegration"
+                                    label="ชื่อบูรณาการ"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your projectname',
+                                        },
+                                    ]}
+                                >
+                                    <Input placeholder="Please input your name" />
+                                </Form.Item>
+                                : null}
 
-                        {selectintegration.integration_name !== 'ไม่' ? <Form.Item
-                            {...formItemLayout}
-                            name="integrationdetail"
-                            label="เรื่อง/วิชา/คณะ"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Input.TextArea showCount maxLength={100} />
+                            {selectintegration.integration_name !== 'ไม่' ? <Form.Item
+                                {...formItemLayout}
+                                name="integrationdetail"
+                                label="เรื่อง/วิชา/คณะ"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Input.TextArea showCount maxLength={100} style={{ width: '45em', height: '10em' }} />
 
-                        </Form.Item> : null}
-                        <Form.Item
-                            {...formItemLayout}
-                            name="reason"
-                            label="หลักการและเหตุผล"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Input.TextArea showCount maxLength={100} />
-                        </Form.Item>
-                        <Form.List
-                            name="object"
-                            rules={[
-                                ({ getFieldValue }) => ({
-
-                                    validator(rule, value) {
-                                        if (getFieldValue('object').length) {
-                                            return Promise.resolve()
-                                        }
-                                        return Promise.reject('กรุณาเพิ่มรายการสินค้า')
-                                    }
-                                })
-                            ]}
-
-                            {...formItemLayout}
-                        >
-                            {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                        <Form.Item
-                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            label={index === 0 ? 'วัตถุประสงค์ ' : ''}
-                                            required={false}
-                                            key={field.key}
-                                        >
-                                            <Form.Item
-                                                {...field}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Input
-                                                    placeholder="วัตถุประสงค์ "
-                                                    style={{
-                                                        width: '60%',
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                            {fields.length > 1 ? (
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => remove(field.name)}
-                                                />
-                                            ) : null}
-                                        </Form.Item>
-                                    ))}
-                                    <Form.Item {...formItemLayoutWithOutLabel2} >
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add sights
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-                        <Form.List
-                            name="indica"
-                            rules={[
-                                ({ getFieldValue }) => ({
-
-                                    validator(rule, value) {
-                                        if (getFieldValue('indica').length) {
-                                            return Promise.resolve()
-                                        }
-                                        return Promise.reject('กรุณาเพิ่มรายการสินค้า')
-                                    }
-                                })
-                            ]}
-                            {...formItemLayout}
-                        >
-                            {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                        <Form.Item
-                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            label={index === 0 ? 'ตัวชี้วัดความสำเร็จ ' : ''}
-                                            required={false}
-                                            key={field.key}
-                                        >
-                                            <Form.Item
-                                                {...field}
-                                                Label='indicas'
-                                                name={[field.name, 'indicas']}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Input
-                                                    placeholder="ตัวชี้วัดความสำเร็จ "
-                                                    style={{
-                                                        width: '60%',
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                {...field}
-                                                Label='countunit'
-                                                name={[field.name, 'countunit']}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Input
-                                                    placeholder="หน่วยนับ "
-                                                    style={{
-                                                        width: '60%',
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                {...field}
-                                                Label='tagetvalue'
-                                                name={[field.name, 'tagetvalue']}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Input
-                                                    placeholder="ค่าเป้าหมาย "
-                                                    style={{
-                                                        width: '60%',
-                                                    }}
-                                                />
-                                            </Form.Item>
-
-
-                                            {fields.length > 1 ? (
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => remove(field.name)}
-                                                />
-                                            ) : null}
-                                        </Form.Item>
-                                    ))}
-                                    <Form.Item {...formItemLayoutWithOutLabel2} >
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add sights
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-                        <Form.Item
-                            {...formItemLayout}
-                            name="targetgroup"
-                            label="กลุ่มเป้าหมาย"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Please input your name" />
-                        </Form.Item>
-                        <Form.List
-                            name="rowsData"
-                            rules={[
-                                ({ getFieldValue }) => ({
-
-                                    validator(rule, value) {
-                                        if (getFieldValue('rowsData').length) {
-                                            return Promise.resolve()
-                                        }
-                                        return Promise.reject('กรุณาเพิ่มรายการสินค้า')
-                                    }
-                                })
-                            ]}
-                            {...formItemLayout}
-                        >
-                            {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                        <Form.Item
-                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            label={index === 0 ? 'ขั้นตอนการดำเนินการ ' : ''}
-                                            required={false}
-                                            key={field.key}
-                                        >
-                                            <Form.Item
-                                                {...field}
-                                                Label='steps'
-                                                name={[field.name, 'steps']}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        /// whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Input
-                                                    placeholder="ขั้นตอนการดำเนินการ/รายการกิจกรรม "
-                                                    style={{
-                                                        width: '60%',
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                {...field}
-                                                Label='start'
-                                                name={[field.name, 'start']}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        // whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Calendar id="basic" placeholder="เลือกวันที่เริิ่มต้น" dateFormat="dd/mm/yy" name="dateend"
-                                                    className="form-control" />
-
-                                            </Form.Item>
-                                            <Form.Item
-                                                {...field}
-                                                Label='end'
-                                                name={[field.name, 'end']}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        //whitespace: true,
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Calendar id="basic" placeholder="เลือกวันที่สิ้นสุด" dateFormat="dd/mm/yy" name="dateend"
-                                                    className="form-control" />
-                                            </Form.Item>
-
-
-                                            {fields.length > 1 ? (
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => remove(field.name)}
-                                                />
-                                            ) : null}
-                                        </Form.Item>
-                                    ))}
-                                    <Form.Item {...formItemLayoutWithOutLabel2} >
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add sights
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-
-
-                        <Form.Item
-                            {...formItemLayout}
-                            name="selectedbudget"
-                            label="แหล่งเงิน/ประเภทงบประมาณที่ใช้"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Dropdown
-                                style={{ width: 360 }}
-                                options={budget}
-                                optionLabel="name"
-                                placeholder="Select "
-                            />
-                        </Form.Item>
-
-
-                        {/****************************/}
-
-                        <Form.Item label="ปริมาณการงบประมาณที่ใช้" {...formItemLayout}>
-                            {/*<Space>*/}
+                            </Form.Item> : null}
                             <Form.Item
-                                noStyle
-                                name="amount"
-
+                                {...formItemLayout}
+                                name="reason"
+                                label="หลักการและเหตุผล"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'กรุณากรอกปริมาณการงบประมาณ',
+                                        message: 'Please input your name',
                                     },
                                 ]}
                             >
-                                <Input style={{ width: 260 }}
-                                    onChange={handleMoney}
-                                    placeholder="งบประมาณที่ใช้" />
+                                <Input.TextArea showCount maxLength={100} style={{ width: '45em', height: '15em' }} />
                             </Form.Item>
-                            {money && <h3>{moneyText}</h3>}
-                            {/*</Space>*/}
-                        </Form.Item>
-                        <Form.Item
-                            {...formItemLayout}
-                            name="workplan2"
-                            label="แผนงาน"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your name',
-                                },
-                            ]}
-                        >
-                            <Dropdown
-                                style={{ width: 360 }}
-                                options={workplan}
-                                optionLabel="workplan_name"
-                                placeholder="Select "
-                            />
-                        </Form.Item>
+                            <Form.List
+                                name="object"
+                                rules={[
+                                    ({ getFieldValue }) => ({
 
-                        <Form.List
-                            name="budget"
-                            rules={[
-                                ({ getFieldValue }) => ({
-
-                                    validator(rule, value) {
-                                        if (getFieldValue('budget').length) {
-                                            return Promise.resolve()
+                                        validator(rule, value) {
+                                            if (getFieldValue('object').length) {
+                                                return Promise.resolve()
+                                            }
+                                            return Promise.reject('กรุณาเพิ่มรายการสินค้า')
                                         }
-                                        return Promise.reject('กรุณาเพิ่มรายการสินค้า')
-                                    }
-                                })
-                            ]}
-                            rules={[
-                                ({ getFieldValue }) => ({
-                                    validator(rule, value) {
-                                        if (getFieldValue('budget').length) {
-                                            return Promise.resolve()
-                                        }
-                                        return Promise.reject('กรุณาเพิ่มงบประมาณที่ใช้')
-                                    }
-                                })
-                            ]}
-                            {...formItemLayout}
-                        >
-                            {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    <Row>
-                                        <Col span={24} offset={8}>
-                                            {fields.map(({ key, name, index, ...restField }) => (
+                                    })
+                                ]}
 
+                                {...formItemLayout}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
+                                            <Form.Item
+                                                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                                label={index === 0 ? 'วัตถุประสงค์ ' : ''}
+                                                required={false}
+                                                key={field.key}
+                                            >
                                                 <Form.Item
-                                                    required={false}
-                                                    key={key}
+                                                    {...field}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
                                                 >
-                                                    <Row>
-                                                        <Col span={24}>
-                                                            <Form.Item
-                                                                {...restField}
-                                                                label="งบรายจ่าย"
-                                                                name={[name, 'exbudget']}
+                                                    <Input
+                                                        placeholder="วัตถุประสงค์ "
+                                                        style={{
+                                                            width: '60%',
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                {fields.length > 1 ? (
+                                                    <MinusCircleOutlined
+                                                        className="dynamic-delete-button"
+                                                        onClick={() => remove(field.name)}
+                                                    />
+                                                ) : null}
+                                            </Form.Item>
+                                        ))}
+                                        <Form.Item {...formItemLayoutWithOutLabel2} >
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                เพิ่มวัตถุประสงค์
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+                            <Form.List
+                                name="indica"
+                                rules={[
+                                    ({ getFieldValue }) => ({
 
-                                                            >
-                                                                <Input style={{ width: 160 }} placeholder="งบรายจ่าย" />
-                                                            </Form.Item>
-                                                        </Col>
-                                                        {/*<Col >*/}
-                                                        <Form.Item
-                                                            {...restField}
-                                                            label="หมวดรายจ่าย"
-                                                            name={[name, 'category']}
-
-                                                        >
-                                                            <Input style={{ width: 160 }} placeholder="หมวดรายจ่าย" />
-                                                        </Form.Item>
-                                                        <Form.Item
-                                                            {...restField}
-                                                            // label="Quarter1"
-                                                            name={[name, 'Quarter1']}
-                                                        // rules={[
-                                                        //     {
-                                                        //         required: true,
-                                                        //         message: 'กรุณากรอกจำนวนสินค้า',
-                                                        //     },
-                                                        // ]}
-                                                        >
-                                                            <InputNumber min={0} controls={false} style={{ width: 160 }}
-                                                                placeholder="Quarter1" />
-                                                        </Form.Item>
-                                                        <Form.Item
-                                                            {...restField}
-                                                            // label="Quarter2"
-                                                            name={[name, 'Quarter2']}
-
-                                                        >
-                                                            <InputNumber min={0} controls={false} style={{ width: 160 }}
-                                                                placeholder="Quarter2" />
-                                                        </Form.Item>
-                                                        <Form.Item
-                                                            {...restField}
-                                                            // label="Quarter3"
-                                                            name={[name, 'Quarter3']}
-
-                                                        >
-                                                            <InputNumber min={0} controls={false} style={{ width: 160 }}
-                                                                placeholder="Quarter3" />
-                                                        </Form.Item>
-                                                        <Form.Item
-                                                            {...restField}
-                                                            // label="Quarter4"
-                                                            name={[name, 'Quarter4']}
-
-                                                        >
-                                                            <InputNumber min={0} controls={false} style={{ width: 160 }}
-                                                                placeholder="Quarter4" />
-                                                        </Form.Item>
-                                                        {/*</Col>*/}
-                                                        {fields.length > 1 ? (
-                                                            <MinusCircleOutlined
-                                                                className="dynamic-delete-button"
-                                                                // style={{justifyItems: 'center'}}
-                                                                onClick={() => remove(name)}
-                                                            />
-                                                        ) : null}
-                                                        {/*<MinusCircleOutlined onClick={() => remove(name)}/>*/}
-                                                    </Row>
-
+                                        validator(rule, value) {
+                                            if (getFieldValue('indica').length) {
+                                                return Promise.resolve()
+                                            }
+                                            return Promise.reject('กรุณาเพิ่มรายการสินค้า')
+                                        }
+                                    })
+                                ]}
+                                {...formItemLayout}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
+                                            <Form.Item
+                                                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                                label={index === 0 ? 'ตัวชี้วัดความสำเร็จ ' : ''}
+                                                required={false}
+                                                key={field.key}
+                                            >
+                                                <Form.Item
+                                                    {...field}
+                                                    Label='indicas'
+                                                    name={[field.name, 'indicas']}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Input
+                                                        placeholder="ตัวชี้วัดความสำเร็จ "
+                                                        style={{
+                                                            width: '60%',
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...field}
+                                                    Label='countunit'
+                                                    name={[field.name, 'countunit']}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Input
+                                                        placeholder="หน่วยนับ "
+                                                        style={{
+                                                            width: '60%',
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...field}
+                                                    Label='tagetvalue'
+                                                    name={[field.name, 'tagetvalue']}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Input
+                                                        placeholder="ค่าเป้าหมาย "
+                                                        style={{
+                                                            width: '60%',
+                                                        }}
+                                                    />
                                                 </Form.Item>
 
-                                            ))}
-                                        </Col>
-                                    </Row>
-                                    <Form.Item  {...formItemLayout}
-                                        label="ประเภทการใช้จ่าย"
-                                    >
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add sights
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
 
-
-                        {/****************************/}
-
-
-                        <Form.List
-                            name="sakes"
-                            {...formItemLayout}
-                        >
-                            {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                        <Form.Item
-                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            label={index === 0 ? 'ประโยชน์ที่คาดว่าจะได้รับ ' : ''}
-                                            required={false}
-                                            key={field.key}
-                                        >
-                                            <Form.Item
-                                                {...field}
-                                                validateTrigger={['onChange', 'onBlur']}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        whitespace: true, //
-                                                        message: 'Please input passenger\'s name or delete this field.',
-                                                    },
-                                                ]}
-                                                noStyle
-                                            >
-                                                <Input
-                                                    placeholder="ประโยชน์ที่คาดว่าจะได้รับ "
-                                                    style={{
-                                                        width: '60%',
-                                                    }}
-                                                />
+                                                {fields.length > 1 ? (
+                                                    <MinusCircleOutlined
+                                                        className="dynamic-delete-button"
+                                                        onClick={() => remove(field.name)}
+                                                    />
+                                                ) : null}
                                             </Form.Item>
-                                            {fields.length > 1 ? (
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => remove(field.name)}
-                                                />
-                                            ) : null}
+                                        ))}
+                                        <Form.Item {...formItemLayoutWithOutLabel2} >
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                เพิ่มตัวชี้วัดความสำเร็จ
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
                                         </Form.Item>
-                                    ))}
-                                    <Form.Item {...formItemLayoutWithOutLabel2} >
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add sights
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-                        <Form.Item {...formItemLayout} name="radioTor" label="เอกสาร TOR"
-                            rules={[{ required: true, message: 'Please pick an item!' }]}>
-                            <Radio.Group>
-                                <Radio value="0">ไม่มี</Radio>
-                                <Radio value="1">มี</Radio>
-                            </Radio.Group>
-                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+                            <Form.Item
+                                {...formItemLayout}
+                                name="targetgroup"
+                                label="กลุ่มเป้าหมาย"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="กลุ่มเป้าหมาย" style={{ width: '45em' }} />
+                            </Form.Item>
+                            <Form.List
+                                name="rowsData"
+                                rules={[
+                                    ({ getFieldValue }) => ({
 
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login-form-button"    >
-                                Submit
-                            </Button>
+                                        validator(rule, value) {
+                                            if (getFieldValue('rowsData').length) {
+                                                return Promise.resolve()
+                                            }
+                                            return Promise.reject('กรุณาเพิ่มรายการสินค้า')
+                                        }
+                                    })
+                                ]}
+                                {...formItemLayout}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
+                                            <Form.Item
+                                                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                                label={index === 0 ? 'ขั้นตอนการดำเนินการ ' : ''}
+                                                required={false}
+                                                key={field.key}
+                                            >
+                                                <Form.Item
+                                                    {...field}
+                                                    Label='steps'
+                                                    name={[field.name, 'steps']}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            /// whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Input
+                                                        placeholder="ขั้นตอนการดำเนินการ/รายการกิจกรรม "
+                                                        style={{
+                                                            width: '60%',
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...field}
+                                                    Label='start'
+                                                    name={[field.name, 'start']}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            // whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Calendar id="basic" placeholder="เลือกวันที่เริ่มต้น" dateFormat="dd/mm/yy" name="dateend"
+                                                        className="form-control" />
 
-                        </Form.Item>
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...field}
+                                                    Label='end'
+                                                    name={[field.name, 'end']}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            //whitespace: true,
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Calendar id="basic" placeholder="เลือกวันที่สิ้นสุด" dateFormat="dd/mm/yy" name="dateend"
+                                                        className="form-control" />
+                                                </Form.Item>
 
-                    </Form>
+
+                                                {fields.length > 1 ? (
+                                                    <MinusCircleOutlined
+                                                        className="dynamic-delete-button"
+                                                        onClick={() => remove(field.name)}
+                                                    />
+                                                ) : null}
+                                            </Form.Item>
+                                        ))}
+                                        <Form.Item {...formItemLayoutWithOutLabel2} >
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                เพิ่มขั้นตอนการดำเนินการ/รายการกิจกรรม
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+
+
+                            <Form.Item
+                                {...formItemLayout}
+                                name="selectedbudget"
+                                label="แหล่งเงิน/ประเภทงบประมาณที่ใช้"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Dropdown
+                                    options={budget}
+                                    optionLabel="name"
+                                    placeholder="แหล่งเงิน/ประเภทงบประมาณที่ใช้"
+                                    style={{ width: '25em' }}
+                                />
+                            </Form.Item>
+
+
+                            {/****************************/}
+
+                            <Form.Item label="ปริมาณการงบประมาณที่ใช้" {...formItemLayout}>
+                                {/*<Space>*/}
+                                <Form.Item
+                                    noStyle
+                                    name="amount"
+
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'กรุณากรอกปริมาณการงบประมาณ',
+                                        },
+                                    ]}
+                                >
+                                    <Input style={{ width: 260 }}
+                                        onChange={handleMoney}
+                                        placeholder="งบประมาณที่ใช้" />
+                                </Form.Item>
+                                {money && <h3>{moneyText}</h3>}
+                                {/*</Space>*/}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemLayout}
+                                name="workplan2"
+                                label="แผนงาน"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your name',
+                                    },
+                                ]}
+                            >
+                                <Dropdown
+                                    style={{ width: '25em' }}
+                                    options={workplan}
+                                    optionLabel="workplan_name"
+                                    placeholder="แผนงาน"
+                                />
+                            </Form.Item>
+
+                            <Form.List
+                                name="budget"
+                                rules={[
+                                    ({ getFieldValue }) => ({
+
+                                        validator(rule, value) {
+                                            if (getFieldValue('budget').length) {
+                                                return Promise.resolve()
+                                            }
+                                            return Promise.reject('กรุณาเพิ่มรายการสินค้า')
+                                        }
+                                    })
+                                ]}
+                                rules={[
+                                    ({ getFieldValue }) => ({
+                                        validator(rule, value) {
+                                            if (getFieldValue('budget').length) {
+                                                return Promise.resolve()
+                                            }
+                                            return Promise.reject('กรุณาเพิ่มงบประมาณที่ใช้')
+                                        }
+                                    })
+                                ]}
+                                {...formItemLayout}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        <Row>
+                                            <Col span={24} offset={8}>
+                                                {fields.map(({ key, name, index, ...restField }) => (
+
+                                                    <Form.Item
+                                                        required={false}
+                                                        key={key}
+                                                    >
+                                                        <Row>
+                                                            <Col span={24}>
+                                                                <Form.Item
+                                                                    {...restField}
+                                                                    label="งบรายจ่าย"
+                                                                    name={[name, 'exbudget']}
+
+                                                                >
+                                                                    <Input style={{ width: 160 }} placeholder="งบรายจ่าย" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            {/*<Col >*/}
+                                                            <Form.Item
+                                                                {...restField}
+                                                                label="หมวดรายจ่าย"
+                                                                name={[name, 'category']}
+
+                                                            >
+                                                                <Input style={{ width: 160 }} placeholder="หมวดรายจ่าย" />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                // label="Quarter1"
+                                                                name={[name, 'Quarter1']}
+                                                            // rules={[
+                                                            //     {
+                                                            //         required: true,
+                                                            //         message: 'กรุณากรอกจำนวนสินค้า',
+                                                            //     },
+                                                            // ]}
+                                                            >
+                                                                <InputNumber min={0} controls={false} style={{ width: 160 }}
+                                                                    placeholder="Quarter1" />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                // label="Quarter2"
+                                                                name={[name, 'Quarter2']}
+
+                                                            >
+                                                                <InputNumber min={0} controls={false} style={{ width: 160 }}
+                                                                    placeholder="Quarter2" />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                // label="Quarter3"
+                                                                name={[name, 'Quarter3']}
+
+                                                            >
+                                                                <InputNumber min={0} controls={false} style={{ width: 160 }}
+                                                                    placeholder="Quarter3" />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                // label="Quarter4"
+                                                                name={[name, 'Quarter4']}
+
+                                                            >
+                                                                <InputNumber min={0} controls={false} style={{ width: 160 }}
+                                                                    placeholder="Quarter4" />
+                                                            </Form.Item>
+                                                            {/*</Col>*/}
+                                                            {fields.length > 1 ? (
+                                                                <MinusCircleOutlined
+                                                                    className="dynamic-delete-button"
+                                                                    // style={{justifyItems: 'center'}}
+                                                                    onClick={() => remove(name)}
+                                                                />
+                                                            ) : null}
+                                                            {/*<MinusCircleOutlined onClick={() => remove(name)}/>*/}
+                                                        </Row>
+
+                                                    </Form.Item>
+
+                                                ))}
+                                            </Col>
+                                        </Row>
+                                        <Form.Item  {...formItemLayout}
+                                            label="ประเภทการใช้จ่าย"
+                                        >
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                เพิ่มประเภทการใช้จ่าย
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+
+
+                            {/****************************/}
+
+
+                            <Form.List
+                                name="sakes"
+                                {...formItemLayout}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
+                                            <Form.Item
+                                                {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                                label={index === 0 ? 'ประโยชน์ที่คาดว่าจะได้รับ ' : ''}
+                                                required={false}
+                                                key={field.key}
+                                            >
+                                                <Form.Item
+                                                    {...field}
+                                                    validateTrigger={['onChange', 'onBlur']}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            whitespace: true, //
+                                                            message: 'Please input passenger\'s name or delete this field.',
+                                                        },
+                                                    ]}
+                                                    noStyle
+                                                >
+                                                    <Input
+                                                        placeholder="ประโยชน์ที่คาดว่าจะได้รับ "
+                                                        style={{
+                                                            width: '60%',
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                {fields.length > 1 ? (
+                                                    <MinusCircleOutlined
+                                                        className="dynamic-delete-button"
+                                                        onClick={() => remove(field.name)}
+                                                    />
+                                                ) : null}
+                                            </Form.Item>
+                                        ))}
+                                        <Form.Item {...formItemLayoutWithOutLabel2} >
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                เพิ่มประโยชน์ที่คาดว่าจะได้รับ
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+                            <Form.Item {...formItemLayout} name="radioTor" label="เอกสาร TOR"
+                                rules={[{ required: true, message: 'Please pick an item!' }]}>
+                                <Radio.Group>
+                                    <Radio value="0">ไม่มี</Radio>
+                                    <Radio value="1">มี</Radio>
+                                </Radio.Group>
+                            </Form.Item>
+
+                            <Form.Item>
+                                <div style={{ marginTop: '1.5em', marginLeft: '85em', marginBottom: '1.5em' }} >
+                                    <Button type="primary" htmlType="submit" className="login-form-button" >
+                                        บันทึก
+                                    </Button>
+                                </div>
+                            </Form.Item>
+
+                        </Form>
+                    </div>
                 </div>
             </div>
         </>

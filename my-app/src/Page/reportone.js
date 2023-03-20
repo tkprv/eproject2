@@ -114,12 +114,12 @@ const Reportone = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div align="left">
-            <h2 style={{ marginTop: '2em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 1</h2>
+            <h2 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 1</h2>
             <Card>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ชื่อโครงการ :</h3>
+                    <h4>ชื่อโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.project_name} </h4>
@@ -129,7 +129,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>งบประมาณที่จัดสรร :</h3>
+                    <h4>งบประมาณที่จัดสรร :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.butget} บาท</h4>
@@ -139,7 +139,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลการใช้จ่าย :</h3>
+                    <h4>ผลการใช้จ่าย :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     {quartercharges.map((value) => {
@@ -151,7 +151,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลตามตัวชี้วัด :</h3>
+                    <h4>ผลตามตัวชี้วัด :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -168,7 +168,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ขั้นตอนการดำเนินการ :</h3>
+                    <h4>ขั้นตอนการดำเนินการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -184,7 +184,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h3>
+                    <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     {quartercharges.map((value) => {
@@ -196,7 +196,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>รายละเอียดความก้าวหน้า :</h3>
+                    <h4>รายละเอียดความก้าวหน้า :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     {detail.map((value) => {
@@ -208,7 +208,7 @@ const Reportone = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ปัญหา/อุปสรรค :</h3>
+                    <h4>ปัญหา/อุปสรรค :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     {problem.map((value) => {

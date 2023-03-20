@@ -47,17 +47,25 @@ const Datareport = () => {
       return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
     } else if (node.status === 5) {
       return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+    } else if (node.status === 6) {
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 7) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 8) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+    } else if (node.status === 9) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
     } else {
       return node.status
     }
   }
 
   const report1 = (node) => {
-    if (node.status === 4 && node.report_one === 0) {
+    if (node.status === 4 && node.report_one === 0 && node.open_reportone === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reportone", state: node })} />
+        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
         <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreportone", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreportone", state: node })} />
+        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
       </div>
     } else if (node.status === 4 && node.report_one !== 0) {
       return <div>
@@ -76,11 +84,11 @@ const Datareport = () => {
   }
 
   const report2 = (node) => {
-    if (node.status === 4 && node.report_two === 0) {
+    if (node.status === 4 && node.report_two === 0 && node.open_reporttwo === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reporttwo", state: node })} />
+        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
         <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreporttwo", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreporttwo", state: node })} />
+        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
       </div>
     } else if (node.status === 4 && node.report_two !== 0) {
       return <div>
@@ -98,11 +106,11 @@ const Datareport = () => {
   }
 
   const report3 = (node) => {
-    if (node.status === 4 && node.report_three === 0) {
+    if (node.status === 4 && node.report_three === 0 && node.open_reportthree === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reportthree", state: node })} />
+        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
         <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreportthree", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreportthree", state: node })} />
+        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
       </div>
     } else if (node.status === 4 && node.report_three !== 0) {
       return <div>
@@ -120,11 +128,11 @@ const Datareport = () => {
   }
 
   const report4 = (node) => {
-    if (node.status === 4 && node.report_four === 0) {
+    if (node.status === 4 && node.report_four === 0 && node.open_reportfour === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reportfour", state: node })} />
+        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
         <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreportfour", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreportfour", state: node })} />
+        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
       </div>
     } else if (node.status === 4 && node.report_four !== 0) {
       return <div>
@@ -177,7 +185,9 @@ const Datareport = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <h3>จัดการรายงานความก้าวหน้า</h3>
+          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
+            <h3>จัดการรายงานความก้าวหน้า</h3>
+          </div>
           <Card>
             <div className="text-left">
               <div className="fit">

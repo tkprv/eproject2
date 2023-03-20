@@ -13,7 +13,7 @@ import { Tag } from 'primereact/tag';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { Card } from "primereact/card";
-import {getLocalSection} from '../helper/utill';
+import { getLocalSection } from '../helper/utill';
 
 const Dataleader = () => {
   const [fiscalyear, setFiscalyear] = useState([])
@@ -50,6 +50,14 @@ const Dataleader = () => {
       return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
     } else if (node.status === 5) {
       return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+    } else if (node.status === 6) {
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 7) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 8) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+    } else if (node.status === 9) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
     } else {
       return node.status
     }
@@ -98,7 +106,7 @@ const Dataleader = () => {
     }
   }
 
-  useEffect (() => {
+  useEffect(() => {
     Projectleader()
   }, [])
 
@@ -119,8 +127,8 @@ const Dataleader = () => {
 
   const Projectleader = () => {
     const id = getLocalSection()
-    console.log('id',id);
-      axios
+    console.log('id', id);
+    axios
       .get(`http://localhost:3001/dataproject/projectleader/${id}`, {})
       .then((res) => {
         setProjectleader(res.data)
@@ -133,6 +141,9 @@ const Dataleader = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
+          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
+            <h3>ข้อมูลโครงการ</h3>
+          </div>
           <Card>
             <div className="text-left">
               <div className="fit">

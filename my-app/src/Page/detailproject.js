@@ -15,7 +15,7 @@ import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { getLocalId } from '../helper/utill';
 
-const Detaildirector = () => {
+const Detailproject = () => {
   const location = useLocation()
   const [confirm, setConfirm] = useState('');
   const [noconfirm, setNoconfirm] = useState('');
@@ -33,7 +33,6 @@ const Detaildirector = () => {
   const [workplanproject, setWorkplanproject] = useState([]);
   const [chargesproject, setChargesproject] = useState([]);
   const [benefitproject, setBenefitproject] = useState([]);
-  const [comment, setComment] = useState('');
   const [commentproject, setCommentproject] = useState([]);
   const [id, setId] = useState("")
   const [displayBasic, setDisplayBasic] = useState(false)
@@ -67,6 +66,10 @@ const Detaildirector = () => {
     'noconfirm': setNoconfirm
   }
 
+  const toggleMobileMenu = () => {
+    setMenu(!menu)
+  }
+
   const onClick = (name, position) => {
     dialogFuncMap[`${name}`](true);
 
@@ -85,10 +88,6 @@ const Detaildirector = () => {
 
   }
 
-  const toggleMobileMenu = () => {
-    setMenu(!menu)
-  }
-
   const workposition = (node) => {
     if (node.director === 1) {
       return 'ผู้บริหาร'
@@ -103,24 +102,6 @@ const Detaildirector = () => {
     } else if (node.admin === 1) {
       return 'ผู้ดูแลระบบ'
     }
-  }
-
-  const renderFooter1 = (name) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => onHide(name)} />
-        <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" onClick={() => confirmproject(location.state.project_id, 4)} />
-      </div>
-    );
-  }
-
-  const renderFooter2 = (name) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => onHide(name)} />
-        <Button label="ส่ง" icon="pi pi-check" className="p-button-success" style={{ width: '17%' }} onClick={() => noconfirmproject(location.state.project_id, 5)} />
-      </div>
-    );
   }
 
   const getfiscalyearandplanname = async () => {
@@ -158,7 +139,6 @@ const Detaildirector = () => {
       });
   }
   console.log('22', userproject)
-
 
   const getstrategic = async () => {
     await axios
@@ -280,46 +260,6 @@ const Detaildirector = () => {
   }
   console.log('102', benefitproject?.benefit_name)
 
-  const confirmproject = (id, n) => {
-    console.log('tt', id)
-    console.log('rr', n)
-    onHide('confirm')
-    axios
-      .put(`http://localhost:3001/dataproject/confirmproject/${id}`, {
-        status: n
-      })
-    alert(`อนุมัติ id${id} sucessful`)
-  }
-
-  const noconfirmproject = async (id, n) => {
-    console.log('tt', id)
-    console.log('rr', n)
-    console.log('comment', comment)
-    onHide('noconfirm')
-    const time1 = moment(times1).format('h:mm:ss');
-    const date1 = moment(dates1).format('YYYY-MM-DD')
-    axios
-      .put(`http://localhost:3001/dataproject/noconfirmproject/${id}`, {
-        status: n
-      })
-    await iscomment(id, time1, date1)
-    alert(`ไม่อนุมัติ id${id} sucessful`)
-  }
-
-  const iscomment = async (id, time1, date1) => {
-    console.log('45', id)
-    axios
-      .post(`http://localhost:3001/dataproject/comment`, {
-        project_id: id,
-        user_id: getLocalId(),
-        comment: comment,
-        comment_level: 1,
-        time_comment: time1,
-        date_comment: date1,
-        comment_type: 1
-      })
-  }
-
   const getcomment = async () => {
     await axios
       .get(`http://localhost:3001/dataproject/commentproject/${location.state.project_id}`)
@@ -330,7 +270,7 @@ const Detaildirector = () => {
         console.log(error)
       });
   }
-  console.log('103', commentproject)
+  console.log('66', commentproject)
 
   return (
     <>
@@ -339,7 +279,7 @@ const Detaildirector = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div className="tabview-demo">
-            <div cstyle={{ marginTop: '2em' }} >
+            <div style={{ marginTop: '2em' }} >
               <TabView>
                 <TabPanel header="รายละเอียดโครงการ">
                   <div align="left">
@@ -429,7 +369,7 @@ const Detaildirector = () => {
                       </div>
                       <div className="fit">
                         <div className="grid p-fluid">
-                          <div className="col-12 md:col-4">
+                          <div className="col-12 md:col-3">
                             <h4>ประเภทของโครงการ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
@@ -461,7 +401,7 @@ const Detaildirector = () => {
                       <div className="fit">
                         <div className="grid p-fluid">
                           <div className="col-12 md:col-3">
-                            <h4>หลักการและเหตุผล:</h4>
+                            <h4>หลักการและเหตุผล :</h4>
                           </div>
                           <div className="col-12 md:col-9">
                             <InputTextarea value={location.state.rationale} onChange={(e) => setValue1(e.target.value)} rows={8} cols={50} />
@@ -593,45 +533,7 @@ const Detaildirector = () => {
                         </div>
                       </div>
                       <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/datadirector" })} />
-                      </div>
-                    </Card>
-                  </div>
-                </TabPanel>
-                <TabPanel header="พิจารณาโครงการ">
-                  <div align="left">
-                    <h3>พิจารณาโครงการ</h3>
-                    <Card>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-2">
-                            <h4>พิจารณาโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            {(location.state.status === 0) ? <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag> :
-                              (location.state.status === 1) ? <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag> :
-                                (location.state.status === 2) ? <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag> :
-                                  (location.state.status === 3) ? <div> <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '8em' }} onClick={() => onClick('confirm')} /> <Button label="ไม่อนุมัติ" icon="pi pi-times" className="p-button-danger" style={{ marginLeft: '.5em', width: '8em' }} onClick={() => onClick('noconfirm')} /></div> :
-                                    (location.state.status === 4) ? <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag> :
-                                      <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>}
-
-                            <Dialog header="แน่ใจหรือไม่?" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter1('confirm')}>
-                              <div className="field" style={{ 'textAlign': 'center' }}>
-                                <i className="pi pi-exclamation-circle p-button-warning" style={{ 'fontSize': '8em', 'color': 'orange' }}></i>
-                                <p style={{ marginTop: 25 }}><h5>คุณต้องการอนุมัติโครงการนี้ไปยังผู้รับผิดชอบโครงการ</h5></p>
-                              </div>
-                            </Dialog>
-                          </div>
-                          <div className="col-12 md:col-2">
-
-                            <Dialog header="เนื่องจาก" visible={noconfirm} onHide={() => onHide('noconfirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter2('noconfirm')}>
-                              <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={71.5} />
-                            </Dialog>
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/datadirector" })} />
+                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/dataleader" })} />
                       </div>
                     </Card>
                   </div>
@@ -654,9 +556,6 @@ const Detaildirector = () => {
                           </div>
                         </div>
                       </div>
-                      <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/datadirector" })} />
-                      </div>
                     </Card>
                   </div>
                 </TabPanel>
@@ -669,4 +568,4 @@ const Detaildirector = () => {
   );
 }
 
-export default Detaildirector
+export default Detailproject

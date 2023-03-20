@@ -9,16 +9,18 @@ import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
+import { Dialog } from 'primereact/dialog';
 
-const Reporttwo = () => {
-  const location = useLocation()
-
+const  Managerreporttwo = () => {
+  const location = useLocation();
+  const [confirm, setConfirm] = useState('');
+  const [position, setPosition] = useState('center');
+  const [displayBasic, setDisplayBasic] = useState(false);
   const [quartercharges, setQuartercharges] = useState([]);
   const [indic, setIndic] = useState([]);
   const [step, setStep] = useState([]);
   const [detail, setDetail] = useState([]);
   const [problem, setProblem] = useState([]);
-  const [setDisplayBasic] = useState(false);
   const [menu, setMenu] = useState(false);
   let history = useHistory()
 
@@ -34,10 +36,22 @@ const Reporttwo = () => {
 
   const dialogFuncMap = {
     'displayBasic': setDisplayBasic,
+    'confirm': setConfirm,
   }
 
   const toggleMobileMenu = () => {
     setMenu(!menu)
+  }
+  const onClick = (name, position) => {
+    dialogFuncMap[`${name}`](true);
+
+    if (position) {
+      setPosition(position);
+    }
+  }
+
+  const onHide = (name) => {
+    dialogFuncMap[`${name}`](false);
   }
 
   const achieve = (node) => {
@@ -46,6 +60,14 @@ const Reporttwo = () => {
     } else {
       return <Tag severity="success" icon="pi pi-check" rounded></Tag>
     }
+  }
+  const renderFooter1 = (name) => {
+    return (
+      <div>
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => onHide(name)} />
+        <Button label="ยืนยัน" icon="pi pi-check" className="p-button-success" onClick={() => openreport(location.state.project_id, 1)} />
+      </div>
+    );
   }
 
   const getquartercharges = () => {
@@ -108,6 +130,16 @@ const Reporttwo = () => {
   }
   console.log('55', problem)
 
+  const openreport = (id, n) => {
+    console.log('tt', id)
+    onHide('confirm')
+    axios
+      .put(`http://localhost:3001/dataproject/openreporttwo/${id}`, {
+        open_reporttwo: n
+      })
+    alert(`เปิดรายงานความก้าวหน้าไตรมาส 2 ใช่มั้ย`)
+  }
+
   return (
     <>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -115,7 +147,7 @@ const Reporttwo = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div align="left">
-            <h2 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 2</h2>
+            <h2 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 2 <Button icon="pi pi-eye" label="เปิดใช้รายงานความก้าวหน้าไตรมาส 2" severity="info" style={{ marginLeft: '31.5em' }} onClick={() => onClick('confirm')} /></h2>
             <Card>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
@@ -219,6 +251,13 @@ const Reporttwo = () => {
                 </div>
               </div>
             </Card>
+
+            <Dialog header="แน่ใจหรือไม่?" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter1('confirm')}>
+              <div className="field" style={{ 'textAlign': 'center' }}>
+                <i className="pi pi-exclamation-circle p-button-warning" style={{ 'fontSize': '8em', 'color': 'orange' }}></i>
+                <p style={{ marginTop: 25 }}><h4>คุณต้องการเปิดรายงานความก้าวหน้าไตรมาส 2 ใช่มั้ย</h4></p>
+              </div>
+            </Dialog>
           </div>
         </div>
       </div>
@@ -226,4 +265,4 @@ const Reporttwo = () => {
   );
 }
 
-export default Reporttwo
+export default Managerreporttwo

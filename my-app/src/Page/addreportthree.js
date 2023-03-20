@@ -292,12 +292,12 @@ const Addreportthree = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div align="left">
-            <h2 style={{ marginTop: '2em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 3</h2>
+            <h3 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 3</h3>
             <Card>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ชื่อโครงการ :</h3>
+                    <h4>ชื่อโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.project_name} </h4>
@@ -307,7 +307,7 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>งบประมาณที่จัดสรร :</h3>
+                    <h4>งบประมาณที่จัดสรร :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.butget} บาท</h4>
@@ -317,7 +317,7 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลการใช้จ่าย :</h3>
+                    <h4>ผลการใช้จ่าย :</h4>
                   </div>
                   <div className="col-12 md:col-3">
                     <InputText value={addquartercharges} onChange={(e) => setAddquartercharges(e.target.value)} style={{ width: '35em' }} placeholder="งบไตรมาสที่ 3" />
@@ -327,7 +327,7 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลตามตัวชี้วัด :</h3>
+                    <h4>ผลตามตัวชี้วัด :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -345,7 +345,7 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ขั้นตอนการดำเนินการ :</h3>
+                    <h4>ขั้นตอนการดำเนินการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -361,7 +361,7 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h3>
+                    <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -374,17 +374,17 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>รายละเอียดความก้าวหน้า :</h3>
+                    <h4>รายละเอียดความก้าวหน้า :</h4>
                   </div>
                   <div className="col-12 md:col-5">
-                    <InputText value={adddetail} onChange={(e) => setAdddetail(e.target.value)} style={{ width: '35em' }} placeholder="รายละเอียดความก้าวหน้า" />
+                    <InputText value={adddetail} onChange={(e) => setAdddetail(e.target.value)} style={{ width: '31em' }} placeholder="รายละเอียดความก้าวหน้า" />
                   </div>
                   <div className="col-12 md:col-4">
                     <div className="p-inputgroup">
                       <Button type="button" onClick={addTableRows1} style={{ width: '15.5em' }}>+ เพิ่มรายละเอียดความก้าวหน้า</Button>
                     </div>
                   </div>
-                  <div className="col-12 md:col-6" style={{ marginLeft: '23em', marginBottom: '2em' }}>
+                  <div className="col-12 md:col-6" style={{ marginLeft: '19.25em', marginBottom: '2em' }}>
                     <Tabdetailreport rowsData={rowsData1} deleteTableRows={deleteTableRows1} handleChange={handleChange1} />
                   </div>
                 </div>
@@ -392,17 +392,17 @@ const Addreportthree = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ปัญหา/อุปสรรค :</h3>
+                    <h4>ปัญหา/อุปสรรค :</h4>
                   </div>
                   <div className="col-12 md:col-5">
-                    <InputText value={addproblem} onChange={(e) => setAddproblem(e.target.value)} style={{ width: '35em' }} placeholder="ปัญหา/อุปสรรค" />
+                    <InputText value={addproblem} onChange={(e) => setAddproblem(e.target.value)} style={{ width: '31em' }} placeholder="ปัญหา/อุปสรรค" />
                   </div>
                   <div className="col-12 md:col-4">
                     <div className="p-inputgroup">
                       <Button type="button" onClick={addTableRows2} style={{ width: '12em' }}>+ เพิ่มอุปสรรค/ปัญหา</Button>
                     </div>
                   </div>
-                  <div className="col-12 md:col-6" style={{ marginLeft: '23em', marginBottom: '2em' }}>
+                  <div className="col-12 md:col-6" style={{ marginLeft: '19.25em', marginBottom: '2em' }}>
                     <Tabproblem rowsData={rowsData2} deleteTableRows={deleteTableRows2} handleChange={handleChange2} />
                   </div>
                 </div>
@@ -419,13 +419,13 @@ const Addreportthree = () => {
               footer={renderFooter1}
               onHide={onHide}
             >
-              <h3>ผลตามตัวชี้วัด</h3>
+              <h4>ผลตามตัวชี้วัด</h4>
               <InputText
                 value={addresult}
                 onChange={(e) => setAddresult(e.target.value)}
                 placeholder="ผลตามตัวชี้วัด"
               />
-              <h3>บรรลุตามตัวชี้วัด</h3>
+              <h4>บรรลุตามตัวชี้วัด</h4>
               <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
             </Dialog>
           </div>

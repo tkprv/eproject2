@@ -294,12 +294,12 @@ const Editreportfour = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div align="left">
-            <h2 style={{ marginTop: '2em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 4</h2>
+            <h3 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 4</h3>
             <Card>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ชื่อโครงการ :</h3>
+                    <h4>ชื่อโครงการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.project_name} </h4>
@@ -309,7 +309,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>งบประมาณที่จัดสรร :</h3>
+                    <h4>งบประมาณที่จัดสรร :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4> {location.state.butget} บาท</h4>
@@ -319,7 +319,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลการใช้จ่าย :</h3>
+                    <h4>ผลการใช้จ่าย :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <InputText value={editquartercharges} onChange={(e) => setEditquartercharges(e.target.value)} style={{ width: '35em' }} placeholder="งบไตรมาสที่ 4" />
@@ -329,7 +329,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลตามตัวชี้วัด :</h3>
+                    <h4>ผลตามตัวชี้วัด :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -347,7 +347,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ขั้นตอนการดำเนินการ :</h3>
+                    <h4>ขั้นตอนการดำเนินการ :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -363,7 +363,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h3>
+                    <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -375,7 +375,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>รายละเอียดความก้าวหน้า :</h3>
+                    <h4>รายละเอียดความก้าวหน้า :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -390,7 +390,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ปัญหา/อุปสรรค :</h3>
+                    <h4>ปัญหา/อุปสรรค :</h4>
                   </div>
                   <div className="col-12 md:col-9">
                     <h4>
@@ -402,7 +402,7 @@ const Editreportfour = () => {
                   </div>
                 </div>
               </div>
-              <div style={{ marginTop: '2em', marginLeft: '65em' }} >
+              <div style={{ marginTop: '2em', marginLeft: '72.5em' }} >
                 <Button label="บันทึก" className="p-button-success" onClick={() => updatequartercharges(quartercharges[0].report_id, editquartercharges, checked)} />
               </div>
             </Card>
@@ -416,7 +416,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>ผลตามตัวชี้วัด :</h3>
+                    <h4>ผลตามตัวชี้วัด :</h4>
                   </div>
                   <div className="col-12 md:col-3">
                     <InputText
@@ -431,7 +431,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
-                    <h3>บรรลุตามตัวชี้วัด :</h3>
+                    <h4>บรรลุตามตัวชี้วัด :</h4>
                   </div>
                   <div className="col-12 md:col-3">
                     <h4>
@@ -451,7 +451,7 @@ const Editreportfour = () => {
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
-                    <h3>รายละเอียดความก้าวหน้า :</h3>
+                    <h4>รายละเอียดความก้าวหน้า :</h4>
                   </div>
                   <div className="col-12 md:col-5">
                     <InputText
@@ -473,10 +473,10 @@ const Editreportfour = () => {
             >
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h3>ปัญหา/อุปสรรค :</h3>
+                  <div className="col-12 md:col-3">
+                    <h4>ปัญหา/อุปสรรค :</h4>
                   </div>
-                  <div className="col-12 md:col-5">
+                  <div className="col-12 md:col-3">
                     <InputText
                       value={editproblem}
                       onChange={(e) => setEditproblem(e.target.value)}

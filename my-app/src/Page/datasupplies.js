@@ -52,6 +52,14 @@ const Datasupplies = () => {
       return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
     } else if (node.status === 5) {
       return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+    } else if (node.status === 6) {
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 7) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+    } else if (node.status === 8) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+    } else if (node.status === 9) {
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
     } else {
       return node.status
     }
@@ -148,7 +156,9 @@ const Datasupplies = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <h3>ข้อมูลโครงการ</h3>
+          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
+            <h3>ข้อมูลโครงการ</h3>
+          </div>
           <Card>
             <div align='left'>
               <div className="fit">

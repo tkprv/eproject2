@@ -17,6 +17,7 @@ const supplies = require('./routes/Supplies')
 const editproject = require('./routes/editProject')
 const addreport = require('./routes/addReport')
 const editreport = require('./routes/editReport')
+const dataevaluation = require('./routes/dataEvaluation')
 
 app.use(bodyparser.json())
 app.use(cors())
@@ -32,7 +33,8 @@ app.use('/supplies',supplies)
 app.use('/editproject',editproject)
 app.use('/addreport',addreport)
 app.use('/editreport',editreport)
+app.use('/dataevaluation',dataevaluation)
 
-const PORT=3001
+const PORT = 3001
 
 app.listen(PORT, console.log(`server listing to the port ${PORT}`))
