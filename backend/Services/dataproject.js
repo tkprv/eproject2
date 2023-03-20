@@ -3,27 +3,27 @@ const request = require('request')
 
 const getproject = (req, res) => {
     const ID = req.params.id;
-    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_user_project.user_id = ?", 
-    [ID], (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
+    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_user_project.user_id = ?",
+        [ID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
     console.log('id', ID)
 }
 
 const projectleader = (req, res) => {
     const ID = req.params.id;
-    db.query("SELECT * FROM tbl_project WHERE section_id = ?", 
-    [ID], (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
+    db.query("SELECT * FROM tbl_project WHERE section_id = ?",
+        [ID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
     console.log('id', ID)
 }
 
@@ -417,32 +417,134 @@ const updatetacticpro = (req, res) => {
 const projecttor = (req, res) => {
     db.query("SELECT * FROM tbl_project WHERE tor = 1", (err, result) => {
         if (err) {
-          console.log(err);
+            console.log(err);
         } else {
-          res.send(result);
+            res.send(result);
         }
-      });
+    });
 }
 
 const deleteprojectid = (req, res) => {
     db.query("SELECT * FROM tbl_project", (err, result) => {
         if (err) {
-          console.log(err);
+            console.log(err);
         } else {
-          res.send(result);
+            res.send(result);
         }
-      });
+    });
 }
 
 const deleteproject = (req, res) => {
     const ID = req.params.ID;
-  db.query("DELETE FROM tbl_project WHERE project_id = ?", ID, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+    db.query("DELETE FROM tbl_project WHERE project_id = ?", ID, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
 }
 
-module.exports = { getproject, projectleader, fiscalyear, project, fiscalyearandplannameproject, sectionproject, userproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, strategicpro, updatestrategicpro, goalpro, updategoalpro, tacticpro, updatetacticpro, projecttor, deleteprojectid, deleteproject }
+const showproject = (req, res) => {
+    const ID = req.params.id;
+    console.log('id', ID)
+    db.query("SELECT * FROM tbl_project WHERE project_id = ?", [ID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+}
+
+const openreportone = (req, res) => {
+    const ID = req.params.id;
+    const openreportone = req.body.open_reportone;
+    db.query(
+        "UPDATE tbl_project SET open_reportone = ? WHERE project_id = ?",
+        [openreportone, ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('openreportone', ID)
+    console.log('newopenreportone', openreportone)
+}
+
+const openreporttwo = (req, res) => {
+    const ID = req.params.id;
+    const openreporttwo = req.body.open_reporttwo;
+    db.query(
+        "UPDATE tbl_project SET open_reporttwo = ? WHERE project_id = ?",
+        [openreporttwo, ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('openreporttwo', ID)
+    console.log('newopenreporttwo', openreporttwo)
+}
+
+const openreportthree = (req, res) => {
+    const ID = req.params.id;
+    const openreportthree = req.body.open_reportthree;
+    db.query(
+        "UPDATE tbl_project SET open_reportthree = ? WHERE project_id = ?",
+        [openreportthree, ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('openreportthree', ID)
+    console.log('newopenreportthree', openreportthree)
+}
+
+const openreportfour = (req, res) => {
+    const ID = req.params.id;
+    const openreportfour = req.body.open_reportfour;
+    db.query(
+        "UPDATE tbl_project SET open_reportfour = ? WHERE project_id = ?",
+        [openreportfour, ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('openreportfour', ID)
+    console.log('newopenreportfour', openreportfour)
+}
+
+const closeproject = (req, res) => {
+    const ID = req.params.id;
+    const closeproject = req.body.close_project;
+    db.query(
+        "UPDATE tbl_project SET close_project = ? WHERE project_id = ?",
+        [closeproject, ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('closeproject', ID)
+    console.log('newcloseproject', closeproject)
+}
+
+module.exports = { getproject, projectleader, fiscalyear, project, fiscalyearandplannameproject, sectionproject, userproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, strategicpro, updatestrategicpro, goalpro, updategoalpro, tacticpro, updatetacticpro, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject }
