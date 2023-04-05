@@ -20,9 +20,9 @@ const Detailleader = () => {
   const [confirm, setConfirm] = useState('');
   const [noconfirm, setNoconfirm] = useState('');
   const [position, setPosition] = useState('center');
-  const [fiscalyearandplanname, setFiscalyearandplanname] = useState([]);
   const [sectionproject, setSectionproject] = useState([]);
   const [userproject, setUserproject] = useState([]);
+  const [strategicplanproject, setStrategicplanproject] = useState([]);
   const [strategicproject, setStrategicproject] = useState([]);
   const [goalproject, setGoalproject] = useState([]);
   const [tacticproject, setTacticproject] = useState([]);
@@ -45,9 +45,9 @@ const Detailleader = () => {
 
   console.log('44', location.state)
   useEffect(() => {
-    getfiscalyearandplanname()
     getsection()
     getuser()
+    getstrategicplan()
     getstrategic()
     getgoal()
     gettactic()
@@ -123,18 +123,6 @@ const Detailleader = () => {
     );
   }
 
-  const getfiscalyearandplanname = async () => {
-    await axios
-      .get(`http://localhost:3001/dataproject/fiscalyearandplannameproject/${location.state.fiscalyear_id}`)
-      .then((res) => {
-        console.log(res.data.fiscalyear)
-        setFiscalyearandplanname(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-  }
-  console.log('11', fiscalyearandplanname?.fiscalyear)
-
   const getsection = async () => {
     axios
       .get(`http://localhost:3001/dataproject/sectionproject/${location.state.section_id}`, {})
@@ -159,9 +147,21 @@ const Detailleader = () => {
   }
   console.log('22', userproject)
 
+  const getstrategicplan = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/strategicplanproject/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setStrategicplanproject(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('11', strategicplanproject)
+
   const getstrategic = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.strategic_id}`)
+      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setStrategicproject(res.data)
@@ -173,7 +173,7 @@ const Detailleader = () => {
 
   const getgoal = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/goalproject/${location.state.goal_id}`)
+      .get(`http://localhost:3001/dataproject/goalproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setGoalproject(res.data)
@@ -185,7 +185,7 @@ const Detailleader = () => {
 
   const gettactic = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.tactic_id}`)
+      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setTacticproject(res.data)
@@ -350,7 +350,7 @@ const Detailleader = () => {
                             <h4>ปีงบประมาณ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.fiscalyear} </h4>
+                            <h4> {location.state.fiscalyear} </h4>
                           </div>
                         </div>
                       </div>
@@ -392,7 +392,9 @@ const Detailleader = () => {
                             <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.plan_name} </h4>
+                            {strategicplanproject.map((value) => {
+                              return <h4> {value?.plan_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -401,8 +403,10 @@ const Detailleader = () => {
                           <div className="col-12 md:col-4">
                             <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
                           </div>
-                          <div className="col-12 md:col-8">
-                            <h4> {strategicproject?.strategic_name} </h4>
+                          <div className="col-12 md:col-6">
+                            {strategicproject.map((value) => {
+                              return <h4> {value?.strategic_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -411,8 +415,10 @@ const Detailleader = () => {
                           <div className="col-12 md:col-4">
                             <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
                           </div>
-                          <div className="col-12 md:col-8">
-                            <h4> {goalproject?.goal_name} </h4>
+                          <div className="col-12 md:col-6">
+                            {goalproject.map((value) => {
+                              return <h4> {value?.goal_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -421,8 +427,10 @@ const Detailleader = () => {
                           <div className="col-12 md:col-4">
                             <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
                           </div>
-                          <div className="col-12 md:col-8">
-                            <h4> {tacticproject?.tactic_name} </h4>
+                          <div className="col-12 md:col-6">
+                            {tacticproject.map((value) => {
+                              return <h4> {value?.tactic_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -442,7 +450,7 @@ const Detailleader = () => {
                             <h4>ลักษณะโครงการ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {(location.state.type === 1) ? 'โครงการใหม่' : (location.state.type === 2) ? 'โครงการต่อเนื่อง' : (location.state.type === 3) ? 'งานประจำ': 'งานพัฒนา'} </h4>
+                            <h4> {location.state.type} </h4>
                           </div>
                         </div>
                       </div>
@@ -559,7 +567,8 @@ const Detailleader = () => {
                           <div className="col-12 md:col-9">
                             <h4>
                               <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="charges_name_head" header="ประเภทค่าใช้จ่าย" />
+                                <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
+                                <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
                                 <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
                                 <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
                                 <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />

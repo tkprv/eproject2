@@ -3,7 +3,7 @@ const request = require('request')
 
 const getproject = (req, res) => {
     const ID = req.params.id;
-    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_user_project.user_id = ?",
+    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_user_project.user_id = ? AND tbl_project.status != 100",
         [ID], (err, result) => {
             if (err) {
                 console.log(err);
@@ -16,7 +16,7 @@ const getproject = (req, res) => {
 
 const projectleader = (req, res) => {
     const ID = req.params.id;
-    db.query("SELECT * FROM tbl_project WHERE section_id = ?",
+    db.query("SELECT * FROM tbl_project WHERE section_id = ? AND status != 100",
         [ID], (err, result) => {
             if (err) {
                 console.log(err);
@@ -38,29 +38,13 @@ const fiscalyear = (req, res) => {
 }
 
 const project = (req, res) => {
-    db.query("SELECT * FROM tbl_project", (err, result) => {
+    db.query("SELECT * FROM tbl_project WHERE status != 100", (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
     });
-}
-
-const fiscalyearandplannameproject = (req, res) => {
-    const ID = req.params.id;
-    db.query("SELECT * FROM tbl_fiscalyear WHERE fiscalyear_id = ?",
-        [ID],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                Object.keys(result).forEach(function (key) {
-                    var row = result[key];
-                    res.send(row)
-                })
-            }
-        });
 }
 
 const sectionproject = (req, res) => {
@@ -97,19 +81,31 @@ const userproject = (req, res) => {
     )
 }
 
-const strategicproject = (req, res) => {
+const strategicplanproject = (req, res) => {
     const ID = req.params.id;
     db.query(
-        "SELECT * FROM tbl_strategic WHERE strategic_id = ?",
+        "SELECT tbl_strategic_project.strategic_project_id, tbl_project.project_id, tbl_strategic_project.project_id, tbl_fiscalyear.fiscalyear_id, tbl_fiscalyear.plan_name FROM tbl_strategic_project LEFT JOIN tbl_project ON tbl_strategic_project.project_id = tbl_project.project_id LEFT JOIN tbl_fiscalyear ON tbl_fiscalyear.fiscalyear_id = tbl_strategic_project.plan_id WHERE tbl_strategic_project.project_id = ?",
         [ID],
         (err, result) => {
             if (err) {
                 console.log(err)
             } else {
-                Object.keys(result).forEach(function (key) {
-                    var row = result[key];
-                    res.send(row)
-                })
+                res.send(result)
+            }
+        }
+    )
+}
+
+const strategicproject = (req, res) => {
+    const ID = req.params.id;
+    db.query(
+        "SELECT tbl_strategic_project.strategic_project_id, tbl_project.project_id, tbl_strategic_project.project_id, tbl_strategic.strategic_id, tbl_strategic.strategic_name FROM tbl_strategic_project LEFT JOIN tbl_project ON tbl_strategic_project.project_id = tbl_project.project_id LEFT JOIN tbl_strategic ON tbl_strategic.strategic_id = tbl_strategic_project.strategic_id WHERE tbl_strategic_project.project_id = ?",
+        [ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
             }
         }
     )
@@ -118,16 +114,13 @@ const strategicproject = (req, res) => {
 const goalproject = (req, res) => {
     const ID = req.params.id;
     db.query(
-        "SELECT * FROM tbl_goal WHERE goal_id = ?",
+        "SELECT tbl_strategic_project.strategic_project_id, tbl_project.project_id, tbl_strategic_project.project_id, tbl_goal.goal_id, tbl_goal.goal_name FROM tbl_strategic_project LEFT JOIN tbl_project ON tbl_strategic_project.project_id = tbl_project.project_id LEFT JOIN tbl_goal ON tbl_goal.goal_id = tbl_strategic_project.goal_id WHERE tbl_strategic_project.project_id = ?",
         [ID],
         (err, result) => {
             if (err) {
                 console.log(err)
             } else {
-                Object.keys(result).forEach(function (key) {
-                    var row = result[key];
-                    res.send(row)
-                })
+                res.send(result)
             }
         }
     )
@@ -136,16 +129,13 @@ const goalproject = (req, res) => {
 const tacticproject = (req, res) => {
     const ID = req.params.id;
     db.query(
-        "SELECT * FROM tbl_tactic WHERE tactic_id = ?",
+        "SELECT tbl_strategic_project.strategic_project_id, tbl_project.project_id, tbl_strategic_project.project_id, tbl_tactic.tactic_id, tbl_tactic.tactic_name FROM tbl_strategic_project LEFT JOIN tbl_project ON tbl_strategic_project.project_id = tbl_project.project_id LEFT JOIN tbl_tactic ON tbl_tactic.tactic_id = tbl_strategic_project.tactic_id WHERE tbl_strategic_project.project_id = ?",
         [ID],
         (err, result) => {
             if (err) {
                 console.log(err)
             } else {
-                Object.keys(result).forEach(function (key) {
-                    var row = result[key];
-                    res.send(row)
-                })
+                res.send(result)
             }
         }
     )
@@ -330,92 +320,8 @@ const comment = (req, res) => {
         })
 }
 
-const strategicpro = (req, res) => {
-    db.query("SELECT * FROM tbl_strategic", (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-}
-
-const updatestrategicpro = (req, res) => {
-    const ID = req.params.id;
-    const strategicpro = req.body.strategic_id;
-    db.query(
-        "UPDATE tbl_project SET strategic_id = ? WHERE project_id = ?",
-        [strategicpro, ID],
-        (err, result) => {
-            if (err) {
-                console.log(err)
-            } else {
-                res.send(result)
-            }
-        }
-    )
-    console.log('strategic', ID)
-    console.log('newstrategic', strategicpro)
-}
-
-const goalpro = (req, res) => {
-    db.query("SELECT * FROM tbl_goal", (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-}
-
-const updategoalpro = (req, res) => {
-    const ID = req.params.id;
-    const goalpro = req.body.goal_id;
-    db.query(
-        "UPDATE tbl_project SET goal_id = ? WHERE project_id = ?",
-        [goalpro, ID],
-        (err, result) => {
-            if (err) {
-                console.log(err)
-            } else {
-                res.send(result)
-            }
-        }
-    )
-    console.log('goal', ID)
-    console.log('newgoal', goalpro)
-}
-
-const tacticpro = (req, res) => {
-    db.query("SELECT * FROM tbl_tactic", (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-}
-
-const updatetacticpro = (req, res) => {
-    const ID = req.params.id;
-    const tacticpro = req.body.tactic_id;
-    db.query(
-        "UPDATE tbl_project SET tactic_id = ? WHERE project_id = ?",
-        [tacticpro, ID],
-        (err, result) => {
-            if (err) {
-                console.log(err)
-            } else {
-                res.send(result)
-            }
-        }
-    )
-    console.log('tactic', ID)
-    console.log('newtactic', tacticpro)
-}
-
 const projecttor = (req, res) => {
-    db.query("SELECT * FROM tbl_project WHERE tor = 1", (err, result) => {
+    db.query("SELECT * FROM tbl_project WHERE tor = 1 AND status != 100", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -547,4 +453,4 @@ const closeproject = (req, res) => {
     console.log('newcloseproject', closeproject)
 }
 
-module.exports = { getproject, projectleader, fiscalyear, project, fiscalyearandplannameproject, sectionproject, userproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, strategicpro, updatestrategicpro, goalpro, updategoalpro, tacticpro, updatetacticpro, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject }
+module.exports = { getproject, projectleader, fiscalyear, project, sectionproject, userproject, strategicplanproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject }

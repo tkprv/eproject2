@@ -12,7 +12,6 @@ Router.delete('/deletestid/:ID',managepland.deletestid)
 Router.put('/updatest/:ID',managepland.updatest)
 Router.post('/createstid',managepland.createstid)
 Router.post('/datast/:id',managepland.datast)
-
-
+Router.get('/getyear',managepland.getyears)
 
 module.exports=Router

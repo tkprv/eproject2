@@ -13,6 +13,16 @@ const getstrategic = (req,res)=> {
     
 }
 
+const getyears = (req,res)=> {
+  db.query("SELECT * FROM tel_year ", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result[0])
+      
+    }
+  });
+}
 
 const createstrategic = (req,res)=> {
     const year = req.body.fiscalyear
@@ -143,5 +153,5 @@ const datast = (req,res)=> {
   
 
 
-module.exports={getstrategic,createstrategic,updatesstatus,updatestrategic,deletestrategic,getstrategicid,deletestid,updatest,createstid,datast}
+module.exports={getstrategic,getyears,createstrategic,updatesstatus,updatestrategic,deletestrategic,getstrategicid,deletestid,updatest,createstid,datast}
   

@@ -12,7 +12,11 @@ Router.post('/newprojectstepe',manageproject.newprojectstepe)
 Router.post('/newobjective',manageproject.newobjective)
 Router.post('/userproject',manageproject.userproject)
 Router.post('/strategicproject',manageproject.strategicproject)
-// Router.post('/email',manageproject.email)
+Router.post('/charges',manageproject.chargesproject)
+Router.post('/sakes',manageproject.createbenefit)
+Router.post('/send_email',manageproject.send_email)
+Router.post('/email',manageproject.email)
+
 
 
 module.exports=Router

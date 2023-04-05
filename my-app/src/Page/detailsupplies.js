@@ -291,7 +291,7 @@ const Detailsupplies = () => {
                             <h4>ปีงบประมาณ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.fiscalyear} </h4>
+                            <h4> {location.state.fiscalyear} </h4>
                           </div>
                         </div>
                       </div>
@@ -383,7 +383,7 @@ const Detailsupplies = () => {
                             <h4>ลักษณะโครงการ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {(location.state.type === 1) ? 'โครงการใหม่' : (location.state.type === 2) ? 'โครงการต่อเนื่อง' : (location.state.type === 3) ? 'งานประจำ': 'งานพัฒนา'} </h4>
+                            <h4> {location.state.type} </h4>
                           </div>
                         </div>
                       </div>
@@ -500,7 +500,8 @@ const Detailsupplies = () => {
                           <div className="col-12 md:col-9">
                             <h4>
                               <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="charges_name_head" header="ประเภทค่าใช้จ่าย" />
+                                <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
+                                <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
                                 <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
                                 <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
                                 <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />

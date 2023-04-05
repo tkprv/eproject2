@@ -10,11 +10,13 @@ import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import axios from 'axios'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
+import { Toast } from 'primereact/toast';
 import { Card } from 'primereact/card';
-// import { Button, Form } from 'antd';
+import { Col, Divider, Form, Input } from "antd"
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
-
+import { InputNumber } from 'antd';
+import { TextareaAutosize } from '@material-ui/core';
 
 
 
@@ -28,6 +30,7 @@ const Managesys = () => {
     const [displayBasic, setDisplayBasic] = useState(false)
     const [dataUpdate, setDataUpdate] = useState('')
     const [id, setId] = useState()
+    const [form] = Form.useForm()
 
 
     const [menu, setMenu] = useState(false)
@@ -86,10 +89,13 @@ const Managesys = () => {
         alert(`Delete id${a_id} sucessful`)
         getposition()
     }
-    const addposition = (value1) => {
+
+    const addposition = (value) => {
         try {
             axios.post('http://localhost:3001/createagency', {
-                section_name: value1
+                section_name: value.agency
+
+
             })
             getposition()
             setValue1('')
@@ -105,6 +111,7 @@ const Managesys = () => {
         )
         onHide()
         getposition()
+
     };
 
     const dialogFuncMap = {
@@ -131,6 +138,10 @@ const Managesys = () => {
         toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     }
 
+    const onFinish = (value) => {
+        console.log(value.agency)
+        addposition(value)
+    }
 
 
     const confirm2 = (id, dataUpdate) => {
@@ -149,8 +160,8 @@ const Managesys = () => {
         return (
 
             <div>
-                <Button label="ยกเลิก" severity="danger" icon="pi pi-times" onClick={onHide}/>
-                <Button label="บันทึก" severity="success" icon="pi pi-check" onClick={() => confirm2(id, dataUpdate)} autoFocus />
+                <Button label="ยกเลิก" icon="pi pi-times" onClick={onHide} severity="danger" />
+                <Button label="บันทึก" icon="pi pi-check" onClick={() => confirm2(id, dataUpdate)} severity="success" autoFocus />
             </div>
 
 
@@ -161,20 +172,53 @@ const Managesys = () => {
         <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
             <Header onMenuClick={(value) => toggleMobileMenu()} />
             <Sidebar />
-
             <div className="page-wrapper">
                 <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-                    <h3>กำหนดโครงสร้างหน่วยงาน
-                    </h3>
+                    <h3>กำหนดโครงสร้างหน่วยงาน</h3>
                 </div>
                 <Card>
                     <div className='text-left'>
-                        <div className='mt-4' >
-                            <InputText value={value1} onChange={(e) => setValue1(e.target.value)} style={{ marginRight: '.6em', width: '30em' }} placeholder='หน่วยงาน' />
-                            <Button label="เพิ่มหน่วยงาน" icon="" className="p-button-success" onClick={() => addposition(value1)} style={{ marginLeft: '.6em' }} />
+                        <div className='mt-1.5' >
+                            {/* <InputText value={value1} onChange={(e) => setValue1(e.target.value)} style={{ marginRight: '.6em' }}/>
+                <Button label="เพิ่มหน่วยงาน" icon=""className="p-button-success" onClick={()=>addposition(value1)} style={{ marginLeft: '.6em' }}/> */}
+                            <Form
+                                form={form}
+                                onFinish={onFinish}
+                                name="dynamic_rule"
+                                layout="inline"
+                                style={{
+                                    justifyItems: 'center',
+                                    maxWidth: '100%',
+                                    border: 'none',
+                                    boxShadow: 'none'
+                                }}
+                            >
+
+                                <Form.Item
+                                    //{...formItemLayout}
+                                    style={{ textAlign: 'center' }}
+                                    name="agency"
+                                    label="หน่วยงาน"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "กรุณากรอกหน่วยงาน",
+                                        },
+                                    ]}
+                                >
+                                    <Input size="large" style={{ width: '25em'}} placeholder="หน่วยงาน" />
+                                </Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="p-button-success"
+                                    label='เพิ่มหน่วยงาน'
+                                    style={{ height: '2.5em' }}
+                                />
+                            </Form>
                         </div>
                         <Dialog style={{ width: '450px' }} header="แก้ไขหน่วยงาน" modal className="p-fluid" visible={displayBasic} footer={renderFooter} onHide={onHide}>
-                            <label htmlFor="description">หน่วยงานของผู้ใช้งาน</label>
+                            <label htmlFor="description"></label>
                             <div>
                                 <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} />
 
@@ -186,12 +230,10 @@ const Managesys = () => {
                             <br />
                             <div >
                                 <DataTable value={position} columnResizeMode="fit" showGridlines responsiveLayout="scroll" >
-                                    <Column field="section_id" header="ลำดับ" style={{ width: '3%', textAlign: 'center' }} />
+                                    <Column field="section_id" header="ลำดับ" style={{ width: '3%',textAlign: 'center' }} />
                                     <Column field="section_name" header="ชื่อหน่วยงาน" />
                                     <Column body={actionTemplate} header="แก้ไข" style={{ textAlign: 'center', width: '15%' }} />
-
                                 </DataTable>
-
                             </div>
                         </div>
                     </div>

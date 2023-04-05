@@ -1,63 +1,61 @@
-input[type=button], input[type=submit], input[type=reset] {
-    background-color: white;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    text-decoration: none;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  
-  /* Tip: use width: 100% for full-width buttons */
-  
+input[type=button],
+input[type=submit],
+input[type=reset] {
+  background-color: white;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 
-  input{
-    background-color: white;
-    color: white;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-  }
+input {
+  background-color: white;
+  color: white;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
 
-  form{
-    margin: 0px auto;
-    width: 100%;
-    padding: 24px;
-    max-width: 448px;
-    background: white;
-    border-radius: 4px;
-    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
-  }
-  
-  .form-div{
-    position:absolute;
-    top:25%;
-    right:0;
-    left:0;
-  }
+form {
+  margin: 0px auto;
+  width: 100%;
+  padding: 24px;
+  max-width: 448px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+}
 
-  .buy-button{
-    background-color: skyblue;
-    border: none;
-    width: 100px;
-    padding: 10px;
-    margin-top: 20px;
-    margin-left: 80px;
-  }
+.form-div {
+  position: absolute;
+  top: 9.5%;
+  right: 0;
+  left: 0;
+}
+
+.buy-button {
+  background-color: skyblue;
+  border: none;
+  width: 100px;
+  padding: 10px;
+  margin-top: 20px;
+  margin-left: 80px;
+}
 
 
-  .loginForm{
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-  }
+.loginForm {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
 
-  .signIn{
-    
-    min-height: 100vh;
-    max-height: 100vh; 
-    width: 100%;
-    height: auto;
-  }
+.signIn {
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  height: auto;
+}

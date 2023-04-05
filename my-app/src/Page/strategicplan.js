@@ -16,14 +16,40 @@ import 'moment/locale/th'
 import { Card } from "primereact/card";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
+import { Col, Divider, Form, Input } from "antd";
+
+const formItemLayout = {
+  labelAlign: "left",
+  labelZise: '10em',
+  labelCol: {
+    xs: { span: 2.5 },
+    sm: { span: 2.5 },
+  },
+  wrapperCol: {
+    xs: { span: 2.5 },
+    sm: { span: 2.5 },
+  },
+
+};
+
+const inputStyle = {
+  fontSize: '16px',
+  padding: '8px'
+}
+const buttonStyle = {
+  fontSize: '14px',
+  padding: '8px 16px'
+}
 
 const Strategicplan = () => {
-  const [strategic, setStrategic] = useState([]);
+  const [strategic, setStrategic] = useState([])
+  const [form] = Form.useForm()
   const [fiscalyear, setFiscalyear] = useState([])
   const [selectedfiscalyear, setSelectedFiscalyear] = useState(null);
   const [value1, setValue1] = useState("");
   const [checked1, setChecked1] = useState(false);
-  const [year, setYear] = useState(null);
+  const [year, setYear] = useState(null)
+  const [years, setYears] = useState(null)
   const [displayBasic, setDisplayBasic] = useState(false);
   const [dataUpdate, setDataUpdate] = useState("");
   const [data, setData] = useState([1]);
@@ -31,12 +57,8 @@ const Strategicplan = () => {
   const [sg1, setSg1] = useState()
   const [sg2, setSg2] = useState()
 
-  // const yearformat = moment(year).locale("th").format("YYYY")
   const date = moment(year).add(543, 'year').format('YYYY')
 
-  console.log("year", moment(year).format("YYYY"));
-  // console.log("yyyyy", yearformat);
-  console.log("LL", date);
   let today = new Date();
   let month = today.getMonth();
   let year2 = today.getFullYear();
@@ -61,33 +83,41 @@ const Strategicplan = () => {
   maxDate.setFullYear(nextYear);
 
   useEffect(() => {
-    getstrategic();
+    getstrategic()
+    getyears()
 
   }, [])
+  const getyears = () => {
+    axios
+      .get("http://localhost:3001/plan/getyear", {})
+      .then((res) => {
+        form.setFieldsValue({ yearsfi: res.data.years })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
   const getstrategic = () => {
     axios
       .get("http://localhost:3001/plan/strategic", {})
       .then((res) => {
-        setStrategic(res.data);
-        //console.log(strategic);
+        setStrategic(res.data)
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const addstrategic = (value1) => {
-    console.log("val", value1);
-    console.log("val", date);
+  const addstrategic = (value) => {
+    console.log(value);
     try {
       axios.post("http://localhost:3001/plan/createstrategic", {
-        fiscalyear: date,
-        plan_name: value1,
+        fiscalyear: value.yearsfi,
+        plan_name: value.planname,
       });
       getstrategic();
       setValue1("");
     } catch (e) {
-      //handleError
     }
   };
   const dialogFuncMap = {
@@ -121,7 +151,6 @@ const Strategicplan = () => {
       flag: flag
     }
     )
-    // onHide()
     getstrategic()
 
   }
@@ -137,7 +166,7 @@ const Strategicplan = () => {
           icon={node.flag === 1 ? "pi pi-check" : "pi pi-times"}
           label={node.flag === 1 ? "ใช้งาน" : "ไม่ใช้งาน"}
           className={node.flag === 1 ? "p-button-success" : "p-button-danger"}
-          style={{ width: "9.5em" }}
+          style={buttonStyle}
           aria-label="Confirmation"
         />
       </div>
@@ -188,13 +217,11 @@ const Strategicplan = () => {
   };
 
   const dateFormat1 = (rowData) => {
-    //console.log("row", rowData.director_of_date);
     if (rowData.director_of_date !== null) {
       return moment(rowData.director_of_date).format("l");
-    } else return null;
+    } else return null
   };
   const dateFormat2 = (rowData) => {
-    //console.log("row", rowData.ref_of_date);
     if (rowData.ref_of_date !== null) {
       return moment(rowData.ref_of_date).format("l");
     } else return null;
@@ -211,6 +238,7 @@ const Strategicplan = () => {
           value={sg1}
           onChange={(e) => setSg1(e.target.value)}
           placeholder="ผ่านมติกรรมการครั้งที่"
+          style={inputStyle}
         ></InputText>
       </div>
     );
@@ -223,6 +251,7 @@ const Strategicplan = () => {
           placeholder="เลือกวันที่"
           value={dates2}
           onChange={(e) => setDates2(e.value)}
+          style={inputStyle}
         />
       </div>
     );
@@ -235,6 +264,7 @@ const Strategicplan = () => {
           value={sg2}
           onChange={(e) => setSg2(e.target.value)}
           placeholder="ผ่านมติกรรมการครั้งที่"
+          style={inputStyle}
         ></InputText>
       </div>
     );
@@ -246,6 +276,7 @@ const Strategicplan = () => {
         placeholder="เลือกวันที่"
         value={dates3}
         onChange={(e) => setDates3(e.value)}
+        style={inputStyle}
       />
     );
   };
@@ -264,7 +295,10 @@ const Strategicplan = () => {
     );
   }
 
-
+  const onFinish = (value) => {
+    console.log(value)
+    addstrategic(value)
+  }
 
   return (
     <>
@@ -273,61 +307,70 @@ const Strategicplan = () => {
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
           <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-            <h3>กำหนดสิทธิผู้ใช้งาน</h3>
+            <h3>จัดการข้อมูลแผนยุทธ์ศาสตร์</h3>
           </div>
           <Card>
-            <div align="left">
-              <div align="left">
-                <div >
-                  <h4>ปีงบประมาณ</h4>
-                  <div className="field col-12 md:col-4">
-                    <Calendar
-                      id="yearpicker"
-                      value={year}
-                      onChange={(e) => setYear(e.value)}
-                      view="year"
-                      dateFormat="yy"
-                      placeholder="ปีงบประมาณ"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div style={{ marginTop: "2em" }}>
-                <h4>แผนยุทธศาสตร์</h4>
-                <div>
-                  <span>
-                    <InputText
-                      value={value1}
-                      onChange={(e) => setValue1(e.target.value)}
-                      placeholder="แผนยุทธศาสตร์"
-                      style={{ width: "30em" }}
-                    ></InputText>
-                  </span>
-                  &nbsp;&nbsp;&nbsp;
-                  <Button
-                    label="เพิ่ม"
-                    className="p-button-success"
-                    onClick={() => addstrategic(value1)}
-                  />
-                  <br />
-                </div>
-              </div>
+            <div align="left" style={{ marginTop: '.5em' }}>
+              <Form
+                form={form}
+                onFinish={onFinish}
+                name="dynamic_rule"
+                style={{
+                  maxWidth: '100%',
+                  border: 'none',
+                  boxShadow: 'none'
+                }}
+              >
+                <Form.Item
+                  {...formItemLayout}
+                  name="yearsfi"
+                  label="ปีงบประมาณ"
+                  rules={[
+                    {
+                      required: true,
+                      message: "ปีงบประมาณ",
+                    },
+                  ]}
+                >
+                  <Input size="large" placeholder="ปีงบประมาณ" style={{ width: '26em' }} />
+                </Form.Item>
+                <Form.Item
+                  {...formItemLayout}
+                  name="planname"
+                  label="แผนยุทธศาสตร์"
+                  rules={[
+                    {
+                      required: true,
+                      message: "กรุณาเพิ่มแผนยุทธศาสตร์",
+                    },
+                  ]}
+                >
+                  <Input size="large" placeholder="แผนยุทธศาสตร์" style={{ width: '25em' }} />
+                </Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="p-button-success"
+                  style={{ marginLeft: '73.7em' }}
+                  label="เพิ่ม"
+                />
+              </Form>
               <Dialog
                 header="จัดการข้อมูลแผนยุทธ์ศาสตร์"
                 visible={displayBasic}
                 style={{ width: "50vw" }}
                 footer={renderFooter}
                 onHide={onHide}
+
               >
                 <Card style={{ backgroundColor: 'var(--surface-100)' }}>
                   <h>ชื่อแผนยุทธ์ศาสตร์</h>
                   <div className="fit">
 
-                    <InputText
+                    <InputText style={inputStyle}
                       value={value1}
                       onChange={(e) => setValue1(e.target.value)}
                       placeholder="แผนยุทธศาสตร์"
-                      style={{ width: "41.5em" }}
                     ></InputText>
                   </div>
                 </Card>
@@ -353,7 +396,7 @@ const Strategicplan = () => {
                       />
                     </DataTable>
                   </div>
-                  <div style={{ marginTop: "30px" }}>
+                  <div style={{ marginTop: "20px" }}>
                     <h>ผ่านมติกรรมการประจำ</h>
                     <DataTable
                       value={data}
@@ -389,7 +432,6 @@ const Strategicplan = () => {
                     paginator rows={10}
                     rowsPerPageOptions={[5, 10, 25]}
                   >
-                    {/* <Column field="" header="ลำดับ" style={{ width: "3%" }} /> */}
                     <Column field="plan_name" header="แผนยุทธศาสตร์" />
                     <Column field={"fiscalyear"} header="ปีงบประมาณ" style={{ textAlign: "center" }} />
                     <Column

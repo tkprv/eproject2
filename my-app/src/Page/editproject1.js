@@ -27,11 +27,17 @@ const Editproject = () => {
   const [userid, setUserid] = useState();
   const [user, setUser] = useState();
   const [Selecteduser, setSelecteduser] = useState(null);
+  const [strategic, setStrategic] = useState([]);
   const [fiscalyearandplanname, setFiscalyearandplanname] = useState([]);
   const [stopen, setStopen] = useState();
   const [stselectfill, setStselectfill] = useState([]);
   const [section, setSection] = useState();
   const [Selectedsection, setSelectedsection] = useState(null);
+  const [selectstrategic, setSelectstrategic] = useState([]);
+  const [selectgoal, setSelectgoal] = useState([]);
+  const [selecttactic, setSelecttactic] = useState();
+  const [datagoal, setDatagoal] = useState([]);
+  const [datatactic, setDatatactic] = useState([]);
   const [edittype, setEdittype] = useState();
   const [editkind, setEditkind] = useState();
   const [integration, setIntegration] = useState();
@@ -76,20 +82,6 @@ const Editproject = () => {
   const [databenefit, setDatabenefit] = useState();
   const [benefitid, setBenefitid] = useState();
   const [edittor, setEdittor] = useState();
-  const [strategicplanproject, setStrategicplanproject] = useState([]);
-  const [strategicproject, setStrategicproject] = useState([]);
-  const [goalproject, setGoalproject] = useState([]);
-  const [tacticproject, setTacticproject] = useState([]);
-  const [plan, setPlan] = useState();
-  const [Selectedplanname, setSelectedplanname] = useState(null);
-  const [strategicplan, setStrategicplan] = useState();
-  const [planid, setPlanid] = useState();
-  const [strategic, setStrategic] = useState([])
-  const [Selectedstrategic, setSelectedstrategic] = useState(null);
-  const [goal, setGoal] = useState([])
-  const [Selectedgoal, setSelectedgoal] = useState(null);
-  const [tactic, setTactic] = useState([]);
-  const [Selectedtactic, setSelectedtactic] = useState(null);
   const [visible1, setVisible1] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
@@ -97,28 +89,18 @@ const Editproject = () => {
   const [visible5, setVisible5] = useState(false);
   const [visible6, setVisible6] = useState(false);
   const [visible7, setVisible7] = useState(false);
-  const [visible8, setVisible8] = useState(false);
-  const [visible9, setVisible9] = useState(false);
-  const [visible10, setVisible10] = useState(false);
-  const [visible11, setVisible11] = useState(false);
   const [menu, setMenu] = useState(false);
   let history = useHistory();
 
   console.log('44', location.state)
 
   useEffect(() => {
+    getstrategicid()
     getfiscalyearandplanname()
-    getstrategicplan()
-    getstrategic()
-    getgoal()
-    gettactic()
     getuser()
+    Strategicdata()
     selectsection()
     selectuser()
-    selectstrategicplan()
-    selectstrategic()
-    selectgoal()
-    selecttactic()
     selectintegration()
     getobjective()
     getindic()
@@ -136,10 +118,6 @@ const Editproject = () => {
     setVisible5(false)
     setVisible6(false)
     setVisible7(false)
-    setVisible8(false)
-    setVisible9(false)
-    setVisible10(false)
-    setVisible11(false)
   }
 
   const toggleMobileMenu = () => {
@@ -156,66 +134,6 @@ const Editproject = () => {
           className="p-button-warning"
           style={{ textAlign: 'center', width: '16.5em' }}
           onClick={() => showuser(node)}
-        ></Button>
-      </div>
-    );
-  }
-
-  const editdatastrategicplan = (node) => {
-    return (
-      <div>
-        <Button
-          type="button"
-          icon="pi pi-pencil"
-          label='แก้ไขแผนยุทธศาสตร์'
-          className="p-button-warning"
-          style={{ textAlign: 'center', width: '14em' }}
-          onClick={() => showplan(node)}
-        ></Button>
-      </div>
-    );
-  }
-
-  const editdatastrategic = (node) => {
-    return (
-      <div>
-        <Button
-          type="button"
-          icon="pi pi-pencil"
-          label='แก้ไขประเด็นยุทธยุทธศาสตร์'
-          className="p-button-warning"
-          style={{ textAlign: 'center', width: '18em' }}
-          onClick={() => showstrategic(node)}
-        ></Button>
-      </div>
-    );
-  }
-
-  const editdatagoal = (node) => {
-    return (
-      <div>
-        <Button
-          type="button"
-          icon="pi pi-pencil"
-          label='แก้ไขเป้าประสงค์'
-          className="p-button-warning"
-          style={{ textAlign: 'center', width: '12em' }}
-          onClick={() => showgoal(node)}
-        ></Button>
-      </div>
-    );
-  }
-
-  const editdatatactic = (node) => {
-    return (
-      <div>
-        <Button
-          type="button"
-          icon="pi pi-pencil"
-          label='แก้ไขกลยุทธ์'
-          className="p-button-warning"
-          style={{ textAlign: 'center', width: '10em' }}
-          onClick={() => showtactic(node)}
         ></Button>
       </div>
     );
@@ -374,41 +292,28 @@ const Editproject = () => {
     );
   }
 
-  const renderFooter8 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
-      </div>
-    );
-  }
+  const getstrategicid = () => {
+    axios
+      .get("http://localhost:3001/editproject/strategicid", {})
+      .then((res) => {
+        setStrategic(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  const renderFooter9 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
-      </div>
-    );
-  }
+  const Strategicdata = () => {
+    axios
+      .get("http://localhost:3001/editproject/strategic", {})
+      .then((res) => {
+        Stopen(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  const renderFooter10 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updategoal(id, Selectedgoal)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter11 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatetactic(id, Selectedtactic)} autoFocus />
-      </div>
-    );
-  }
   const Stopen = (m) => {
     const rows = [];
     const collunm = m.find((obj) => {
@@ -505,6 +410,41 @@ const Editproject = () => {
   }
   console.log('11', fiscalyearandplanname?.plan_name)
 
+  const onStrategic = (s) => {
+    form.setFieldValue({ yeaselectissuer: s.value })
+    setSelectstrategic(s.value);
+    getdatagoal(s.value.strategic_id);
+  }
+
+  const onGoal = (e) => {
+    setSelectgoal(e.value)
+    gettactic(e.value.goal_id)
+  }
+
+  const getdatagoal = (id) => {
+    axios
+      .get(`http://localhost:3001/stg/goaal${id}`, {})
+      .then((res) => {
+        setDatagoal(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const gettactic = (id) => {
+
+    axios
+      .get(`http://localhost:3001/stg/tactic2${id}`, {})
+      .then((res) => {
+        setDatatactic(res.data)
+        console.log('res.data', res.data)
+
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  };
+
   const handlType = (e) => {
     const choice = e.target.value
     setEdittype(choice)
@@ -517,54 +457,6 @@ const Editproject = () => {
     form.setFieldsValue({ editkind: choice })
 
   }
-
-  const getstrategicplan = () => {
-    axios
-      .get(`http://localhost:3001/dataproject/strategicplanproject/${location.state.project_id}`, {})
-      .then((res) => {
-        console.log(res.data)
-        setStrategicplanproject(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-  }
-  console.log('11', strategicplanproject)
-
-  const getstrategic = async () => {
-    await axios
-      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.project_id}`)
-      .then((res) => {
-        console.log(res.data.data)
-        setStrategicproject(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-  }
-  console.log('33', strategicproject?.strategic_name)
-
-  const getgoal = async () => {
-    await axios
-      .get(`http://localhost:3001/dataproject/goalproject/${location.state.project_id}`)
-      .then((res) => {
-        console.log(res.data.data)
-        setGoalproject(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-  }
-  console.log('44', goalproject?.goal_name)
-
-  const gettactic = async () => {
-    await axios
-      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.project_id}`)
-      .then((res) => {
-        console.log(res.data.data)
-        setTacticproject(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-  }
-  console.log('55', tacticproject?.tactic_name)
 
   const selectintegration = () => {
     axios
@@ -839,176 +731,17 @@ const Editproject = () => {
 
   }
 
-  const showplan = (item) => {
-    setPlanid(item.strategic_project_id)
-    axios
-      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
-      .then((res) => {
-        setPlan(res.data[0].strategic_project_id)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-    setVisible8(true)
-  };
-
-  const selectstrategicplan = () => {
-    axios
-      .get(`http://localhost:3001/editmanager/strategicplanpro`, {})
-      .then((res) => {
-        console.log(res.data)
-        setStrategicplan(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-
-  }
-
-  const onsetStrategicplan = (e) => {
-    setSelectedplanname(e.value);
-  }
-
-  const updatestrategicplan = (id, Selectedplanname) => {
-    console.log('tt', id)
-    console.log('rr', Selectedplanname)
-    setVisible8(false)
-    axios
-      .put(`http://localhost:3001/editmanager/updatestrategicplan/${planid}`, {
-        plan_id: Selectedplanname.fiscalyear_id
-      })
-    alert(`ต้องการเปลี่ยนแผนยุทธศาสตร์ใช่มั้ย?`)
-  }
-
-  const showstrategic = (item) => {
-    setPlanid(item.strategic_project_id)
-    axios
-      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
-      .then((res) => {
-        setPlan(res.data[0].strategic_project_id)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-    setVisible9(true)
-  };
-
-  const selectstrategic = () => {
-    axios
-      .get(`http://localhost:3001/editmanager/strategicpro`, {})
-      .then((res) => {
-        console.log(res.data)
-        setStrategic(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-
-  }
-
-  const onsetStrategic = (e) => {
-    setSelectedstrategic(e.value);
-  }
-
-  const updatestrategic = (id, Selectedstrategic) => {
-    console.log('tt', id)
-    console.log('rr', Selectedstrategic)
-    setVisible9(false)
-    axios
-      .put(`http://localhost:3001/editmanager/updatestrategic/${planid}`, {
-        strategic_id: Selectedstrategic.strategic_id
-      })
-    alert(`ต้องการเปลี่ยนประเด็นยุทธศาสตร์ใช่มั้ย?`)
-  }
-
-  const showgoal = (item) => {
-    setPlanid(item.strategic_project_id)
-    axios
-      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
-      .then((res) => {
-        setPlan(res.data[0].strategic_project_id)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-    setVisible10(true)
-  };
-
-  const selectgoal = () => {
-    axios
-      .get(`http://localhost:3001/editmanager/goalpro`, {})
-      .then((res) => {
-        console.log(res.data)
-        setGoal(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-
-  }
-
-  const onsetGoal = (e) => {
-    setSelectedgoal(e.value);
-  }
-
-  const updategoal = (id, Selectedgoal) => {
-    console.log('tt', id)
-    console.log('rr', Selectedgoal)
-    setVisible10(false)
-    axios
-      .put(`http://localhost:3001/editmanager/updategoal/${planid}`, {
-        goal_id: Selectedgoal.goal_id
-      })
-    alert(`ต้องการเปลี่ยนเป้าประสงค์ใช่มั้ย?`)
-  }
-
-  const showtactic = (item) => {
-    setPlanid(item.strategic_project_id)
-    axios
-      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
-      .then((res) => {
-        setPlan(res.data[0].strategic_project_id)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-    setVisible11(true)
-  };
-
-  const selecttactic = () => {
-    axios
-      .get(`http://localhost:3001/editmanager/tacticpro`, {})
-      .then((res) => {
-        console.log(res.data)
-        setTactic(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
-
-  }
-
-  const onsetTactic = (e) => {
-    setSelectedtactic(e.value);
-  }
-
-  const updatetactic = (id, Selectedtactic) => {
-    console.log('tt', id)
-    console.log('rr', Selectedtactic)
-    setVisible11(false)
-    axios
-      .put(`http://localhost:3001/editmanager/updatetactic/${planid}`, {
-        tactic_id: Selectedtactic.tactic_id
-      })
-    alert(`ต้องการเปลี่ยนกุลยุทธ์ใช่มั้ย?`)
-  }
-
-  const updateproject = (id, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbudget, edittype) => {
+  const updateproject = (id, year, Selectedsection, selectstrategic, selectgoal, selecttactic, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbudget, edittype) => {
     axios
       .put(`http://localhost:3001/editproject/updateproject/${id}`, {
-        fiscalyear: year.fiscalyear,
+        fiscalyear_id: year.fiscalyear_id,
         section_id: Selectedsection.section_id,
-
+        strategic_id: selectstrategic.strategic_id,
+        goal_id: selectgoal.goal_id,
+        tactic_id: selecttactic.tactic_id,
         integration_id: Selectedintegration.integration_id,
         workplan_id: Selectedworkplan.workplan_id,
-        type: editkind,
-        integra_name: Selectedintegration.integration_name,
+        type: (editkind === 'โครงการใหม่') ? 1 : (editkind === 'โครงการต่อเนื่อง') ? 2 : (editkind === 'งานประจำ') ? 3 : 4,
         integra_subject: editintegrasubject,
         rationale: editrationale,
         target_group: edittargetgroup,
@@ -1080,12 +813,6 @@ const Editproject = () => {
                   <div className="col-12 md:col-3">
                     <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
                   </div>
-                  <h4>
-                    <DataTable value={strategicplanproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                      <Column field="plan_name" header="แผนยุทธศาสตร์" />
-                      <Column body={editdatastrategicplan} header="จัดการ" style={{ textAlign: 'center' }} />
-                    </DataTable>
-                  </h4>
                   <div className="col-12 md:col-9">
                     <h4>
                       {fiscalyearandplanname?.plan_name}
@@ -1099,12 +826,7 @@ const Editproject = () => {
                     <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
                   </div>
                   <div className="col-12 md:col-8">
-                    <h4>
-                      <DataTable value={strategicproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                        <Column field="strategic_name" header="ประเด็นยุทธศาสตร์" />
-                        <Column body={editdatastrategic} header="จัดการ" style={{ textAlign: 'center' }} />
-                      </DataTable>
-                    </h4>
+                    <Dropdown value={selectstrategic} options={stselectfill} style={{ width: '30em' }} onChange={onStrategic} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
                   </div>
                 </div>
               </div>
@@ -1114,12 +836,7 @@ const Editproject = () => {
                     <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
                   </div>
                   <div className="col-12 md:col-8">
-                    <h4>
-                      <DataTable value={goalproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                        <Column field="goal_name" header="เป้าประสงค์" />
-                        <Column body={editdatagoal} header="จัดการ" style={{ textAlign: 'center' }} />
-                      </DataTable>
-                    </h4>
+                    <Dropdown value={selectgoal} options={datagoal} style={{ width: '30em' }} onChange={onGoal} optionLabel="goal_name" placeholder="เป้าประสงค์" />
                   </div>
                 </div>
               </div>
@@ -1129,12 +846,7 @@ const Editproject = () => {
                     <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
                   </div>
                   <div className="col-12 md:col-8">
-                    <h4>
-                      <DataTable value={tacticproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                        <Column field="tactic_name" header="กลยุทธ์" />
-                        <Column body={editdatatactic} header="จัดการ" style={{ textAlign: 'center' }} />
-                      </DataTable>
-                    </h4>
+                    <Dropdown value={selecttactic} options={datatactic} style={{ width: '30em' }} onChange={(e) => setSelecttactic(e.value)} optionLabel="tactic_name" placeholder="กลยุทธ์" />
                   </div>
                 </div>
               </div>
@@ -1401,7 +1113,7 @@ const Editproject = () => {
                 </div>
               </div>
               <div style={{ marginTop: '2em', marginLeft: '70em' }} >
-                <Button label="บันทึก" className="p-button-success" onClick={() => updateproject(location.state.project_id, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbutget, edittype)} />
+                <Button label="บันทึก" className="p-button-success" onClick={() => updateproject(location.state.project_id, year, Selectedsection, selectstrategic, selectgoal, selecttactic, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbutget, edittype)} />
               </div>
             </Card>
 
@@ -1692,78 +1404,6 @@ const Editproject = () => {
                 </div>
               </div>
             </Dialog>
-
-            <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขแผนยุทธศาสตร์" modal className="p-fluid"
-                visible={visible8}
-                footer={renderFooter8}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>แผนยุทธศาสตร์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '30em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
-                    </div>
-                  </div>
-                </div>
-              </Dialog>
-
-              <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
-                visible={visible9}
-                footer={renderFooter9}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>ประเด็นยุทธศาสตร์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '30em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
-                    </div>
-                  </div>
-                </div>
-              </Dialog>
-
-              <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขเป้าประสงค์" modal className="p-fluid"
-                visible={visible10}
-                footer={renderFooter10}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>เป้าประสงค์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '30em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
-                    </div>
-                  </div>
-                </div>
-              </Dialog>
-
-              <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขเกลยุทธ์" modal className="p-fluid"
-                visible={visible11}
-                footer={renderFooter11}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>กลยุทธ์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '30em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
-                    </div>
-                  </div>
-                </div>
-              </Dialog>
           </div>
         </div>
       </div>

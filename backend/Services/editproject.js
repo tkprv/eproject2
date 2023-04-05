@@ -279,14 +279,12 @@ const updatebenefit = (req, res) => {
 
 const updateproject = (req, res) => {
     const ID = req.params.id;
-  const fiscalyear = req.body.fiscalyear_id
+  const fiscalyear = req.body.fiscalyear
   const section = req.body.section_id;
-  const strategic = req.body.strategic_id;
-  const goal = req.body.goal_id;
-  const tactic = req.body.tactic_id;
   const integration = req.body.integration_id;
   const workplan = req.body.workplan_id;
   const kind = req.body.type;
+  const integraname = req.body.integra_name;
   const integrasubject = req.body.integra_subject;
   const rationale = req.body.rationale;
   const targetgroup = req.body.target_group;
@@ -297,8 +295,8 @@ const updateproject = (req, res) => {
   const type = req.body.out_plan;
   const status = req.body.status;
   db.query(
-    "UPDATE tbl_project SET fiscalyear_id = ?, section_id = ?, strategic_id = ?, goal_id = ?, tactic_id = ?, integration_id = ?, workplan_id = ?, type = ?, integra_subject = ?, rationale = ?, target_group = ?, butget = ?, butget_char = ?, tor = ?, source_name = ?, out_plan = ?, status = ? WHERE project_id = ?",
-    [fiscalyear, section, strategic, goal, tactic, integration, workplan, kind, integrasubject, rationale, targetgroup, butget, butgetchar, tor, sourcename, type, status, ID],
+    "UPDATE tbl_project SET fiscalyear = ?, section_id = ?, integration_id = ?, workplan_id = ?, type = ?, integra_name = ?, integra_subject = ?, rationale = ?, target_group = ?, butget = ?, butget_char = ?, tor = ?, source_name = ?, out_plan = ?, status = ? WHERE project_id = ?",
+    [fiscalyear, section, integration, workplan, kind, integraname, integrasubject, rationale, targetgroup, butget, butgetchar, tor, sourcename, type, status, ID],
     (err, result) => {
       if (err) {
         console.log(err)
@@ -310,12 +308,10 @@ const updateproject = (req, res) => {
   console.log('id', ID)
   console.log('newfiscalyear', fiscalyear)
   console.log('newsection', section)
-  console.log('newstrategic', strategic)
-  console.log('newgoal', goal)
-  console.log('newtactic', tactic)
   console.log('newintegration', integration)
   console.log('newworkplan', workplan)
   console.log('newkind', kind)
+  console.log('newintegraname', integraname)
   console.log('newintegrasubject', integrasubject)
   console.log('newrationale', rationale)
   console.log('newtargetgroup', targetgroup)

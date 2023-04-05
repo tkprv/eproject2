@@ -14,8 +14,6 @@ import {
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 
-
-
 const Header = (props) => {
 
   const handlesidebar = () => {

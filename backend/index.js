@@ -18,6 +18,7 @@ const editproject = require('./routes/editProject')
 const addreport = require('./routes/addReport')
 const editreport = require('./routes/editReport')
 const dataevaluation = require('./routes/dataEvaluation')
+const editmanager = require('./routes/editManager')
 
 app.use(bodyparser.json())
 app.use(cors())
@@ -34,6 +35,7 @@ app.use('/editproject',editproject)
 app.use('/addreport',addreport)
 app.use('/editreport',editreport)
 app.use('/dataevaluation',dataevaluation)
+app.use('/editmanager',editmanager)
 
 const PORT = 3001
 

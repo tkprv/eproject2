@@ -1,6 +1,3 @@
-/**
- * App Header
- */
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';

@@ -108,7 +108,7 @@ const Manageuser = () => {
           type="button"
           icon="pi pi-pencil"
           className="p-button-warning"
-          style={{ marginRight: ".5em", height: "3.1em" }} 
+          style={{ marginRight: ".5em", height: "3.1em" }}
           onClick={() => show(node.user_id)}
         > </Button>
 
@@ -124,6 +124,7 @@ const Manageuser = () => {
       </div>
     );
   };
+
   const deleteperson = (p_id) => {
     axios.delete(`http://localhost:3001/manageuser/delete/${p_id}`);
     alert(`Delete id${p_id} sucessful`)
@@ -210,7 +211,6 @@ const Manageuser = () => {
 
   }
 
-
   const updatestatusperson = async (id, n) => {
     console.log('tt', id)
     console.log('rr', n)
@@ -276,16 +276,15 @@ const Manageuser = () => {
                       <label htmlFor="description">หน่วยงานของผู้ใช้งาน</label>
                       {/* <DropdownDemo/> */}
                       <div>
-                        <Dropdown value={selectposition} options={position} onChange={(e) => setSelectposition(e.target.value)} optionLabel="section_name" placeholder="select" />
-
+                        <Dropdown value={selectposition} options={position} onChange={(e) => setSelectposition(e.target.value)} optionLabel="section_name" placeholder="หน่วยงานของผู้ใช้งาน" />
                       </div>
                     </div>
                     :
                     null}
 
-                  <h5>กำหนดสิทธิให้กับผู้ใช้งาน</h5>
+                  <label htmlFor="workposition">กำหนดสิทธิให้กับผู้ใช้งาน</label>
 
-                  <div className="field-radiobutton">
+                  <div className="field-radiobutton" style={{ marginTop: '.5em'}}>
                     <RadioButton inputId="ผู้บริหาร" name="ผู้บริหาร" value="ผู้บริหาร" onChange={(e) => setPrivilege(e.value)} checked={privilege === 'ผู้บริหาร'} />
                     <label htmlFor="ผู้บริหาร">ผู้บริหาร</label>
                   </div>

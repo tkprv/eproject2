@@ -111,7 +111,7 @@ const StrategicIssues = () => {
   const actionTemplate = (node) => {
     return (
       <div>
-        <Button
+        {/* <Button
           type="button"
           icon="pi pi-search"
           className="p-button-success"
@@ -119,7 +119,7 @@ const StrategicIssues = () => {
           onClick={() =>
             history.push({ pathname: "/home/goaldetail", state: node })
           }
-        ></Button>
+        ></Button> */}
         <Button
           type="button"
           icon="pi pi-pencil"
@@ -194,9 +194,9 @@ const StrategicIssues = () => {
           <Card>
             <div className="text-left">
 
-              <div style={{ marginTop: "2em" }}>
-                <h3>แผนยุทธศาสตร์</h3>
-                <div className="col-12 md:col-4">
+              <div >
+                <h4>แผนยุทธศาสตร์</h4>
+                <div >
                   <Dropdown
                     value={selectedSt}
                     options={stopen}
@@ -206,7 +206,7 @@ const StrategicIssues = () => {
                     style={{ width: "30em" }}
                   />
                 </div>
-                <h3>ประเด็นยุทธศาสตร์</h3>
+                <h4 style={{ marginTop: '1em'}}>ประเด็นยุทธศาสตร์</h4>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-4">
                     <div className="p-inputgroup" style={{ width: "30em" }}>

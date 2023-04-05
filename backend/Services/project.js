@@ -1,7 +1,9 @@
 const db = require('../config/dbConfig')
 const request = require('request')
-
-
+const { send } = require('express/lib/response')
+const transporter = require('../config/sendEmail')
+const SMTPConnection = require("nodemailer/lib/smtp-connection")
+const nodemailer = require("nodemailer")
     
 const workplan = (req,res)=> {
     db.query("SELECT * FROM  tbl_workplan ", (err, result) => {
@@ -65,8 +67,8 @@ const newproject22222 = (req,res)=> {
   const out_plan = req.body.out_plan //โครงการนอกแผน
   ///รายงานความก้าวหน้าแต่ละไตรมาส 
   //จำนวนเงิน
-  db.query("INSERT INTO tbl_project (fiscalyear_id,section_id,strategic_id,goal_id,tactic_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",
-  [year,section_id,strategic_id,goal_id,tactic_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan],
+  db.query("INSERT INTO tbl_project (fiscalyear,section_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",
+  [year,section_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan],
   (err, result) => {
     if (err) {
       console.log('5',err);
@@ -75,16 +77,6 @@ const newproject22222 = (req,res)=> {
     }
 
   })
-  console.log("fiscalyear_id",year)
-  console.log('section_id',section_id)
-  console.log('srategic',strategic_id)
-  console.log('goal_id',goal_id)
-  console.log('tactic_id',tactic_id)
-  console.log('integration_id',integration_id)
-  console.log('workplan_id',workplan_id)
-  console.log('project_name',project_name)
-  console.log('rationale',rationale)
-  console.log('integra_subject',integra_subject)
 
 }
 
@@ -129,7 +121,6 @@ const newprojectstepe = (req,res)=> {
 const newobjective = (req,res)=> {
   const projectid = req.body.project_id
   const name = req.body.objective_name
-//obtain อัพเดต
   db.query("INSERT INTO tbl_objective(project_id,objective_name) VALUES (?,?) ",
   [projectid,name],
   (err, result) => {
@@ -160,12 +151,16 @@ const userproject = (req,res)=> {
 }
 
 
+
+
 function strategicproject(req, res) {
   const projectid = req.body.project_id;
   const planid = req.body.plan_id;
   const stid = req.body.strategic_id;
   const goalid = req.body.goal_id;
   const tacid = req.body.tactic_id;
+
+  console.log(tacid)
 
   db.query("INSERT INTO tbl_strategic_project(project_id,plan_id,strategic_id,goal_id,tactic_id) VALUES (?,?,?,?,?) ",
     [projectid, planid, stid, goalid, tacid],
@@ -178,19 +173,84 @@ function strategicproject(req, res) {
 
     });
 }
-// const email =(req,res) =>{
-//   const id = req.body.user_id
-//   db.query("SELECT * FROM tbl_user WHERE user_id =?", [id], (err, result) => {
-//     if (err) {
-//       console.log(err)
-//     } else {
-//       console.log(result)
-//     }
-//   })
+//createbenefit
+function createbenefit(req, res) {
+  const projectid = req.body.project_id
+  const benefit = req.body.benefit_name
+
+  db.query("INSERT INTO tbl_benefit(project_id,benefit_name) VALUES (?,?) ",
+    [projectid, benefit],
+    (err, result) => {
+      if (err) {
+        console.log('5', err);
+      } else {
+        res.send(result);
+      }
+
+    });
+}
+
+function chargesproject(req, res) {
+  const projectid = req.body.project_id
+  const chargesname = req.body.charges_name_head
+  const catname = req.body.charges_name
+  const quarterone = req.body.quarter_one
+  const quartertwo = req.body.quarter_two
+  const quarterthree = req.body.quarter_three
+  const  quarterfour = req.body.quarter_four
 
 
-// }
+  console.log(quarterone)
 
+  db.query("INSERT INTO tbl_charges(project_id,charges_name_head,charges_name,quarter_one,quarter_two,quarter_three,quarter_four) VALUES (?,?,?,?,?,?,?) ",
+    [projectid, chargesname, catname, quarterone, quartertwo,quarterthree,quarterfour],
+    (err, result) => {
+      if (err) {
+        console.log('5', err);
+      } else {
+        res.send(result);
+      }
 
-module.exports={workplan,workplan222,integration,getSection,newproject22222,newprojectindic,newprojectstepe,newobjective,userproject,strategicproject}
+    });
+}
+
+const email =(req,res) =>{
+  const id = req.body.user_id
+  db.query("SELECT * FROM tbl_user WHERE user_id =?", [id], (err, result) => {
+    if (err) {
+      console.log(err)
+    } else {
+      send_email(result)
+    }
+  })
+}
+
+function send_email(nn) {
+  const email = nn[0].email
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'stampxq11@gmail.com',
+      pass: 'bmyhppgtnxstjnqy'
+    }
+})
+
+var mailOptions = {
+    from: 'stampxq11@gmail.com',
+    to: 's6204062630611@email.kmutnb.ac.th',
+    subject:'โครงการใหม่',
+    text:'โครงการใหม่'
+}
+
+transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error)
+    } else {
+        console.log("Email Sent: " + info.response)
+    }
+    response.redirect("/")
+})
+}
+
+module.exports={createbenefit,chargesproject,send_email,email,workplan,workplan222,integration,getSection,newproject22222,newprojectindic,newprojectstepe,newobjective,userproject,strategicproject}
   

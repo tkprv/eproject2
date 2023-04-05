@@ -20,9 +20,9 @@ const Detailmanager = () => {
   const location = useLocation()
   const [confirm, setConfirm] = useState('');
   const [position, setPosition] = useState('center');
-  const [fiscalyearandplanname, setFiscalyearandplanname] = useState([]);
   const [sectionproject, setSectionproject] = useState([]);
   const [userproject, setUserproject] = useState([]);
+  const [strategicplanproject, setStrategicplanproject] = useState([]);
   const [strategicproject, setStrategicproject] = useState([]);
   const [goalproject, setGoalproject] = useState([]);
   const [tacticproject, setTacticproject] = useState([]);
@@ -37,17 +37,23 @@ const Detailmanager = () => {
   const [commentproject, setCommentproject] = useState([]);
   const [id, setId] = useState("")
   const [displayBasic, setDisplayBasic] = useState(false)
-  const [times1, setTimes1] = useState()
-  const [dates1, setDates1] = useState()
-  const [value1, setValue1] = useState()
-  const [planname, setPlanname] = useState([])
+  const [times1, setTimes1] = useState();
+  const [dates1, setDates1] = useState();
+  const [value1, setValue1] = useState();
+  const [plan, setPlan] = useState();
   const [Selectedplanname, setSelectedplanname] = useState(null);
+  const [strategicplan, setStrategicplan] = useState();
+  const [planid, setPlanid] = useState();
   const [strategic, setStrategic] = useState([])
   const [Selectedstrategic, setSelectedstrategic] = useState(null);
   const [goal, setGoal] = useState([])
   const [Selectedgoal, setSelectedgoal] = useState(null);
-  const [tactic, setTactic] = useState([])
+  const [tactic, setTactic] = useState([]);
   const [Selectedtactic, setSelectedtactic] = useState(null);
+  const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+  const [visible3, setVisible3] = useState(false);
+  const [visible4, setVisible4] = useState(false);
   const [menu, setMenu] = useState(false);
   let history = useHistory();
 
@@ -57,9 +63,9 @@ const Detailmanager = () => {
 
   console.log('44', location.state)
   useEffect(() => {
-    getfiscalyearandplanname()
     getsection()
     getuser()
+    getstrategicplan()
     getstrategic()
     getgoal()
     gettactic()
@@ -71,6 +77,7 @@ const Detailmanager = () => {
     getcharges()
     getbenefit()
     getcomment()
+    selectstrategicplan()
     selectstrategic()
     selectgoal()
     selecttactic()
@@ -98,6 +105,13 @@ const Detailmanager = () => {
     setId(id)
   }
 
+  const onhide = () => {
+    setVisible1(false)
+    setVisible2(false)
+    setVisible3(false)
+    setVisible4(false)
+  }
+
   const workposition = (node) => {
     if (node.director === 1) {
       return 'ผู้บริหาร'
@@ -114,6 +128,66 @@ const Detailmanager = () => {
     }
   }
 
+  const editdatastrategicplan = (node) => {
+    return (
+      <div>
+        <Button
+          type="button"
+          icon="pi pi-pencil"
+          label='แก้ไขแผนยุทธศาสตร์'
+          className="p-button-warning"
+          style={{ textAlign: 'center', width: '14em' }}
+          onClick={() => showplan(node)}
+        ></Button>
+      </div>
+    );
+  }
+
+  const editdatastrategic = (node) => {
+    return (
+      <div>
+        <Button
+          type="button"
+          icon="pi pi-pencil"
+          label='แก้ไขประเด็นยุทธยุทธศาสตร์'
+          className="p-button-warning"
+          style={{ textAlign: 'center', width: '18em' }}
+          onClick={() => showstrategic(node)}
+        ></Button>
+      </div>
+    );
+  }
+
+  const editdatagoal = (node) => {
+    return (
+      <div>
+        <Button
+          type="button"
+          icon="pi pi-pencil"
+          label='แก้ไขเป้าประสงค์'
+          className="p-button-warning"
+          style={{ textAlign: 'center', width: '12em' }}
+          onClick={() => showgoal(node)}
+        ></Button>
+      </div>
+    );
+  }
+
+  const editdatatactic = (node) => {
+    return (
+      <div>
+        <Button
+          type="button"
+          icon="pi pi-pencil"
+          label='แก้ไขกลยุทธ์'
+          className="p-button-warning"
+          style={{ textAlign: 'center', width: '10em' }}
+          onClick={() => showtactic(node)}
+        ></Button>
+      </div>
+    );
+  }
+
   const renderFooter = (name) => {
     return (
       <div>
@@ -123,17 +197,41 @@ const Detailmanager = () => {
     );
   }
 
-  const getfiscalyearandplanname = async () => {
-    await axios
-      .get(`http://localhost:3001/dataproject/fiscalyearandplannameproject/${location.state.fiscalyear_id}`)
-      .then((res) => {
-        console.log(res.data.fiscalyear)
-        setFiscalyearandplanname(res.data)
-      }).catch((error) => {
-        console.log(error)
-      });
+  const renderFooter1 = (id) => {
+    return (
+      <div>
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onhide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
+      </div>
+    );
   }
-  console.log('11', fiscalyearandplanname?.fiscalyear)
+
+  const renderFooter2 = (id) => {
+    return (
+      <div>
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onhide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
+      </div>
+    );
+  }
+
+  const renderFooter3 = (id) => {
+    return (
+      <div>
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onhide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updategoal(id, Selectedgoal)} autoFocus />
+      </div>
+    );
+  }
+
+  const renderFooter4 = (id) => {
+    return (
+      <div>
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onhide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatetactic(id, Selectedtactic)} autoFocus />
+      </div>
+    );
+  }
 
   const getsection = async () => {
     axios
@@ -159,9 +257,21 @@ const Detailmanager = () => {
   }
   console.log('22', userproject)
 
+  const getstrategicplan = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/strategicplanproject/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setStrategicplanproject(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('11', strategicplanproject)
+
   const getstrategic = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.strategic_id}`)
+      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setStrategicproject(res.data)
@@ -173,7 +283,7 @@ const Detailmanager = () => {
 
   const getgoal = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/goalproject/${location.state.goal_id}`)
+      .get(`http://localhost:3001/dataproject/goalproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setGoalproject(res.data)
@@ -185,7 +295,7 @@ const Detailmanager = () => {
 
   const gettactic = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.tactic_id}`)
+      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setTacticproject(res.data)
@@ -321,9 +431,62 @@ const Detailmanager = () => {
       });
   }
 
+  const showplan = (item) => {
+    setPlanid(item.strategic_project_id)
+    axios
+      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
+      .then((res) => {
+        setPlan(res.data[0].strategic_project_id)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    setVisible1(true)
+  };
+
+  const selectstrategicplan = () => {
+    axios
+      .get(`http://localhost:3001/editmanager/strategicplanpro`, {})
+      .then((res) => {
+        console.log(res.data)
+        setStrategicplan(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+
+  }
+
+  const onsetStrategicplan = (e) => {
+    setSelectedplanname(e.value);
+  }
+
+  const updatestrategicplan = (id, Selectedplanname) => {
+    console.log('tt', id)
+    console.log('rr', Selectedplanname)
+    setVisible1(false)
+    axios
+      .put(`http://localhost:3001/editmanager/updatestrategicplan/${planid}`, {
+        plan_id: Selectedplanname.fiscalyear_id
+      })
+    alert(`ต้องการเปลี่ยนแผนยุทธศาสตร์ใช่มั้ย?`)
+  }
+
+  const showstrategic = (item) => {
+    setPlanid(item.strategic_project_id)
+    axios
+      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
+      .then((res) => {
+        setPlan(res.data[0].strategic_project_id)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    setVisible2(true)
+  };
+
   const selectstrategic = () => {
     axios
-      .get(`http://localhost:3001/dataproject/strategicpro`, {})
+      .get(`http://localhost:3001/editmanager/strategicpro`, {})
       .then((res) => {
         console.log(res.data)
         setStrategic(res.data)
@@ -337,19 +500,33 @@ const Detailmanager = () => {
     setSelectedstrategic(e.value);
   }
 
-  const updatestrategicpro = (id, Selectedstrategic) => {
+  const updatestrategic = (id, Selectedstrategic) => {
     console.log('tt', id)
     console.log('rr', Selectedstrategic)
+    setVisible2(false)
     axios
-      .put(`http://localhost:3001/dataproject/updatestrategicpro/${id}`, {
-        strategic_id: Selectedstrategic
+      .put(`http://localhost:3001/editmanager/updatestrategic/${planid}`, {
+        strategic_id: Selectedstrategic.strategic_id
       })
     alert(`ต้องการเปลี่ยนประเด็นยุทธศาสตร์ใช่มั้ย?`)
   }
 
+  const showgoal = (item) => {
+    setPlanid(item.strategic_project_id)
+    axios
+      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
+      .then((res) => {
+        setPlan(res.data[0].strategic_project_id)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    setVisible3(true)
+  };
+
   const selectgoal = () => {
     axios
-      .get(`http://localhost:3001/dataproject/goalpro`, {})
+      .get(`http://localhost:3001/editmanager/goalpro`, {})
       .then((res) => {
         console.log(res.data)
         setGoal(res.data)
@@ -366,16 +543,30 @@ const Detailmanager = () => {
   const updategoal = (id, Selectedgoal) => {
     console.log('tt', id)
     console.log('rr', Selectedgoal)
+    setVisible3(false)
     axios
-      .put(`http://localhost:3001/dataproject/updategoalpro/${id}`, {
-        goal_id: Selectedgoal
+      .put(`http://localhost:3001/editmanager/updategoal/${planid}`, {
+        goal_id: Selectedgoal.goal_id
       })
     alert(`ต้องการเปลี่ยนเป้าประสงค์ใช่มั้ย?`)
   }
 
+  const showtactic = (item) => {
+    setPlanid(item.strategic_project_id)
+    axios
+      .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
+      .then((res) => {
+        setPlan(res.data[0].strategic_project_id)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    setVisible4(true)
+  };
+
   const selecttactic = () => {
     axios
-      .get(`http://localhost:3001/dataproject/tacticpro`, {})
+      .get(`http://localhost:3001/editmanager/tacticpro`, {})
       .then((res) => {
         console.log(res.data)
         setTactic(res.data)
@@ -392,9 +583,10 @@ const Detailmanager = () => {
   const updatetactic = (id, Selectedtactic) => {
     console.log('tt', id)
     console.log('rr', Selectedtactic)
+    setVisible4(false)
     axios
-      .put(`http://localhost:3001/dataproject/updatetacticpro/${id}`, {
-        tactic_id: Selectedtactic
+      .put(`http://localhost:3001/editmanager/updatetactic/${planid}`, {
+        tactic_id: Selectedtactic.tactic_id
       })
     alert(`ต้องการเปลี่ยนกุลยุทธ์ใช่มั้ย?`)
   }
@@ -418,7 +610,7 @@ const Detailmanager = () => {
                             <h4>ปีงบประมาณ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.fiscalyear} </h4>
+                            <h4> {location.state.fiscalyear} </h4>
                           </div>
                         </div>
                       </div>
@@ -460,7 +652,9 @@ const Detailmanager = () => {
                             <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.plan_name} </h4>
+                            {strategicplanproject.map((value) => {
+                              return <h4> {value?.plan_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -470,7 +664,9 @@ const Detailmanager = () => {
                             <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
                           </div>
                           <div className="col-12 md:col-6">
-                            <h4> {strategicproject?.strategic_name} </h4>
+                            {strategicproject.map((value) => {
+                              return <h4> {value?.strategic_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -480,7 +676,9 @@ const Detailmanager = () => {
                             <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
                           </div>
                           <div className="col-12 md:col-6">
-                            <h4> {goalproject?.goal_name} </h4>
+                            {goalproject.map((value) => {
+                              return <h4> {value?.goal_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -490,7 +688,9 @@ const Detailmanager = () => {
                             <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
                           </div>
                           <div className="col-12 md:col-6">
-                            <h4> {tacticproject?.tactic_name} </h4>
+                            {tacticproject.map((value) => {
+                              return <h4> {value?.tactic_name} </h4>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -510,7 +710,7 @@ const Detailmanager = () => {
                             <h4>ลักษณะโครงการ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {(location.state.type === 1) ? 'โครงการใหม่' : (location.state.type === 2) ? 'โครงการต่อเนื่อง' : (location.state.type === 3) ? 'งานประจำ': 'งานพัฒนา'} </h4>
+                            <h4> {location.state.type} </h4>
                           </div>
                         </div>
                       </div>
@@ -627,7 +827,8 @@ const Detailmanager = () => {
                           <div className="col-12 md:col-9">
                             <h4>
                               <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="charges_name_head" header="ประเภทค่าใช้จ่าย" />
+                                <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
+                                <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
                                 <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
                                 <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
                                 <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />
@@ -672,7 +873,7 @@ const Detailmanager = () => {
                             <h4>ปีงบประมาณ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.fiscalyear} </h4>
+                            <h4> {location.state.fiscalyear} </h4>
                           </div>
                         </div>
                       </div>
@@ -713,9 +914,12 @@ const Detailmanager = () => {
                           <div className="col-12 md:col-3">
                             <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
                           </div>
-                          <div className="col-12 md:col-9">
+                          <div className="col-12 md:col-8">
                             <h4>
-                              {fiscalyearandplanname?.plan_name}
+                              <DataTable value={strategicplanproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                                <Column field="plan_name" header="แผนยุทธศาสตร์" />
+                                <Column body={editdatastrategicplan} header="จัดการ" style={{ textAlign: 'center' }} />
+                              </DataTable>
                             </h4>
                           </div>
                         </div>
@@ -727,9 +931,11 @@ const Detailmanager = () => {
                           </div>
                           <div className="col-12 md:col-8">
                             <h4>
-                              <Dropdown value={Selectedstrategic} options={strategic} style={{ width: '30em' }} onChange={onsetStrategic} optionLabel="strategic_name" />
+                              <DataTable value={strategicproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                                <Column field="strategic_name" header="ประเด็นยุทธศาสตร์" />
+                                <Column body={editdatastrategic} header="จัดการ" style={{ textAlign: 'center' }} />
+                              </DataTable>
                             </h4>
-                            <Button icon="pi pi-check" className="p-button-success" style={{ width: '3em' }} onClick={() => updatestrategicpro(location.state.project_id, Selectedstrategic.strategic_id)} />
                           </div>
                         </div>
                       </div>
@@ -740,9 +946,11 @@ const Detailmanager = () => {
                           </div>
                           <div className="col-12 md:col-8">
                             <h4>
-                              <Dropdown value={Selectedgoal} options={goal} style={{ width: '30em' }} onChange={onsetGoal} optionLabel="goal_name" />
+                              <DataTable value={goalproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                                <Column field="goal_name" header="เป้าประสงค์" />
+                                <Column body={editdatagoal} header="จัดการ" style={{ textAlign: 'center' }} />
+                              </DataTable>
                             </h4>
-                            <Button icon="pi pi-check" className="p-button-success" style={{ width: '3em' }} onClick={() => updategoal(location.state.project_id, Selectedgoal.goal_id)} />
                           </div>
                         </div>
                       </div>
@@ -753,9 +961,11 @@ const Detailmanager = () => {
                           </div>
                           <div className="col-12 md:col-8">
                             <h4>
-                              <Dropdown value={Selectedtactic} options={tactic} style={{ width: '30em' }} onChange={onsetTactic} optionLabel="tactic_name" />
+                              <DataTable value={tacticproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                                <Column field="tactic_name" header="กลยุทธ์" />
+                                <Column body={editdatatactic} header="จัดการ" style={{ textAlign: 'center' }} />
+                              </DataTable>
                             </h4>
-                            <Button icon="pi pi-check" className="p-button-success" style={{ width: '3em' }} onClick={() => updatetactic(location.state.project_id, Selectedtactic.tactic_id)} />
                           </div>
                         </div>
                       </div>
@@ -775,7 +985,7 @@ const Detailmanager = () => {
                             <h4>ลักษณะโครงการ :</h4>
                           </div>
                           <div className="col-12 md:col-9">
-                            <h4> {(location.state.type === 1) ? 'โครงการใหม่' : (location.state.type === 2) ? 'โครงการต่อเนื่อง' : (location.state.type === 3) ? 'งานประจำ': 'งานพัฒนา'} </h4>
+                            <h4> {location.state.type} </h4>
                           </div>
                         </div>
                       </div>
@@ -892,7 +1102,8 @@ const Detailmanager = () => {
                           <div className="col-12 md:col-9">
                             <h4>
                               <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="charges_name_head" header="ประเภทค่าใช้จ่าย" />
+                                <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
+                                <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
                                 <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
                                 <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
                                 <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />
@@ -924,9 +1135,6 @@ const Detailmanager = () => {
                           </div>
                         </div>
                       </div>
-                      <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/datamanager" })} />
-                      </div>
                     </Card>
                   </div>
                 </TabPanel>
@@ -953,7 +1161,7 @@ const Detailmanager = () => {
                           </div>
                         </div>
                       </div>
-                   
+
                     </Card>
                   </div>
                 </TabPanel>
@@ -979,6 +1187,78 @@ const Detailmanager = () => {
                   </div>
                 </TabPanel>
               </TabView>
+
+              <Dialog
+                style={{ width: '500px', width: "50vw" }} header="เแก้ไขแผนยุทธศาสตร์" modal className="p-fluid"
+                visible={visible1}
+                footer={renderFooter1}
+                onHide={onhide}
+              >
+                <div className="fit" style={{ marginLeft: '1.5em' }}>
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-3">
+                      <h4>แผนยุทธศาสตร์ :</h4>
+                    </div>
+                    <div className="col-12 md:col-1">
+                      <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '30em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+
+              <Dialog
+                style={{ width: '500px', width: "50vw" }} header="เแก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
+                visible={visible2}
+                footer={renderFooter2}
+                onHide={onhide}
+              >
+                <div className="fit" style={{ marginLeft: '1.5em' }}>
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-3">
+                      <h4>ประเด็นยุทธศาสตร์ :</h4>
+                    </div>
+                    <div className="col-12 md:col-1">
+                      <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '30em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+
+              <Dialog
+                style={{ width: '500px', width: "50vw" }} header="เแก้ไขเป้าประสงค์" modal className="p-fluid"
+                visible={visible3}
+                footer={renderFooter3}
+                onHide={onhide}
+              >
+                <div className="fit" style={{ marginLeft: '1.5em' }}>
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-3">
+                      <h4>เป้าประสงค์ :</h4>
+                    </div>
+                    <div className="col-12 md:col-1">
+                      <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '30em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+
+              <Dialog
+                style={{ width: '500px', width: "50vw" }} header="เแก้ไขเกลยุทธ์" modal className="p-fluid"
+                visible={visible4}
+                footer={renderFooter4}
+                onHide={onhide}
+              >
+                <div className="fit" style={{ marginLeft: '1.5em' }}>
+                  <div className="grid p-fluid">
+                    <div className="col-12 md:col-3">
+                      <h4>กลยุทธ์ :</h4>
+                    </div>
+                    <div className="col-12 md:col-1">
+                      <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '30em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
             </div>
           </div>
         </div>

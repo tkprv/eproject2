@@ -2,7 +2,7 @@ const db = require('../config/dbConfig')
 const request = require('request')
 const axios = require('axios')
 
-    
+
 const api = (req,res)=> {
     const username = req.body.username
     token ='nK6p0wT-8NVHUwB8p0e9QSYBSaIZGp9D'
@@ -110,5 +110,6 @@ const updateuserperson = (req, res) => {
   console.log('flag', ID)
   console.log('newflag', flag)
 }
+
 module.exports={api,person,updateuser,deleteuser,createuser, updateuserperson}
   

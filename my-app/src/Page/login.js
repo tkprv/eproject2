@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Toast from "./toast/Toast";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import { Button } from "primereact/button";
+import { Form } from 'antd';
 import { InputText } from "primereact/inputtext";
-import axios from "axios"
 import "./sigin.css";
-import { setLocalUser} from '../helper/utill'
+import { setLocalUser } from '../helper/utill'
+import logo from '../logo kmutnb.png'
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 const testListSuccess = [
   {
@@ -31,6 +33,19 @@ const testListError = [
   },
 ];
 
+const formItemLayout = {
+  labelAlign: "left",
+  labelCol: {
+    xs: { span: 15 },
+    sm: { span: 5 },
+  },
+  wrapperCol: {
+    xs: { span: 5 },
+    sm: { span: 15 },
+  },
+
+};
+
 function Signin() {
   let history = useHistory();
   const [success, setSuccess] = useState(false);
@@ -38,21 +53,21 @@ function Signin() {
   const [user, setUser] = useState({
     username: String,
     email: String,
-    scopes:"student"
+    scopes: "student"
     /*  currentUser: null,
     message: "", */
   });
   const [getuser, setGetuser] = useState();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
 
- 
-   
+
+
   const onSubmit = (e) => {
     e.preventDefault();
     /*   console.log(user); */
@@ -74,13 +89,13 @@ function Signin() {
         setTimeout(() => {
           setSuccess(false);
           history.push("/Page/admindashboard")
-          
+
         }, 500)
-        if(data){
+        if (data) {
           setLocalUser(data[0].user_id, data[0].displayname, data[0].section_id, data[0].director, data[0].manager, data[0].supervisor, data[0].supplies, data[0].responsible, data[0].admin)
         }
 
-         })
+      })
 
       .catch((err) => {
         console.log(err);
@@ -91,7 +106,7 @@ function Signin() {
       });
   };
 
- 
+
   return (
     <div className="signIn">
       <Toast
@@ -100,45 +115,72 @@ function Signin() {
         position="top-right"
       />
       <Toast triger={error} toastList={testListError} position="top-right" />
+
       <div class="loginForm">
-        <div className="form-div">
+        <div style={{ marginLeft: '22.5em', marginTop: '10.5em' }}>
+          <img src={logo} alt="logo" style={{ width: '22em' }} />
+        </div>
+        <div style={{ marginLeft: '19em', marginTop: '.5em' }}>
+          <h2>ระบบบริหารและประเมินผลโครงการ</h2>
+        </div>
+
+        <div className="form-div" style={{ marginLeft: '31em' }}>
           <form /* onSubmit={this.onSubmit} */>
-            <h2 style={{ textAlign: "center" }}>Login</h2>
+            <h2 style={{ textAlign: "center" }}>เข้าสู่ระบบ</h2>
             <div>
-              <label>username</label>
-              <div>
+              <label style={{ marginTop: '1em' }}>ชื่อผู้ใช้งาน</label>
+              <div style={{ marginTop: '.5em' }}>
                 <InputText
                   type="Text"
                   name="username"
-                  type="username"
                   value={user.username}
                   onChange={onChange}
                 />
               </div>
             </div>
-
             <div>
-              <label>Password</label>
-              <div>
-                <InputText
-                  type="Text"
+              <label style={{ marginTop: '1em' }}>รหัสผ่าน</label>
+              <div style={{ marginTop: '.5em' }}>
+                <Form.Item
+                  {...formItemLayout}
                   name="password"
-                  value={user.password}
-                  onChange={onChange}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: 'กรุณากรอกรหัสผ่าน',
+                    },
+                  ]}
+                >
+                  <InputText
+                    type="password"
+                    name="password"
+                    value={user.password}
+                    onChange={onChange}
+                    style={{ width: '25em' }}
+                  />
+                </Form.Item>
               </div>
             </div>
-
             <div style={{ display: "flex" }}>
-              <div>
+              <div style={{ marginLeft: '4.5em' }}>
                 <Button className="buy-button" type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            sx={{mt: 3, mb: 2}} onClick={onSubmit}>
-                  Login
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1, mb: 2 }}
+                  onClick={onSubmit}
+                  icon='pi pi-sign-in'
+                  label="Sign In"
+                >
                 </Button>
               </div>
-              
+            </div>
+            <div>
+              <hr style={{ marginTop: '2em' }}></hr>
+            </div>
+            <div style={{ marginTop: '2em' }}>
+              <h4>ติดต่อสอบถาม</h4>
+              <h5 style={{ marginTop: '.5em' }}>1. ข้อมูลแผนข้อมูลหน่วยงาน ติดต่อ : คุณนางศรินญา พงศ์สุริยา โทร.</h5><h5>2215</h5>
+              <h5 style={{ marginTop: '.5em' }}>2. กรณีไม่พบข้อมูลบุคลากรหรือ Account หรือไม่สามารถใช้งานระบบ</h5><h5>ได้ติดต่อ : นางสาวกุณฑล กระบวนรัตน์ โทร. 2232</h5>
             </div>
           </form>
         </div>
