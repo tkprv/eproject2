@@ -638,7 +638,7 @@ const Detailleader = () => {
                         <h4>เอกสาร TOR :</h4>
                       </div>
                       <div className="col-12 md:col-9">
-                        <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <i className="pi pi-file-pdf" style={{ fontSize: '2rem', color: 'red', marginRight: '.1em' }}></i>}</h4>
+                        <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <Tag className="mr-2" severity="success" value="มีเอกสาร" rounded></Tag>}</h4>
                       </div>
                     </div>
                   </div>
