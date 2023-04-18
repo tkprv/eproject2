@@ -90,6 +90,7 @@ const Editkeepproject = () => {
   const [Selectedgoal, setSelectedgoal] = useState(null);
   const [tactic, setTactic] = useState([]);
   const [Selectedtactic, setSelectedtactic] = useState(null);
+  const [pro, setPro] = useState();
   const [visible1, setVisible1] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
@@ -107,6 +108,7 @@ const Editkeepproject = () => {
   console.log('44', location.state)
 
   useEffect(() => {
+    showproject()
     Strategicdata()
     getfiscalyearandplanname()
     getstrategicplan()
@@ -387,6 +389,23 @@ const Editkeepproject = () => {
       </div>
     );
   }
+
+  const showproject = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/pro/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setPro(res.data)
+        setYear(res.data[0].fiscalyear)
+        setEditintegrasubject(res.data[0].integra_subject)
+        setEditrationale(res.data[0].rationale)
+        setEdittargetgroup(res.data[0].target_group)
+        setEditmoney(res.data[0].butget)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('22', pro)
 
   const Strategicdata = () => {
     axios
