@@ -15,6 +15,27 @@ const workplan = (req,res)=> {
       })
     
 } 
+const Findplan = (req, res) => {
+  const yaer = req.body.year
+  db.query("SELECT * FROM  tbl_fiscalyear LEFT JOIN tbl_strategic ON tbl_fiscalyear.fiscalyear_id =tbl_strategic.fiscalyear_id LEFT JOIN tbl_goal ON  tbl_strategic.strategic_id = tbl_goal.strategic_id LEFT JOIN tbl_tactic ON tbl_goal.goal_id = tbl_tactic.goal_id  WHERE  flag = 1 and fiscalyear = ?   ",[yaer], (err, result) => {
+    if (err) {
+      console.log(err); 
+    } else {
+      res.send(result);
+    }
+  })
+}
+
+const Planname = (req, res) => {
+  const yaer = req.body.year
+  db.query("SELECT * FROM  tbl_fiscalyear WHERE  flag = 1   ", (err, result) => {
+    if (err) {
+      console.log(err); 
+    } else {
+      res.send(result);
+    }
+  })
+}
 const workplan222 = (req,res)=> {
   res.send('555')
   
@@ -64,9 +85,8 @@ const newproject22222 = (req,res)=> {
   //const source = req.body.source //ไอดีงบ
   const source_name = req.body.source_name //ชื่องบ
   const  status = req.body.status // สถานะเจค 
-  const out_plan = req.body.out_plan //โครงการนอกแผน
-  ///รายงานความก้าวหน้าแต่ละไตรมาส 
-  //จำนวนเงิน
+  const out_plan = req.body.out_plan
+     console.log(workplan_id);
   db.query("INSERT INTO tbl_project (fiscalyear,section_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",
   [year,section_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan],
   (err, result) => {
@@ -162,16 +182,72 @@ function strategicproject(req, res) {
 
   console.log(tacid)
 
-  db.query("INSERT INTO tbl_strategic_project(project_id,plan_id,strategic_id,goal_id,tactic_id) VALUES (?,?,?,?,?) ",
-    [projectid, planid, stid, goalid, tacid],
-    (err, result) => {
-      if (err) {
-        console.log('5', err);
-      } else {
-        res.send(result);
-      }
+  // db.query("INSERT INTO tbl_strategic_project(project_id,plan_id,strategic_id,goal_id,tactic_id) VALUES (?,?,?,?,?) ",
+  //   [projectid, planid, stid, goalid, tacid],
+  //   (err, result) => {
+  //     if (err) {
+  //       console.log('5', err);
+  //     } else {
+  //       res.send(result);
+  //     }
 
-    });
+  //   });
+let values = [];
+for (let i = 0; i < tacid.length; i++) {
+  values.push(projectid, planid, stid, goalid, tacid[i]);
+}
+
+let placeholders = '';
+for (let i = 0; i < tacid.length; i++) {
+  placeholders += '(?,?,?,?,?),';
+}
+placeholders = placeholders.slice(0, -1);
+
+console.log(values)
+console.log(placeholders);
+const sql = `INSERT INTO tbl_strategic_project(project_id,plan_id,strategic_id,goal_id,tactic_id) VALUES ${placeholders}`;
+
+db.query(sql, values, (err, result) => {
+  if (err) {
+    console.log('Error:', err);
+  } else {
+    console.log('Result:', result);
+  }
+});
+  // const projectid = req.body.project_id;
+  // const planid = req.body.plan_id;
+  // const stid = req.body.strategic_id;
+  // const goalid = req.body.goal_id;
+  // const tacid = req.body.tactic_id;
+
+  // console.log(tacid);
+
+  // db.query(
+  //   "INSERT INTO tbl_strategic_project(project_id,plan_id,strategic_id,goal_id) VALUES (?,?,?,?) ",
+  //   [projectid, planid, stid, goalid],
+  //   (err, result) => {
+  //     if (err) {
+  //       console.log(err);
+  //       res.status(500).send("Internal server error");
+  //     } else {
+  //       if (tacid.length > 1) {
+  //         for (let i = 1; i < tacid.length; i++) {
+  //           db.query(
+  //             "INSERT INTO tbl_additional_data(project_id,tactic_id,additional_data) VALUES (?,?,?)",
+  //             [projectid, tacid[i], "additional data for tactic " + (i + 1)],
+  //             (err, result) => {
+  //               if (err) {
+  //                 console.log(err);
+  //                 res.status(500).send("Internal server error");
+  //               }
+  //             }
+  //           );
+  //         }
+  //       }
+  //       res.send(result);
+  //     }
+  //   }
+  // )
 }
 //createbenefit
 function createbenefit(req, res) {
@@ -214,43 +290,48 @@ function chargesproject(req, res) {
     });
 }
 
-const email =(req,res) =>{
-  const id = req.body.user_id
-  db.query("SELECT * FROM tbl_user WHERE user_id =?", [id], (err, result) => {
+const email =(req,res) =>{ 
+  const id_project = req.params.id
+  const project_name = req.params.name
+  db.query("SELECT email FROM tbl_user WHERE supervisor = 1 ", (err, result) => {
     if (err) {
       console.log(err)
     } else {
-      send_email(result)
+      send_email(result,id_project,project_name)
     }
   })
+  console.log("id_project",id_project);
+  console.log("id_project",project_name);
+
 }
 
-function send_email(nn) {
-  const email = nn[0].email
+function send_email(emailData,projecid,pjname) {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'stampxq11@gmail.com',
-      pass: 'bmyhppgtnxstjnqy'
+      user: 'eproject2@icit.kmutnb.ac.th',
+      pass: 'ukixewpnjnydxpnm'
     }
 })
 
-var mailOptions = {
-    from: 'stampxq11@gmail.com',
-    to: 's6204062630611@email.kmutnb.ac.th',
-    subject:'โครงการใหม่',
-    text:'โครงการใหม่'
-}
+for (let i = 0; i < emailData.length; i++) {
+  const email = emailData[i].email;
+  const mailOptions = {
+    from: 'eproject2@icit.kmutnb.ac.th',
+    to: email,
+    subject: `โครงการใหม่ ${pjname}`,
+    text: `${pjname}`
+  };
 
-transporter.sendMail(mailOptions, function(error, info){
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-        console.log(error)
+      console.log(error);
     } else {
-        console.log("Email Sent: " + info.response)
+      console.log('Email sent: ' + info.response);
     }
-    response.redirect("/")
-})
+  });
+}
 }
 
-module.exports={createbenefit,chargesproject,send_email,email,workplan,workplan222,integration,getSection,newproject22222,newprojectindic,newprojectstepe,newobjective,userproject,strategicproject}
-  
+
+module.exports={createbenefit,Planname,Findplan,chargesproject,send_email,email,workplan,workplan222,integration,getSection,newproject22222,newprojectindic,newprojectstepe,newobjective,userproject,strategicproject}

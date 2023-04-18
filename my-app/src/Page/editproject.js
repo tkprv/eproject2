@@ -17,6 +17,7 @@ import { Calendar } from "primereact/calendar";
 import { RadioButton } from "primereact/radiobutton";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
+import { Panel } from 'primereact/panel';
 
 const Editproject = () => {
   const location = useLocation();
@@ -90,6 +91,7 @@ const Editproject = () => {
   const [Selectedgoal, setSelectedgoal] = useState(null);
   const [tactic, setTactic] = useState([]);
   const [Selectedtactic, setSelectedtactic] = useState(null);
+  const [pro, setPro] = useState();
   const [visible1, setVisible1] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
@@ -107,6 +109,8 @@ const Editproject = () => {
   console.log('44', location.state)
 
   useEffect(() => {
+    showproject()
+    Strategicdata()
     getfiscalyearandplanname()
     getstrategicplan()
     getstrategic()
@@ -154,7 +158,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขผู้รับผิดชอบโครงการ'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '16.5em' }}
+          style={{ textAlign: 'center', width: '16.5em', height: '2.5em' }}
           onClick={() => showuser(node)}
         ></Button>
       </div>
@@ -169,7 +173,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขแผนยุทธศาสตร์'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '14em' }}
+          style={{ textAlign: 'center', width: '14em', height: '2.5em' }}
           onClick={() => showplan(node)}
         ></Button>
       </div>
@@ -184,7 +188,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขประเด็นยุทธยุทธศาสตร์'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '18em' }}
+          style={{ textAlign: 'center', width: '18em', height: '2.5em' }}
           onClick={() => showstrategic(node)}
         ></Button>
       </div>
@@ -199,7 +203,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขเป้าประสงค์'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '12em' }}
+          style={{ textAlign: 'center', width: '12em', height: '2.5em' }}
           onClick={() => showgoal(node)}
         ></Button>
       </div>
@@ -214,7 +218,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขกลยุทธ์'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '10em' }}
+          style={{ textAlign: 'center', width: '10em', height: '2.5em' }}
           onClick={() => showtactic(node)}
         ></Button>
       </div>
@@ -229,7 +233,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขวัตถุประสงค์'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '13.5em' }}
+          style={{ textAlign: 'center', width: '13.5em', height: '2.5em' }}
           onClick={() => showobjective(node)}
         ></Button>
       </div>
@@ -244,7 +248,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขตัวชี้วัดความสำเร็จ หน่วยนับ ค่าเป้าหมาย'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '25em' }}
+          style={{ textAlign: 'center', width: '25em', height: '2.5em' }}
           onClick={() => showindic(node)}
         ></Button>
       </div>
@@ -259,7 +263,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขหัวข้อค่าใช้จ่าย'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '20em' }}
+          style={{ textAlign: 'center', width: '20em', height: '2.5em' }}
           onClick={() => showchargeshead(node)}
         ></Button>
       </div>
@@ -274,7 +278,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขประเภทค่าใช้จาย'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '20em' }}
+          style={{ textAlign: 'center', width: '20em', height: '2.5em' }}
           onClick={() => showcharges(node)}
         ></Button>
       </div>
@@ -304,7 +308,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขขั้นตอนการดำเนินการ'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '16.5em' }}
+          style={{ textAlign: 'center', width: '16.5em', height: '2.5em' }}
           onClick={() => showstep(node)}
         ></Button>
       </div>
@@ -314,8 +318,8 @@ const Editproject = () => {
   const renderFooter1 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updateuser(id, Selecteduser)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateuser(id, Selecteduser)} autoFocus />
       </div>
     );
   }
@@ -323,8 +327,8 @@ const Editproject = () => {
   const renderFooter2 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updateobjective(id, editobjective)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateobjective(id, editobjective)} autoFocus />
       </div>
     );
   }
@@ -341,8 +345,8 @@ const Editproject = () => {
   const renderFooter4 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestep(id, editstep, editdatest, editdatesp)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestep(id, editstep, editdatest, editdatesp)} autoFocus />
       </div>
     );
   }
@@ -350,8 +354,8 @@ const Editproject = () => {
   const renderFooter5 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatechrageshead(id, editchargeshead)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatechrageshead(id, editchargeshead)} autoFocus />
       </div>
     );
   }
@@ -359,8 +363,8 @@ const Editproject = () => {
   const renderFooter6 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatebenefit(id, editbenefit)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatebenefit(id, editbenefit)} autoFocus />
       </div>
     );
   }
@@ -368,8 +372,8 @@ const Editproject = () => {
   const renderFooter7 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatechrages(id, editcharges, editcharges1, editcharges2, editcharges3, editcharges4)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatechrages(id, editcharges, editcharges1, editcharges2, editcharges3, editcharges4)} autoFocus />
       </div>
     );
   }
@@ -377,8 +381,8 @@ const Editproject = () => {
   const renderFooter8 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
       </div>
     );
   }
@@ -386,8 +390,8 @@ const Editproject = () => {
   const renderFooter9 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
       </div>
     );
   }
@@ -395,8 +399,8 @@ const Editproject = () => {
   const renderFooter10 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updategoal(id, Selectedgoal)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updategoal(id, Selectedgoal)} autoFocus />
       </div>
     );
   }
@@ -404,11 +408,40 @@ const Editproject = () => {
   const renderFooter11 = (id) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updatetactic(id, Selectedtactic)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" ostyle={{ height: '2.5em' }} nClick={() => updatetactic(id, Selectedtactic)} autoFocus />
       </div>
     );
   }
+  const showproject = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/pro/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setPro(res.data)
+        setYear(res.data[0].fiscalyear)
+        setEditintegrasubject(res.data[0].integra_subject)
+        setEditrationale(res.data[0].rationale)
+        setEdittargetgroup(res.data[0].target_group)
+        setEditmoney(res.data[0].butget)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('22', pro)
+
+
+  const Strategicdata = () => {
+    axios
+      .get("http://localhost:3001/editproject/strategic", {})
+      .then((res) => {
+        Stopen(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const Stopen = (m) => {
     const rows = [];
     const collunm = m.find((obj) => {
@@ -688,8 +721,8 @@ const Editproject = () => {
 
   const updatestep = (id, editstep, editdatest, editdatesp) => {
     setVisible4(false)
-    const datest = moment(editdatest).format('YYYY-MM-DD')
-    const datesp = moment(editdatesp).format('YYYY-MM-DD')
+    const datest = moment(editdatest).add(543, 'year').format('YYYY-MM-DD')
+    const datesp = moment(editdatesp).add(543, 'year').format('YYYY-MM-DD')
     axios.put(`http://localhost:3001/editproject/updatestep/${stepid}`, {
       step_name: editstep,
       start: datest,
@@ -1028,9 +1061,8 @@ const Editproject = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div align="left">
-            <h3 style={{ marginTop: '2em', marginLeft: '1em' }}>รายละเอียดโครงการ</h3>
-            <Card>
+          <Card>
+            <Panel header='รายละเอียดโครงการ'>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
@@ -1075,7 +1107,7 @@ const Editproject = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit" style={{ marginLeft: '1.5em', marginTop: '1em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
@@ -1316,7 +1348,7 @@ const Editproject = () => {
                   </div>
                   <div className="col-12 md:col-3">
                     <div className="p-inputgroup">
-                      {editmoney && <h4>{moneyText}</h4>}
+                      {editmoney && <h4 style={{ marginLeft: '2em', marginTop: '.6em' }}>{moneyText}</h4>}
                     </div>
                   </div>
                 </div>
@@ -1401,370 +1433,370 @@ const Editproject = () => {
                 </div>
               </div>
               <div style={{ marginTop: '2em', marginLeft: '70em' }} >
-                <Button label="บันทึก" className="p-button-success" onClick={() => updateproject(location.state.project_id, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbutget, edittype)} />
+                <Button label="บันทึก" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateproject(location.state.project_id, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbutget, edittype)} />
               </div>
-            </Card>
+            </Panel>
+          </Card>
 
-            <Dialog
-              style={{ width: '500px', width: "50vw" }} header="เแก้ไขผู้รับผิดชอบโครงการ" modal className="p-fluid"
-              visible={visible1}
-              footer={renderFooter1}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-5">
-                    <h4>ชื่อผู้รับผิดชอบโครงการ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="fname" placeholder="ชื่อผู้รับผิดชอบโครงการ" />
-                  </div>
+          <Dialog
+            style={{ width: '500px', width: "50vw" }} header="เแก้ไขผู้รับผิดชอบโครงการ" modal className="p-fluid"
+            visible={visible1}
+            footer={renderFooter1}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-5">
+                  <h4>ชื่อผู้รับผิดชอบโครงการ :</h4>
+                </div>
+                <div className="col-12 md:col-1">
+                  <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="fname" placeholder="ชื่อผู้รับผิดชอบโครงการ" />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-5">
-                    <h4>นามสกุลผู้รับผิดชอบโครงการ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="lname" placeholder="นามสกุลผู้รับผิดชอบโครงการ" />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-5">
+                  <h4>นามสกุลผู้รับผิดชอบโครงการ :</h4>
+                </div>
+                <div className="col-12 md:col-1">
+                  <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="lname" placeholder="นามสกุลผู้รับผิดชอบโครงการ" />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เแก้ไขวัตถุประสงค์" modal className="p-fluid"
-              visible={visible2}
-              footer={renderFooter2}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h4>วัตถุประสงค์ :</h4>
-                  </div>
-                  <div className="col-12 md:col-5">
-                    <InputText
-                      value={editobjective}
-                      onChange={(e) => setEditobjective(e.target.value)}
-                      style={{ width: '30.5em' }}
-                      placeholder="วัตถุประสงค์"
-                    />
-                  </div>
+          <Dialog
+            style={{ width: '450px', width: "50vw" }} header="เแก้ไขวัตถุประสงค์" modal className="p-fluid"
+            visible={visible2}
+            footer={renderFooter2}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-3">
+                  <h4>วัตถุประสงค์ :</h4>
+                </div>
+                <div className="col-12 md:col-5">
+                  <InputText
+                    value={editobjective}
+                    onChange={(e) => setEditobjective(e.target.value)}
+                    style={{ width: '30.5em' }}
+                    placeholder="วัตถุประสงค์"
+                  />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เแก้ไขตัวชี้วัด หน่วยนับ และค่าเป้าหมาย" modal className="p-fluid"
-              visible={visible3}
-              footer={renderFooter3}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>ตัวชี้วัดความสำเร็จ :</h4>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editindic}
-                      onChange={(e) => setEditindic(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="ตัวชี้วัดความสำเร็จ"
-                    />
-                  </div>
+          <Dialog
+            style={{ width: '450px', width: "50vw" }} header="เแก้ไขตัวชี้วัด หน่วยนับ และค่าเป้าหมาย" modal className="p-fluid"
+            visible={visible3}
+            footer={renderFooter3}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>ตัวชี้วัดความสำเร็จ :</h4>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editindic}
+                    onChange={(e) => setEditindic(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="ตัวชี้วัดความสำเร็จ"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>หน่วยนับ :</h4>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editunit}
-                      onChange={(e) => setEditunit(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="หน่วยนับ"
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>หน่วยนับ :</h4>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editunit}
+                    onChange={(e) => setEditunit(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="หน่วยนับ"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>ค่าเป้าหมาย :</h4>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editcost}
-                      onChange={(e) => setEditcost(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="ค่าเป้าหมาย"
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>ค่าเป้าหมาย :</h4>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editcost}
+                    onChange={(e) => setEditcost(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="ค่าเป้าหมาย"
+                  />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เแก้ไขขั้นตอนดำเนินการ" modal className="p-fluid"
-              visible={visible4}
-              footer={renderFooter4}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>ขั้นตอนการดำเนินการ :</h4>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editstep}
-                      onChange={(e) => setEditstep(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="ขั้นตอนการดำเนินการ"
-                    />
-                  </div>
+          <Dialog
+            style={{ width: '450px', width: "50vw" }} header="เแก้ไขขั้นตอนดำเนินการ" modal className="p-fluid"
+            visible={visible4}
+            footer={renderFooter4}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>ขั้นตอนการดำเนินการ :</h4>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editstep}
+                    onChange={(e) => setEditstep(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="ขั้นตอนการดำเนินการ"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>เริ่มต้น :</h4>
-                  </div>
-                  <div className="col-12 md:col-8">
-                    <Calendar
-                      id="basic"
-                      placeholder="เลือกวันที่เริ่มต้น"
-                      value={editdatest}
-                      onChange={(e) => setEditdatest(e.target.value)}
-                      style={{ width: '26.5em' }}
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>เริ่มต้น :</h4>
+                </div>
+                <div className="col-12 md:col-8">
+                  <Calendar
+                    id="basic"
+                    placeholder="เลือกวันที่เริ่มต้น"
+                    value={editdatest}
+                    onChange={(e) => setEditdatest(e.target.value)}
+                    style={{ width: '26.5em' }}
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>สิ้นสุด :</h4>
-                  </div>
-                  <div className="col-12 md:col-8">
-                    <Calendar
-                      id="basic"
-                      placeholder="เลือกวันที่สิ้นสุด"
-                      value={editdatesp}
-                      onChange={(e) => setEditdatesp(e.target.value)}
-                      style={{ width: '26.5em' }}
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>สิ้นสุด :</h4>
+                </div>
+                <div className="col-12 md:col-8">
+                  <Calendar
+                    id="basic"
+                    placeholder="เลือกวันที่สิ้นสุด"
+                    value={editdatesp}
+                    onChange={(e) => setEditdatesp(e.target.value)}
+                    style={{ width: '26.5em' }}
+                  />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เแก้ไขหัวข้อค่าใช้จ่าย" modal className="p-fluid"
-              visible={visible5}
-              footer={renderFooter5}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h4>หัวข้อค่าใช้จ่าย :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <InputText
-                      value={editchargeshead}
-                      onChange={(e) => setEditchargeshead(e.target.value)}
-                      style={{ width: '30.5em' }}
-                      placeholder="หัวข้อค่าใช้จ่าย"
-                    />
-                  </div>
+          <Dialog
+            style={{ width: '450px', width: "50vw" }} header="เแก้ไขหัวข้อค่าใช้จ่าย" modal className="p-fluid"
+            visible={visible5}
+            footer={renderFooter5}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-3">
+                  <h4>หัวข้อค่าใช้จ่าย :</h4>
+                </div>
+                <div className="col-12 md:col-1">
+                  <InputText
+                    value={editchargeshead}
+                    onChange={(e) => setEditchargeshead(e.target.value)}
+                    style={{ width: '30.5em' }}
+                    placeholder="หัวข้อค่าใช้จ่าย"
+                  />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เแก้ไขประโยช์ที่คาดว่าจะได้รับ" modal className="p-fluid"
-              visible={visible6}
-              footer={renderFooter6}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>ประโยช์ที่คาดว่าจะได้รับ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <InputText
-                      value={editbenefit}
-                      onChange={(e) => setEditbenefit(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="ประโยช์ที่คาดว่าจะได้รับ"
-                    />
-                  </div>
+          <Dialog
+            style={{ width: '450px', width: "50vw" }} header="เแก้ไขประโยช์ที่คาดว่าจะได้รับ" modal className="p-fluid"
+            visible={visible6}
+            footer={renderFooter6}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>ประโยช์ที่คาดว่าจะได้รับ :</h4>
+                </div>
+                <div className="col-12 md:col-1">
+                  <InputText
+                    value={editbenefit}
+                    onChange={(e) => setEditbenefit(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="ประโยช์ที่คาดว่าจะได้รับ"
+                  />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เแก้ไขประเภทค่าใช้จ่าย และแผนการใช้จ่ายในแต่ละไตรมาส" modal className="p-fluid"
-              visible={visible7}
-              footer={renderFooter7}
-              onHide={onHide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h4>ประเภทค่าใช้จ่าย :</h4>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editcharges}
-                      onChange={(e) => setEditcharges(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="ประเภทค่าใช้จ่าย"
-                    />
-                  </div>
+          <Dialog
+            style={{ width: '450px', width: "50vw" }} header="เแก้ไขประเภทค่าใช้จ่าย และแผนการใช้จ่ายในแต่ละไตรมาส" modal className="p-fluid"
+            visible={visible7}
+            footer={renderFooter7}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h4>ประเภทค่าใช้จ่าย :</h4>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editcharges}
+                    onChange={(e) => setEditcharges(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="ประเภทค่าใช้จ่าย"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h3>แผนการใช้จ่ายไตรมาส 1 :</h3>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editcharges1}
-                      onChange={(e) => setEditcharges1(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="แผนการใช้จ่ายไตรมาส 1"
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h3>แผนการใช้จ่ายไตรมาส 1 :</h3>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editcharges1}
+                    onChange={(e) => setEditcharges1(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="แผนการใช้จ่ายไตรมาส 1"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h3>แผนการใช้จ่ายไตรมาส 2 :</h3>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editcharges2}
-                      onChange={(e) => setEditcharges2(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="แผนการใช้จ่ายไตรมาส 2"
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h3>แผนการใช้จ่ายไตรมาส 2 :</h3>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editcharges2}
+                    onChange={(e) => setEditcharges2(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="แผนการใช้จ่ายไตรมาส 2"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h3>แผนการใช้จ่ายไตรมาส 3 :</h3>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editcharges3}
-                      onChange={(e) => setEditcharges3(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="แผนการใช้จ่ายไตรมาส 3"
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h3>แผนการใช้จ่ายไตรมาส 3 :</h3>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editcharges3}
+                    onChange={(e) => setEditcharges3(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="แผนการใช้จ่ายไตรมาส 3"
+                  />
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <h3>แผนการใช้จ่ายไตรมาส 4 :</h3>
-                  </div>
-                  <div className="col-10 md:col-1">
-                    <InputText
-                      value={editcharges4}
-                      onChange={(e) => setEditcharges4(e.target.value)}
-                      style={{ width: '26.5em' }}
-                      placeholder="แผนการใช้จ่ายไตรมาส 4"
-                    />
-                  </div>
+            </div>
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-4">
+                  <h3>แผนการใช้จ่ายไตรมาส 4 :</h3>
+                </div>
+                <div className="col-10 md:col-1">
+                  <InputText
+                    value={editcharges4}
+                    onChange={(e) => setEditcharges4(e.target.value)}
+                    style={{ width: '26.5em' }}
+                    placeholder="แผนการใช้จ่ายไตรมาส 4"
+                  />
                 </div>
               </div>
-            </Dialog>
+            </div>
+          </Dialog>
 
-            <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขแผนยุทธศาสตร์" modal className="p-fluid"
-                visible={visible8}
-                footer={renderFooter8}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>แผนยุทธศาสตร์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '30em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
-                    </div>
-                  </div>
+          <Dialog
+            style={{ width: '500px', width: "50vw" }} header="เแก้ไขแผนยุทธศาสตร์" modal className="p-fluid"
+            visible={visible8}
+            footer={renderFooter8}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-3">
+                  <h4>แผนยุทธศาสตร์ :</h4>
                 </div>
-              </Dialog>
+                <div className="col-12 md:col-1">
+                  <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '30em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
+                </div>
+              </div>
+            </div>
+          </Dialog>
 
-              <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
-                visible={visible9}
-                footer={renderFooter9}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>ประเด็นยุทธศาสตร์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '30em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
-                    </div>
-                  </div>
+          <Dialog
+            style={{ width: '500px', width: "50vw" }} header="เแก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
+            visible={visible9}
+            footer={renderFooter9}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-3">
+                  <h4>ประเด็นยุทธศาสตร์ :</h4>
                 </div>
-              </Dialog>
+                <div className="col-12 md:col-1">
+                  <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '30em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
+                </div>
+              </div>
+            </div>
+          </Dialog>
 
-              <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขเป้าประสงค์" modal className="p-fluid"
-                visible={visible10}
-                footer={renderFooter10}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>เป้าประสงค์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '30em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
-                    </div>
-                  </div>
+          <Dialog
+            style={{ width: '500px', width: "50vw" }} header="เแก้ไขเป้าประสงค์" modal className="p-fluid"
+            visible={visible10}
+            footer={renderFooter10}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-3">
+                  <h4>เป้าประสงค์ :</h4>
                 </div>
-              </Dialog>
+                <div className="col-12 md:col-1">
+                  <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '30em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
+                </div>
+              </div>
+            </div>
+          </Dialog>
 
-              <Dialog
-                style={{ width: '500px', width: "50vw" }} header="เแก้ไขเกลยุทธ์" modal className="p-fluid"
-                visible={visible11}
-                footer={renderFooter11}
-                onHide={onHide}
-              >
-                <div className="fit" style={{ marginLeft: '1.5em' }}>
-                  <div className="grid p-fluid">
-                    <div className="col-12 md:col-3">
-                      <h4>กลยุทธ์ :</h4>
-                    </div>
-                    <div className="col-12 md:col-1">
-                      <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '30em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
-                    </div>
-                  </div>
+          <Dialog
+            style={{ width: '500px', width: "50vw" }} header="เแก้ไขเกลยุทธ์" modal className="p-fluid"
+            visible={visible11}
+            footer={renderFooter11}
+            onHide={onHide}
+          >
+            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="grid p-fluid">
+                <div className="col-12 md:col-3">
+                  <h4>กลยุทธ์ :</h4>
                 </div>
-              </Dialog>
-          </div>
+                <div className="col-12 md:col-1">
+                  <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '30em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
+                </div>
+              </div>
+            </div>
+          </Dialog>
         </div>
       </div>
     </>

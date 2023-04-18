@@ -9,22 +9,24 @@ import { Toast } from 'primereact/toast'
 import { PlusOutlined } from '@ant-design/icons'
 import { Dropdown } from 'primereact/dropdown'
 import { Button, Checkbox, Divider, Form, Input, Modal, Radio, Select, Spin } from 'antd'
+import { ExclamationCircleFilled } from '@ant-design/icons';
+const { confirm } = Modal;
 
 const formItemLayout = {
     labelCol: {
-        xs: {span: 24},
-        sm: {span: 8},
+        xs: { span: 24 },
+        sm: { span: 8 },
         offset: 2,
     },
     wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 20},
+        xs: { span: 24 },
+        sm: { span: 20 },
         offset: 2,
     },
 }
 // import './DataTableDemo.css';
 
-const Adduser = ({getuser}) => {
+const Adduser = ({ getuser }) => {
 
     let emptyProduct = {
         id: null,
@@ -56,11 +58,15 @@ const Adduser = ({getuser}) => {
     const [privilege, setPrivilege] = useState('ผู้บริหาร')
     const [filteredResults, setFilteredResults] = useState([])
     const optionsRole = [
-        {label: 'เจ้าหน้าที่แผน', value: 'เจ้าหน้าที่แผน'},
-        {label: 'หัวหน้าฝ่าย', value: 'หัวหน้าฝ่าย'},
-        {label: 'เจ้าหน้าที่พัสดุ', value: 'เจ้าหน้าที่พัสดุ'},
-        {label: 'ผู้ดูแลระบบ', value: 'ผู้ดูแลระบบ'},
+        { label: 'เจ้าหน้าที่แผน', value: 'เจ้าหน้าที่แผน' },
+        { label: 'หัวหน้าฝ่าย', value: 'หัวหน้าฝ่าย' },
+        { label: 'เจ้าหน้าที่พัสดุ', value: 'เจ้าหน้าที่พัสดุ' },
+        { label: 'ผู้ดูแลระบบ', value: 'ผู้ดูแลระบบ' },
     ]
+    const dialogFuncMap = {
+        'isModalOpen': setIsModalOpen,
+
+    }
 
     useEffect(() => {
         onPositionChange()
@@ -132,7 +138,7 @@ const Adduser = ({getuser}) => {
 
 
     useEffect(() => {
-        setLazyItems(Array.from({length: 100000}))
+        setLazyItems(Array.from({ length: 100000 }))
         setLazyLoading(false)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -148,7 +154,7 @@ const Adduser = ({getuser}) => {
         // setIsModalOpen(false)
         // setLoading(false)
         try {
-            const {data} = await axios.post('http://localhost:3001/manageuser/create', {
+            const { data } = await axios.post('http://localhost:3001/manageuser/create', {
                 section_id: value.radioRole === 'ผู้บริหาร' ? 0 : selectposition.section_id,
                 username: value.username,
                 fname: value.firstname,
@@ -178,19 +184,19 @@ const Adduser = ({getuser}) => {
                 setRole(null)
                 setIsModalOpen(false)
                 setLoading(false)
-              } else {
+            } else {
                 // Registration failed
                 if (datauser.err.includes('Duplicate entry') && datauser.err.includes('username')) {
-                    toast.current.show({severity:'warn', summary: 'Warning', detail:'มีข้อมูลผู้ใช้นี้แล้ว', life: 3000});
+                    toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'มีข้อมูลผู้ใช้นี้แล้ว', life: 3000 });
                     setLoading(true)
                 } else {
-                  console.log('erroe');
+                    console.log('erroe');
                 }
-              }
+            }
         } catch (e) {
             console.log(e)
         }
-
+        handleCancel()
     }
 
     const apiuser = async (value) => {
@@ -200,26 +206,28 @@ const Adduser = ({getuser}) => {
                 username: value
             }).then((res) => {
                 console.log()
-                if(res.data.api_status === 'success'){
+                if (res.data.api_status === 'success') {
                     setFilteredResults(res.data.userInfo)
                 }
-                else{ setLoading(false) 
+                else {
+                    setLoading(false)
                     toast.current.show({
-                    severity:'warn', 
-                    summary: "warn",
-                    detail: "ไม่มีข้อมูลของผู้ใช้นี้",
-                    life: 3000,
-                  })}
-                
+                        severity: 'warn',
+                        summary: "warn",
+                        detail: "ไม่มีข้อมูลของผู้ใช้นี้",
+                        life: 3000,
+                    })
+                }
+
             })
-           setLoading(false)
-            
+            setLoading(false)
+
         } catch (e) {
         }
     }
 
     const onCategoryChange = (e) => {
-        let _product = {...product}
+        let _product = { ...product }
         _product['category'] = e.value
         setProduct(_product)
     }
@@ -227,9 +235,7 @@ const Adduser = ({getuser}) => {
     const showModal = () => {
         setIsModalOpen(true)
     }
-    const handleOk = () => {
-        setIsModalOpen(false)
-    }
+   
     const handleCancel = () => {
         setRole(null)
         setIsModalOpen(false)
@@ -241,12 +247,7 @@ const Adduser = ({getuser}) => {
     const handleNum = (e) => {
         console.log(e.target.value)
         setLoading(true)
-        if (e.target.value.length === 14) {
             apiuser(e.target.value)
-        } else {
-            form.setFieldsValue({firstname: null, lastname: null, email: null})
-        }
-
     }
 
     const onChange = (checkedValues) => {
@@ -256,10 +257,23 @@ const Adduser = ({getuser}) => {
         }
     }
 
+    const showConfirm = () => {
+        confirm({
+            title: 'ต้องการเพิ่มผู้ใช้งานใช่มั้ย?',
+            icon: <ExclamationCircleFilled />,
+            onOk() {
+                console.log('Ok');
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
+
     return (
         <div className="datatable-crud-demo">
-            <Toast ref={toast}/>
-            <Button type="primary" size={'large'} onClick={showModal} icon={<PlusOutlined/>} ghost>
+            <Toast ref={toast} />
+            <Button type="primary" size={'large'} onClick={showModal} icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />} ghost>
                 เพิ่มบัญชีผู้ใช้งาน
             </Button>
 
@@ -277,9 +291,9 @@ const Adduser = ({getuser}) => {
                     size={'large'}
                     style={{
                         maxWidth: '100%',
-                        border: 'none', 
-                        boxShadow: 'none' 
-                      }}
+                        border: 'none',
+                        boxShadow: 'none'
+                    }}
                 >
                     <Form.Item
                         label="Username"
@@ -300,10 +314,10 @@ const Adduser = ({getuser}) => {
                             // }
                         ]}
                     >
-                        <Input maxLength={14} onChange={handleNum}/>
+                        <Input maxLength={14} onChange={handleNum} />
                     </Form.Item>
                     <div className="text-center">
-                        <Spin size="large" spinning={loading}/>
+                        <Spin size="large" spinning={loading} />
                     </div>
                     <Form.Item
                         label="ชื่อ"
@@ -316,7 +330,7 @@ const Adduser = ({getuser}) => {
                             },
                         ]}
                     >
-                        <Input/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label="นามสกุล"
@@ -329,7 +343,7 @@ const Adduser = ({getuser}) => {
                             },
                         ]}
                     >
-                        <Input/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         name="email"
@@ -340,7 +354,7 @@ const Adduser = ({getuser}) => {
                                 message: 'กรุณากรอกอีเมล',
                             }]}
                     >
-                        <Input/>
+                        <Input />
                     </Form.Item>
                     {role === 'ผู้ใช้งาน' ?
                         <Form.Item
@@ -351,7 +365,7 @@ const Adduser = ({getuser}) => {
                                     required: true,
                                     message: 'กรุณาเลือกหน่วยงาน',
                                 }]}>
-                              <Dropdown value={position} options={position}  onChange={(e) => setSelectposition(e.target.value)} optionLabel="section_name" placeholder="select" style={{ Width: '100%'}} /> 
+                            <Dropdown value={position} options={position} onChange={(e) => setSelectposition(e.target.value)} optionLabel="section_name" placeholder="หน่วยงาน" style={{ width: '29.5em' }} />
 
                         </Form.Item> : null
                     }
@@ -364,7 +378,8 @@ const Adduser = ({getuser}) => {
                                 message: 'กรุณาเลือกสิทธิให้กับผู้ใช้งาน',
                             }]}>
                         <Radio.Group onChange={(e) => setRole(e.target.value)} size={'large'}>
-                            <Radio value="ผู้บริหาร">ผู้บริหาร</Radio>
+                            <Radio value="ผู้บริหาร" style={{ marginBottom: '.5em' }}>ผู้บริหาร</Radio>
+                            <br />
                             <Radio value="ผู้ใช้งาน">สิทธิ์ของผู้ใช้ในหน่วยงาน</Radio>
                         </Radio.Group>
                     </Form.Item>
@@ -372,7 +387,7 @@ const Adduser = ({getuser}) => {
                     {role === 'ผู้ใช้งาน' ?
                         <Form.Item
                             name="role"
-                            
+
                             rules={[
                                 {
                                     required: true,
@@ -381,22 +396,22 @@ const Adduser = ({getuser}) => {
                             <Checkbox.Group
                                 onChange={onChange}
                             >
-                                <Checkbox value="เจ้าหน้าที่แผน"
-                                          disabled={checkedList.length === 3 && checkedList.every((value) => {
-                                              return value !== 'เจ้าหน้าที่แผน'
-                                          })}>เจ้าหน้าที่แผน</Checkbox>
+                                <Checkbox style={{ marginLeft: '2em'}} value="เจ้าหน้าที่แผน"
+                                    disabled={checkedList.length === 3 && checkedList.every((value) => {
+                                        return value !== 'เจ้าหน้าที่แผน'
+                                    })}>เจ้าหน้าที่แผน</Checkbox>
                                 <Checkbox value="หัวหน้าฝ่าย"
-                                          disabled={checkedList.length === 3 && checkedList.every((value) => {
-                                              return value !== 'หัวหน้าฝ่าย'
-                                          })}>หัวหน้าฝ่าย</Checkbox>
+                                    disabled={checkedList.length === 3 && checkedList.every((value) => {
+                                        return value !== 'หัวหน้าฝ่าย'
+                                    })}>หัวหน้าฝ่าย</Checkbox>
                                 <Checkbox value="เจ้าหน้าที่พัสดุ"
-                                          disabled={checkedList.length === 3 && checkedList.every((value) => {
-                                              return value !== 'เจ้าหน้าที่พัสดุ'
-                                          })}>เจ้าหน้าที่พัสดุ</Checkbox>
+                                    disabled={checkedList.length === 3 && checkedList.every((value) => {
+                                        return value !== 'เจ้าหน้าที่พัสดุ'
+                                    })}>เจ้าหน้าที่พัสดุ</Checkbox>
                                 <Checkbox value="ผู้ดูแลระบบ"
-                                          disabled={checkedList.length === 3 && checkedList.every((value) => {
-                                              return value !== 'ผู้ดูแลระบบ'
-                                          })}>ผู้ดูแลระบบ</Checkbox>
+                                    disabled={checkedList.length === 3 && checkedList.every((value) => {
+                                        return value !== 'ผู้ดูแลระบบ'
+                                    })}>ผู้ดูแลระบบ</Checkbox>
                             </Checkbox.Group>
                         </Form.Item>
 
@@ -406,18 +421,21 @@ const Adduser = ({getuser}) => {
                         <Button
                             ghost
                             className="mr-2"
-                            type="primary"
+                            type="primary" danger
                             size="large"
                             onClick={handleCancel}
+
                         >
-                            Cancle
+                            ยกเลิก
                         </Button>
                         <Button
                             type="primary"
                             size="large"
                             htmlType="submit"
+                            style={{ width: '4.5em' }}
+                            onClick={() => showConfirm() }
                         >
-                            Save
+                            เพิ่ม
                         </Button>
                     </div>
                 </Form>

@@ -1907,10 +1907,10 @@ input[type=file].form-control {
 
 .header {
   background: #ff9b44;
-  background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
+  background: linear-gradient(to right, #F77100 0%, #F77100 100%);
   border-bottom: 1px solid transparent;
   height: 60px;
-  z-index: 1002;
+  z-index: 100;
   position: fixed;
   top: 0;
   right: 0;
@@ -1992,9 +1992,9 @@ input[type=file].form-control {
   .header .mobile_btn {
     color: #ffffff;
     font-size: 24px;
-    height: 60px;
-    line-height: 60px;
-    width: 60px;
+    height: 100px;
+    line-height: 100px;
+    width: 100px;
     z-index: 10;
     padding: 0 20px;
     position: absolute;
@@ -2254,7 +2254,7 @@ input[type=file].form-control {
 }
 .sidebar,
 .two-col-bar {
-  background-color: #34444c;
+  background-color: #3D3D3D;
   border-right: 1px solid transparent;
   margin-top: 0;
   position: fixed;
@@ -8915,6 +8915,3 @@ canvas {
   width: 100%;
   height: auto;
 }
-
-
-

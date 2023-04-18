@@ -9,6 +9,7 @@ import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
+import { Panel } from 'primereact/panel';
 
 const Reporttwo = () => {
   const location = useLocation()
@@ -114,10 +115,9 @@ const Reporttwo = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div align="left">
-            <h2 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 2</h2>
-            <Card>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+          <Card>
+            <Panel header='รายงานความก้าวหน้าไตรมาส 2'>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ชื่อโครงการ :</h4>
@@ -127,7 +127,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>งบประมาณที่จัดสรร :</h4>
@@ -137,7 +137,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลการใช้จ่าย :</h4>
@@ -149,7 +149,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลตามตัวชี้วัด :</h4>
@@ -166,7 +166,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ขั้นตอนการดำเนินการ :</h4>
@@ -182,7 +182,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
@@ -194,7 +194,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>รายละเอียดความก้าวหน้า :</h4>
@@ -206,7 +206,7 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ปัญหา/อุปสรรค :</h4>
@@ -218,8 +218,8 @@ const Reporttwo = () => {
                   </div>
                 </div>
               </div>
-            </Card>
-          </div>
+            </Panel>
+          </Card>
         </div>
       </div>
     </>

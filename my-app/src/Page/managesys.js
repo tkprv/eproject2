@@ -12,13 +12,14 @@ import axios from 'axios'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast';
 import { Card } from 'primereact/card';
-import { Col, Divider, Form, Input } from "antd"
+import { Form, Input } from "antd"
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
-import { InputNumber } from 'antd';
-import { TextareaAutosize } from '@material-ui/core';
-
-
+import { Panel } from 'primereact/panel';
+import { Tooltip } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Modal } from 'antd';
+const { confirm } = Modal;
 
 const Managesys = () => {
     const [person, setPerson] = useState([])
@@ -37,6 +38,7 @@ const Managesys = () => {
     const toggleMobileMenu = () => {
         setMenu(!menu)
     }
+
     useEffect(() => {
         setLazyItems(Array.from({ length: 100000 }))
         setLazyLoading(false);
@@ -47,6 +49,10 @@ const Managesys = () => {
         getposition()
     }, [])
 
+    const onHide = () => {
+        setDisplayBasic(false)
+        form.resetFields()
+    }
 
     const getposition = () => {
         axios
@@ -64,6 +70,7 @@ const Managesys = () => {
             getposition()
         }
     }, [globalFilter])
+    
     const header = (
         <div className="table-header">
             {/* <h5 className="mx-0 my-1"> </h5> */}
@@ -78,17 +85,32 @@ const Managesys = () => {
     const actionTemplate = (node, column) => {
         return (
             <div >
-                <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginRight: '.5em' }} onClick={() => show(node.section_id)}></Button>
+                <Tooltip placement="bottom" title={<span>แก้ไขหน่วยงาน</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ height: '2.5em', width: '2.5em' }} onClick={() => show(node.section_id)}></Button></Tooltip>
                 {/* <Button type="button" icon="pi pi-trash" className="p-button-danger" onClick={() => {deleteperson(node.section_id)}}></Button> */}
             </div>
         )
 
     }
+
+    const showConfirm = (value) => {
+        confirm({
+            title: 'ต้องการแก้ไขหน่วยงานใช่มั้ย?',
+            icon: <ExclamationCircleFilled />,
+            onOk() {
+                updateposiion(value, dataUpdate)
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
+
     const deleteperson = (a_id) => {
         axios.delete(`http://localhost:3001/delete2/${a_id}`)
         alert(`Delete id${a_id} sucessful`)
         getposition()
     }
+
 
     const addposition = (value) => {
         try {
@@ -102,6 +124,7 @@ const Managesys = () => {
         } catch (e) {
         }
     }
+
     const updateposiion = (ID, dataUpdate) => {
 
         axios.put(`http://localhost:3001/updateagency/${ID}`, {
@@ -118,15 +141,15 @@ const Managesys = () => {
         'displayBasic': setDisplayBasic,
 
     }
+    
     const show = (id) => {
         setDisplayBasic(true);
         setId(id)
-
     }
 
-    const onHide = () => {
-        setDisplayBasic(false);
-    }
+    // const onHide = () => {
+    //     setDisplayBasic(false);
+    // }
 
     const toast = useRef(null);
 
@@ -143,6 +166,9 @@ const Managesys = () => {
         addposition(value)
     }
 
+    const onFinish1 = (value) => {
+        updateposiion(value, dataUpdate)
+    }
 
     const confirm2 = (id, dataUpdate) => {
         confirmDialog({
@@ -158,13 +184,10 @@ const Managesys = () => {
 
     const renderFooter = () => {
         return (
-
             <div>
-                <Button label="ยกเลิก" icon="pi pi-times" onClick={onHide} severity="danger" />
-                <Button label="บันทึก" icon="pi pi-check" onClick={() => confirm2(id, dataUpdate)} severity="success" autoFocus />
+                <Button label="ยกเลิก" icon="pi pi-times" style={{ height: '2.5em' }} onClick={onHide} severity="danger" />
+                <Button label="บันทึก" icon="pi pi-check" style={{ height: '2.5em' }} onClick={() => showConfirm(id)} severity="success" autoFocus />
             </div>
-
-
         );
     }
 
@@ -173,71 +196,128 @@ const Managesys = () => {
             <Header onMenuClick={(value) => toggleMobileMenu()} />
             <Sidebar />
             <div className="page-wrapper">
-                <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-                    <h3>กำหนดโครงสร้างหน่วยงาน</h3>
-                </div>
+
                 <Card>
-                    <div className='text-left'>
-                        <div className='mt-1.5' >
-                            {/* <InputText value={value1} onChange={(e) => setValue1(e.target.value)} style={{ marginRight: '.6em' }}/>
+                    <Panel header='กำหนดโครงสร้างหน่วยงาน'>
+                        <div className='text-left'>
+                            <div className='mt-1.5' >
+                                {/* <InputText value={value1} onChange={(e) => setValue1(e.target.value)} style={{ marginRight: '.6em' }}/>
                 <Button label="เพิ่มหน่วยงาน" icon=""className="p-button-success" onClick={()=>addposition(value1)} style={{ marginLeft: '.6em' }}/> */}
-                            <Form
-                                form={form}
-                                onFinish={onFinish}
-                                name="dynamic_rule"
-                                layout="inline"
-                                style={{
-                                    justifyItems: 'center',
-                                    maxWidth: '100%',
-                                    border: 'none',
-                                    boxShadow: 'none'
-                                }}
-                            >
-
-                                <Form.Item
-                                    //{...formItemLayout}
-                                    style={{ textAlign: 'center' }}
-                                    name="agency"
-                                    label="หน่วยงาน"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "กรุณากรอกหน่วยงาน",
-                                        },
-                                    ]}
+                                <Form
+                                    form={form}
+                                    onFinish={onFinish}
+                                    name="dynamic_rule"
+                                    layout="inline"
+                                    style={{
+                                        justifyItems: 'center',
+                                        maxWidth: '100%',
+                                        border: 'none',
+                                        boxShadow: 'none'
+                                    }}
                                 >
-                                    <Input size="large" style={{ width: '25em'}} placeholder="หน่วยงาน" />
-                                </Form.Item>
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    className="p-button-success"
-                                    label='เพิ่มหน่วยงาน'
-                                    style={{ height: '2.5em' }}
-                                />
-                            </Form>
-                        </div>
-                        <Dialog style={{ width: '450px' }} header="แก้ไขหน่วยงาน" modal className="p-fluid" visible={displayBasic} footer={renderFooter} onHide={onHide}>
-                            <label htmlFor="description"></label>
-                            <div>
-                                <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} />
 
+                                    <Form.Item
+                                        //{...formItemLayout}
+                                        style={{ textAlign: 'center' }}
+                                        label="หน่วยงาน"
+                                        name="agency"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "กรุณากรอกหน่วยงาน",
+                                            },
+                                        ]}
+                                    >
+                                        <Input size="large" style={{ width: '25em' }} placeholder="หน่วยงาน" />
+                                    </Form.Item>
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        className="p-button-success"
+                                        icon='pi pi-plus'
+                                        label='เพิ่มหน่วยงาน'
+                                        style={{ height: '2.5em' }}
+                                    />
+                                </Form>
                             </div>
-                        </Dialog>
 
-                        <div >
-                            <div />
-                            <br />
+                            {/* <Dialog style={{ width: '600px' }} header="แก้ไขหน่วยงาน" modal className="p-fluid" visible={displayBasic} footer={renderFooter} onHide={onHide}>
+                                <label htmlFor="description"></label>
+                                <div>
+                                    <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} />
+
+                                </div>
+                            </Dialog> */}
+
                             <div >
-                                <DataTable value={position} columnResizeMode="fit" showGridlines responsiveLayout="scroll" >
-                                    <Column field="section_id" header="ลำดับ" style={{ width: '3%',textAlign: 'center' }} />
-                                    <Column field="section_name" header="ชื่อหน่วยงาน" />
-                                    <Column body={actionTemplate} header="แก้ไข" style={{ textAlign: 'center', width: '15%' }} />
-                                </DataTable>
+                                <div />
+                                <br />
+                                <div >
+                                    <DataTable value={position} columnResizeMode="fit" showGridlines responsiveLayout="scroll" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} >
+                                        <Column field="section_id" sortable header="ลำดับ" style={{ width: '3%', textAlign: 'center' }} />
+                                        <Column field="section_name" sortable header="ชื่อหน่วยงาน" />
+                                        <Column body={actionTemplate} header="แก้ไข" style={{ textAlign: 'center', width: '15%' }} />
+                                    </DataTable>
+                                </div>
+                            </div>
+                            <div>
+                                <Modal
+                                    title={<h4 className="m-0">{'แก้ไขข้อมูลหน่วยงาน'}</h4>}
+                                    open={displayBasic}
+                                    onCancel={onHide}
+                                    footer={null}
+                                >
+                                    <Form
+                                        form={form}
+                                        onFinish={onFinish1}
+                                        name="dynamic_rule"
+                                        layout="inline"
+                                        style={{
+                                            justifyItems: 'center',
+                                            maxWidth: '100%',
+                                            border: 'none',
+                                            boxShadow: 'none'
+                                        }}
+                                    >
+
+                                        <Form.Item
+                                            //{...formItemLayout}
+                                            style={{ textAlign: 'center' }}
+                                            label="หน่วยงาน"
+                                            name="agency"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "กรุณากรอกหน่วยงาน",
+                                                },
+                                            ]}
+                                        >
+                                            <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} style={{ width: '25em' }} />
+
+                                        </Form.Item>
+                                        <div className="text-right mt-4">
+                                            <Button
+                                                icon='pi pi-times'
+                                                severity="danger"
+                                                label='ยกเลิก'
+                                                style={{ marginRight: '.5em', height: '2.5em', marginLeft: '14.95em' }}
+                                                onClick={onHide}
+                                            >
+                                            </Button>
+                                            <Button
+                                                icon='pi pi-check'
+                                                severity="success"
+                                                label='บันทึก'
+                                                style={{ height: '2.5em' }}
+                                                onClick={() => showConfirm(id)}
+                                            >
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                </Modal>
                             </div>
                         </div>
-                    </div>
-
+                    </Panel>
                 </Card>
             </div>
         </div>

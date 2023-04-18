@@ -2,13 +2,14 @@ const db = require('../config/dbConfig')
 const request = require('request')
 
 const createquartercharges = (req, res) => {
-    const project = req.body.project_id
-    const quarter = req.body.quarter
+    const project = req.body.project_id;
+    const quarter = req.body.quarter;
     const used = req.body.used;
-    const periodcheck = req.body.period_check
+    const periodcheck = req.body.period_check;
+    const status = req.body.status_report;
     console.log('charges', req.body)
-    db.query("INSERT INTO tbl_report (project_id, quarter, used, period_check) VALUES (?, ?, ?, ?)",
-        [project, quarter, used, periodcheck],
+    db.query("INSERT INTO tbl_report (project_id, quarter, used, period_check, status_report) VALUES (?, ?, ?, ?, ?)",
+        [project, quarter, used, periodcheck, status],
         (err, result) => {
             if (err) {
                 console.log('13', err)
@@ -21,9 +22,10 @@ const createquartercharges = (req, res) => {
 const updatereportone = (req, res) => {
     const ID = req.params.id;
     const reportone = req.body.report_one;
+    const status = req.body.status_report1;
     db.query(
-        "UPDATE tbl_project SET report_one = ? WHERE project_id = ?",
-        [reportone, ID],
+        "UPDATE tbl_project SET report_one = ?, status_report1 = ? WHERE project_id = ?",
+        [reportone, status, ID],
         (err, result) => {
             if (err) {
                 console.log('12', err)
@@ -34,6 +36,7 @@ const updatereportone = (req, res) => {
     )
     console.log('reportone', ID)
     console.log('newreportone', reportone)
+    console.log('newstatus', status)
 }
 
 const showreport = (req, res) => {
@@ -82,7 +85,7 @@ const createproblem = (req, res) => {
 const showresult = (req, res) => {
     const ID = req.params.id
     console.log('id', ID)
-    db.query("SELECT * FROM tbl_indic_project_result WHERE indic_project_result_id =?", [ID], (err, result) => {
+    db.query("SELECT * FROM tbl_indic_project_result WHERE indic_project_result_id = ?", [ID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -94,7 +97,7 @@ const showresult = (req, res) => {
 const createresult = (req, res) => {
     const ID = req.params.id;
     const result = req.body.result;
-    const achieve = req.body.achieve
+    const achieve = req.body.achieve;
     db.query(
         "UPDATE tbl_indic_project_result SET result = ?, achieve = ? WHERE indic_project_result_id = ?",
         [result, achieve, ID],
@@ -115,9 +118,10 @@ const createresult = (req, res) => {
 const updatereporttwo = (req, res) => {
     const ID = req.params.id;
     const reporttwo = req.body.report_two;
+    const status = req.body.status_report2;
     db.query(
-        "UPDATE tbl_project SET report_two = ? WHERE project_id = ?",
-        [reporttwo, ID],
+        "UPDATE tbl_project SET report_two = ?, status_report2 = ? WHERE project_id = ?",
+        [reporttwo, status, ID],
         (err, result) => {
             if (err) {
                 console.log('12', err)
@@ -128,42 +132,47 @@ const updatereporttwo = (req, res) => {
     )
     console.log('reporttwo', ID)
     console.log('newreporttwo', reporttwo)
+    console.log('newstatus', status)
 }
 
 const updatereportthree = (req, res) => {
     const ID = req.params.id;
     const reportthree = req.body.report_three;
+    const status = req.body.status_report3;
     db.query(
-      "UPDATE tbl_project SET report_three = ? WHERE project_id = ?",
-      [reportthree, ID],
-      (err, result) => {
-        if (err) {
-          console.log('12', err)
-        } else {
-          res.send(result)
+        "UPDATE tbl_project SET report_three = ?, status_report3 = ? WHERE project_id = ?",
+        [reportthree, status, ID],
+        (err, result) => {
+            if (err) {
+                console.log('12', err)
+            } else {
+                res.send(result)
+            }
         }
-      }
     )
     console.log('reportthree', ID)
     console.log('newreportthree', reportthree)
+    console.log('newstatus', status)
 }
 
 const updatereportfour = (req, res) => {
     const ID = req.params.id;
-  const reportfour = req.body.report_four;
-  db.query(
-    "UPDATE tbl_project SET report_four = ? WHERE project_id = ?",
-    [reportfour, ID],
-    (err, result) => {
-      if (err) {
-        console.log('12', err)
-      } else {
-        res.send(result)
-      }
-    }
-  )
-  console.log('reportfour', ID)
-  console.log('newreportfour', reportfour)
+    const reportfour = req.body.report_four;
+    const status = req.body.status_report4;
+    db.query(
+        "UPDATE tbl_project SET report_four = ?, status_report4 = ? WHERE project_id = ?",
+        [reportfour, status, ID],
+        (err, result) => {
+            if (err) {
+                console.log('12', err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('reportfour', ID)
+    console.log('newreportfour', reportfour)
+    console.log('newstatus', status)
 }
 
-module.exports = { createquartercharges, updatereportone, showreport, createdetail, createproblem, showresult, createresult,updatereporttwo, updatereportthree, updatereportfour }
+module.exports = { createquartercharges, updatereportone, showreport, createdetail, createproblem, showresult, createresult, updatereporttwo, updatereportthree, updatereportfour }

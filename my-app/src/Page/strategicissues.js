@@ -14,6 +14,35 @@ import { DataTable } from "primereact/datatable";
 import { Card } from "primereact/card";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
+import { ExclamationCircleFilled, MinusCircleOutlined, PlusOutlined, } from "@ant-design/icons"
+import { Modal } from "antd"
+import { Col, Divider, Form, Input, notification, Tooltip } from "antd";
+import { Panel } from 'primereact/panel'
+
+const { confirm } = Modal
+
+const formItemLayout = {
+  labelAlign: "left",
+  labelZise: '10em',
+  labelCol: {
+    xs: { span: 2.5 },
+    sm: { span: 2.5 },
+  },
+  wrapperCol: {
+    xs: { span: 2.5 },
+    sm: { span: 2.5 },
+  },
+
+};
+
+const inputStyle = {
+  fontSize: '16px',
+  padding: '8px'
+}
+const buttonStyle = {
+  fontSize: '14px',
+  padding: '8px 16px'
+}
 
 const StrategicIssues = () => {
   const [strategic, setStrategic] = useState([]);
@@ -24,7 +53,9 @@ const StrategicIssues = () => {
   const [value3, setValue3] = useState();
   const [displayBasic, setDisplayBasic] = useState(false);
   const [dataUpdate, setDataUpdate] = useState("");
-  const [id, setId] = useState();
+  const [id, setId] = useState()
+  const [form] = Form.useForm()
+
   let history = useHistory();
   const [menu, setMenu] = useState(false)
   const toggleMobileMenu = () => {
@@ -60,30 +91,42 @@ const StrategicIssues = () => {
   };
 
   const deletestid = (ID) => {
-    axios.delete(`http://localhost:3001/plan/deletestid/${ID}`);
-
-    alert(`Delete id${ID} sucessful`);
-    getstrategicid();
+    axios.delete(`http://localhost:3001/plan/deletestid/${ID}`)
+    getstrategicid()
   };
-  const updatest = (ID, dataUpdate) => {
+  const updatest = (ID, dataUpdate) => { 
+    onHide()
     axios.put(`http://localhost:3001/plan/updatest/${ID}`, {
       strategic_name: dataUpdate
-
     }
     )
-    onHide()
     getstrategicid()
 
   };
 
-  const addstid = () => {
+  const addstid = (value) => {
     try {
       //order_strategic: value2.length + 1
       axios.post("http://localhost:3001/plan/createstid", {
-        fiscalyear_id: value3.fiscalyear_id,
+        fiscalyear_id: value.yearsfi.fiscalyear_id,
         order_strategic: 1,
-        strategic_name: value1,
-      });
+        strategic_name: value.staraagic,
+      }).then((res) => {
+        console.log(res);
+        if (res.data === 'ER_DUP_ENTRY') {
+          notification.error({
+            message: `${value.staraagic}`,
+            description: "มีข้อมูลอยู่แล้ว"
+
+          })
+          getstrategicid()
+          setValue1('')
+        } else {
+          getstrategicid()
+          setValue1('')
+        }
+      })
+
       getstrategicid()
       setValue1('')
     } catch (e) {
@@ -120,23 +163,25 @@ const StrategicIssues = () => {
             history.push({ pathname: "/home/goaldetail", state: node })
           }
         ></Button> */}
-        <Button
+        <Tooltip placement="bottom" title={<span>สร้างเป้าประสงค์ ตัวชี้วัด หน่วยนับ ค่าเป้าหมาย กลยุทธ์</span>} ><Button
           type="button"
           icon="pi pi-pencil"
           className="p-button-warning"
-          style={{ marginRight: ".5em" }}
+          style={{ marginRight: ".5em", height: '2.5em', width: '2.5em' }}
           onClick={() =>
             history.push({ pathname: "/home/edit", state: node })
           }
-        ></Button>
-        <Button
+        ></Button></Tooltip>
+        <Tooltip placement="bottom" title={<span>ลบประเด็นยุทธศาตร์</span>} ><Button
           type="button"
           icon="pi pi-trash"
           className="p-button-danger"
+          style={{ height: '2.5em', width: '2.5em' }}
           onClick={() => {
-            deletestid(node.strategic_id);
+            showConfirm(node.strategic_id)
+            // deletestid(node.strategic_id);
           }}
-        ></Button>
+        ></Button></Tooltip>
       </div>
     );
   };
@@ -144,25 +189,29 @@ const StrategicIssues = () => {
   const dialogFuncMap = {
     displayBasic: setDisplayBasic,
   };
+  
   const show = (id) => {
     setDisplayBasic(true);
     setId(id);
   };
+
   const onHide = () => {
-    setDisplayBasic(false);
-  };
+    setDisplayBasic(false)
+    form.resetFields()
+  }
 
   const action = (rowData) => {
     return (
       <div>
         {/* <span className="button-text">{rowData.strategic_name}</span> */}
-        <Button
-          type="button"
-          icon="pi pi-pencil"
-          className="p-button-warning"
-          style={{ marginLeft: ".5em" }}
-          onClick={() => show(rowData.strategic_id)}
-        ></Button>
+        <Tooltip placement="bottom" title={<span>แก้ไขประเด็นยุทธศาตร์</span>} >
+          <Button
+            type="button"
+            icon="pi pi-pencil"
+            className="p-button-warning"
+            style={{ marginRight: ".5em", height: '2.5em', width: '2.5em' }}
+            onClick={() => show(rowData.strategic_id)}
+          ></Button></Tooltip>
       </div>
     );
   };
@@ -175,10 +224,61 @@ const StrategicIssues = () => {
     return (
 
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="ตกลง" icon="pi pi-check" className="p-button-success" onClick={() => confirm2(id, dataUpdate)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="ตกลง" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
       </div>
     );
+  }
+
+  const onFinish = (value) => {
+    //console.log(value.yearsfi.fiscalyear_id)
+    showConfirm2(value)
+  }
+
+  const showConfirm = (value) => {
+    confirm({
+      title: "ต้องการลบประเด็นยุทธศาสตร์ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        deletestid(value)
+
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm2 = (value) => {
+    confirm({
+      title: "ต้องการเพิ่มประเด็นยุทธศาสตร์ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      content: `${value.staraagic}`,
+      onOk() {
+        console.log("OK");
+        addstid(value)
+
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm3 = (value) => {
+    confirm({
+      title: "ต้องการแก้ไขประเด็นยุทธศาสตร์ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        confirm2(value, dataUpdate)
+
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   }
 
   return (
@@ -187,49 +287,66 @@ const StrategicIssues = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-            <h3>จัดการข้อมูลประเด็นยุทธ์ศาสตร์ เป้าประสงค์ กลยุทธ์
-            </h3>
-          </div>
-          <Card>
-            <div className="text-left">
 
-              <div >
-                <h4>แผนยุทธศาสตร์</h4>
-                <div >
+          <Card>
+            <Panel header="จัดการข้อมูลประเด็นยุทธ์ศาสตร์ เป้าประสงค์ กลยุทธ์">
+
+              <Form
+                form={form}
+                onFinish={onFinish}
+                name="dynamic_rule"
+                style={{
+                  maxWidth: '100%',
+                  border: 'none',
+                  boxShadow: 'none'
+                }}
+              >
+                <Form.Item
+                  {...formItemLayout}
+                  name="yearsfi"
+                  label="แผนยุทธศาสตร์"
+                  rules={[
+                    {
+                      required: true,
+                      message: "แผนยุทธศาสตร์",
+                    },
+                  ]}
+                >
                   <Dropdown
                     value={selectedSt}
                     options={stopen}
                     onChange={onStrategic}
                     optionLabel="plan_name"
                     placeholder="แผนยุทธศาสตร์"
-                    style={{ width: "30em" }}
+                    style={{ height: '2.5em', marginLeft: '1.1em' }}
                   />
-                </div>
-                <h4 style={{ marginTop: '1em'}}>ประเด็นยุทธศาสตร์</h4>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-4">
-                    <div className="p-inputgroup" style={{ width: "30em" }}>
-                      <InputText
-                        value={value1}
-                        onChange={(e) => setValue1(e.target.value)}
-                        placeholder="ประเด็นยุทธศาสตร์"
-                      ></InputText>
-                    </div>
-                  </div>
-                  <div className="col-12 md:col-5" >
-                    <div className="p-inputgroup" >
-                      <Button
-                        label="เพิ่ม"
-                        className="p-button-success"
-                        style={{ marginLeft: "4.5em" }}
-                        onClick={addstid}
-                      />
-                    </div>
-                  </div>
-                </div>
+                </Form.Item>
+                <Form.Item
+                  {...formItemLayout}
+                  name="staraagic"
+                  label="ประเด็นยุทธศาสตร์"
+                  rules={[
+                    {
+                      required: true,
+                      message: "กรุณาเพิ่มประเด็นยุทธศาสตร์",
+                    },
+                  ]}
+                >
+                  <Input size="large" placeholder="ประเด็นยุทธศาสตร์" style={{ width: '25em', height: '2.5em' }} />
+                </Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="p-button-success"
+                  style={{ marginLeft: '61em', height: '2.5em' }}
+                  icon='pi pi-plus'
+                  label="เพิ่มประเด็นยุทธศาสตร์"
+                  onClick={() => showConfirm2()}
+                />
+              </Form>
+              {/* <div className="text-left"> */}
 
-              </div>
+
               <div>
                 <DataTable
                   value={value2}
@@ -242,8 +359,8 @@ const StrategicIssues = () => {
                   rowsPerPageOptions={[5, 10, 25]}
                 >
                   {/* <Column field="" header="ลำดับ" style={{ width: "3%" }} /> */}
-                  <Column field="plan_name" header="แผนยุทธศาสตร์" />
-                  <Column field="strategic_name" header="ชื่อประเด็นยุทธศาสตร์"></Column>
+                  <Column field="plan_name" header="แผนยุทธศาสตร์"/>
+                  <Column field="strategic_name" header="ชื่อประเด็นยุทธศาสตร์" sortable/>
                   <Column body={action}
                     header="แก้ไขประเด็นยุทธศาตร์"
                     style={{ textAlign: "center", width: "17%" }}
@@ -256,7 +373,7 @@ const StrategicIssues = () => {
                 </DataTable>
               </div>
 
-              <Dialog
+              {/* <Dialog
                 style={{ width: '450px', width: "50vw" }} header="แก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
                 visible={displayBasic}
                 footer={renderFooter}
@@ -266,11 +383,26 @@ const StrategicIssues = () => {
                   value={dataUpdate}
                   onChange={(e) => setDataUpdate(e.target.value)}
                   placeholder="ชื่อประเด็นยุทธศาสตร์"
-
                 />
-              </Dialog>
+              </Dialog> */}
 
-            </div>
+              {/* </div> */}
+              <div>
+                <Modal
+                  title={<h4 className="m-0">{'จัดการข้อมูลประเด็นยุทธศาสตร์'}</h4>}
+                  open={displayBasic}
+                  onCancel={onHide}
+                  footer={null}
+                  width={700}
+                >
+                  <InputText value={dataUpdate} onChange={(e) => setDataUpdate(e.target.value)} placeholder="ชื่อประเด็นยุทธศาสตร์" />
+                  <div className="text-right mt-4">
+                    <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide} />
+                    <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
+                  </div>
+                </Modal>
+              </div>
+            </Panel>
           </Card>
         </div>
       </div>

@@ -395,4 +395,5 @@ const DataGoal = ({ id }) => {
 
   )
 }
+
 export default DataGoal

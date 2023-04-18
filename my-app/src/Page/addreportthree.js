@@ -14,6 +14,11 @@ import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
+import { Panel } from 'primereact/panel';
+import { ExclamationCircleFilled } from "@ant-design/icons"
+import { Modal } from "antd"
+import { Form } from "antd";
+const { confirm } = Modal
 
 const Addreportthree = () => {
   const location = useLocation()
@@ -33,6 +38,9 @@ const Addreportthree = () => {
   const [rowsData1, setRowsData1] = React.useState([]);
   const [rowsData2, setRowsData2] = React.useState([]);
   const [visible1, setVisible1] = useState(false);
+  const [form] = Form.useForm();
+  const [displayBasic1, setDisplayBasic1] = useState(false)
+  const [displayBasic2, setDisplayBasic2] = useState(false)
   const [menu, setMenu] = useState(false);
   let history = useHistory();
   console.log('project', location.state)
@@ -55,18 +63,24 @@ const Addreportthree = () => {
     getindic()
   }, []);
 
-  useEffect(() => {
-    showreportthree(reportid)
-    createdetailthree(reportid)
-    createproblemthree(reportid)
-  }, [reportid])
+  // useEffect(() => {
+  //   showreportthree(reportid)
+  //   createdetailthree(reportid)
+  //   createproblemthree(reportid)
+  // }, [reportid])
 
   const dialogFuncMap = {
     'displayBasic': setDisplayBasic,
   }
 
-  const onHide = () => {
-    setVisible1(false)
+  const onHide1 = () => {
+    setDisplayBasic1(false)
+    form.resetFields()
+  }
+
+  const onHide2 = () => {
+    setDisplayBasic2(false)
+    form.resetFields()
   }
 
   const dataachieve = (node) => {
@@ -87,21 +101,21 @@ const Addreportthree = () => {
           icon="pi pi-plus"
           label='เพิ่มผลตามตัวชี้วัดและบรรลุตามตัวชี้วัด'
           className="p-button-success"
-          style={{ textAlign: 'center', width: '22em' }}
+          style={{ textAlign: 'center', width: '22em', height: '2.5em' }}
           onClick={() => showresult(node)}
         ></Button>
       </div>
     );
   }
 
-  const renderFooter1 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="ตกลง" icon="pi pi-check" className="p-button-success" onClick={() => createresult(id, addresult, checked1)} autoFocus />
-      </div>
-    );
-  }
+  // const renderFooter1 = (id) => {
+  //   return (
+  //     <div>
+  //       <Button type="button" icon="pi pi-download" label='จัดเก็บ' className="p-button-help" onClick={() => createresult(id, addresult, checked1, 0)} />
+  //       <Button type="button" icon="pi pi-send" label='ส่ง' style={{ width: '7em', marginLeft: '.4em' }} onClick={() => createresult(id, addresult, checked1, 1)} autoFocus />
+  //     </div>
+  //   );
+  // }
 
   const addTableRows1 = () => {
     setRowsData1([...rowsData1, rowsInput1])
@@ -173,31 +187,31 @@ const Addreportthree = () => {
   }
   console.log('33', step)
 
-  const createquarterchargesthree = async (id) => {
+  const createquarterchargestthree = async (id, statusreport) => {
     axios
       .post(`http://localhost:3001/addreport/createquartercharges`, {
         project_id: id,
         quarter: 3,
         used: addquartercharges,
-        period_check: (checked === true) ? 1 : 0
+        period_check: (checked === true) ? 1 : 0,
+        status_report: statusreport
       }).then((res) => {
         setReportid(res.data.insertId)
+        createdetailthree(res.data.insertId)
+        createproblemthree(res.data.insertId)
       })
-    await updatereportthree(id)
-    alert(`ต้องการเพิ่มข้อมูลรายงานความก้าวหน้าไตรมาสใช่มั้ย?`)
+    await updatereportthree(id, statusreport)
   }
 
-  const updatereportthree = async (id) => {
-    console.log('tt', id)
+  const updatereportthree = async (id, statusreport) => {
     axios
       .put(`http://localhost:3001/addreport/updatereportthree/${id}`, {
-        report_three: 3
+        report_three: 3,
+        status_report3: statusreport
       })
-
   }
 
   const showreportthree = async (item) => {
-    console.log('111', reportid)
     axios
       .get(`http://localhost:3001/addreport/showreport/${reportid}`, {})
       .then((res) => {
@@ -208,7 +222,6 @@ const Addreportthree = () => {
   };
 
   const createdetailthree = async (id) => {
-    console.log('id', id)
     axios
       .post(`http://localhost:3001/addreport/createdetail`, {
         report_id: id,
@@ -226,7 +239,7 @@ const Addreportthree = () => {
         try {
           axios.post('http://localhost:3001/addreport/createdetail', {
             report_id: id,
-            detail: value.detail,
+            detail: value.detail
           })
         } catch (e) {
         }
@@ -235,12 +248,10 @@ const Addreportthree = () => {
   }
 
   const createproblemthree = async (id) => {
-    console.log('rr', reportid)
-    console.log('id', id)
     axios
       .post(`http://localhost:3001/addreport/createproblem`, {
         report_id: id,
-        problem: addproblem
+        problem: addproblem,
       }).then((res) => {
         showreportthree()
         createproblemthree2(id)
@@ -254,7 +265,7 @@ const Addreportthree = () => {
         try {
           axios.post('http://localhost:3001/addreport/createproblem', {
             report_id: id,
-            problem: value.problem,
+            problem: value.problem
           })
         } catch (e) {
         }
@@ -263,27 +274,83 @@ const Addreportthree = () => {
   }
 
   const showresult = (item) => {
+    setDisplayBasic2(true)
     setResultid(item.indic_project_result_id)
     axios
       .get(`http://localhost:3001/addreport/showresult/${item.indic_project_result_id}`, {})
       .then((res) => {
         setResult(res.data[0].indic_project_result_id)
+
       })
       .catch((error) => {
         console.log(error)
       });
-    setVisible1(true)
   };
 
   const createresult = (id, addresult, checked1) => {
-    setVisible1(false)
+    onHide2()
     axios.put(`http://localhost:3001/addreport/createresult/${resultid}`, {
       result: addresult,
       achieve: (checked1 === true) ? 1 : 0
     })
-    alert(`ต้องการเพิ่มผลตามตัวชี้วัด และบรรลุตามตัวชี้วัดใช่มั้ย?`)
-    showresult()
   };
+
+  const showConfirm1 = (value) => {
+    confirm({
+      title: "ต้องการจัดเก็บรายงานความก้าวหน้าไตรมาส 3 ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        createquarterchargestthree(value, 0)
+
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm2 = (value) => {
+    confirm({
+      title: "ต้องการส่งรายงานความก้าวหน้าไตรมาส 3 ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        createquarterchargestthree(value, 1)
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm3 = (value) => {
+    confirm({
+      title: "ต้องการจัดเก็บข้อมูลผลตามตัวชี้วัด และบรรลุตามตัวชี้วัดใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        createresult(value, addresult, checked1)
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm4 = (value) => {
+    confirm({
+      title: "ต้องการส่งข้อมูลผลตามตัวชี้วัด และบรรลุตามตัวชี้วัดใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        createresult(value, addresult, checked1)
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
 
   return (
     <>
@@ -291,9 +358,8 @@ const Addreportthree = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div align="left">
-            <h3 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 3</h3>
-            <Card>
+          <Card>
+            <Panel header='รายงานความก้าวหน้าไตรมาส 3'>
               <div className="fit" style={{ marginLeft: '1.5em' }}>
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
@@ -408,12 +474,36 @@ const Addreportthree = () => {
                 </div>
               </div>
               <div style={{ marginTop: '2em', marginLeft: '60em' }} >
-                <Button type="button" icon="pi pi-send" label='ส่ง' style={{ width: '7em' }} className="p-button-info" onClick={() => createquarterchargesthree(location.state.project_id)} />
-                <Button type="button" icon="pi pi-download" label='จัดเก็บ' className="p-button-help" style={{ marginLeft: '.4em' }} />
+                <Button type="button" icon="pi pi-download" label='จัดเก็บ' className="p-button-help" style={{ height: '2.5em' }} onClick={() => showConfirm1(location.state.project_id)} />
+                <Button type="button" icon="pi pi-send" label='ส่ง' style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} className="p-button-info" onClick={() => showConfirm2(location.state.project_id)} />
               </div>
-            </Card>
+            </Panel>
+          </Card>
 
-            <Dialog
+          <div>
+            <Modal
+              title={<p className="m-0">{'เพิ่มผลตามตัวชี้วัด และบรรลุตามตัวชี้วัด'}</p>}
+              open={displayBasic2}
+              onCancel={onHide2}
+              footer={null}
+              width={700}
+            >
+              <h4>ผลตามตัวชี้วัด</h4>
+              <InputText
+                value={addresult}
+                onChange={(e) => setAddresult(e.target.value)}
+                placeholder="ผลตามตัวชี้วัด"
+              />
+              <h4 style={{ marginTop: '.5em' }}>บรรลุตามตัวชี้วัด</h4>
+              <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
+              <div className="text-right mt-4">
+                <Button type="button" icon="pi pi-download" label='จัดเก็บ' className="p-button-help" style={{ height: '2.5em' }} onClick={() => showConfirm3(resultid)} />
+                <Button type="button" icon="pi pi-send" label='ส่ง' style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} className="p-button-info" onClick={() => showConfirm4(resultid)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+
+          {/* <Dialog
               style={{ width: '450px', width: "50vw" }} header="เพิ่มผลตามตัวชี้วัด และบรรลุตามตัวชี้วัด" modal className="p-fluid"
               visible={visible1}
               footer={renderFooter1}
@@ -425,10 +515,9 @@ const Addreportthree = () => {
                 onChange={(e) => setAddresult(e.target.value)}
                 placeholder="ผลตามตัวชี้วัด"
               />
-              <h4>บรรลุตามตัวชี้วัด</h4>
+              <h4 style={{ marginTop: '.5em' }}>บรรลุตามตัวชี้วัด</h4>
               <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
-            </Dialog>
-          </div>
+            </Dialog> */}
         </div>
       </div>
     </>

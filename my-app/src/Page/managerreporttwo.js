@@ -10,8 +10,9 @@ import { Tag } from 'primereact/tag';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { Dialog } from 'primereact/dialog';
+import { Panel } from 'primereact/panel';
 
-const  Managerreporttwo = () => {
+const Managerreporttwo = () => {
   const location = useLocation();
   const [confirm, setConfirm] = useState('');
   const [position, setPosition] = useState('center');
@@ -64,8 +65,8 @@ const  Managerreporttwo = () => {
   const renderFooter1 = (name) => {
     return (
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => onHide(name)} />
-        <Button label="ยืนยัน" icon="pi pi-check" className="p-button-success" onClick={() => openreport(location.state.project_id, 1)} />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em', }} onClick={() => onHide(name)} />
+        <Button label="ยืนยัน" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => openreport(location.state.project_id, 1)} />
       </div>
     );
   }
@@ -146,10 +147,10 @@ const  Managerreporttwo = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div align="left">
-            <h2 style={{ marginTop: '.5em', marginLeft: '1em' }}>รายงานความก้าวหน้าไตรมาส 2 <Button icon="pi pi-eye" label="เปิดใช้รายงานความก้าวหน้าไตรมาส 2" severity="info" style={{ marginLeft: '31.5em' }} onClick={() => onClick('confirm')} /></h2>
-            <Card>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+          <Card>
+            <Panel header='รายงานความก้าวหน้าไตรมาส 2'>
+              <Button icon="pi pi-eye" label="เปิดใช้รายงานความก้าวหน้าไตรมาส 2" severity="info" style={{ marginLeft: '54em', height: '2.5em', marginBottom: '1em' }} onClick={() => onClick('confirm')} />
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ชื่อโครงการ :</h4>
@@ -159,7 +160,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>งบประมาณที่จัดสรร :</h4>
@@ -169,7 +170,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลการใช้จ่าย :</h4>
@@ -181,7 +182,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลตามตัวชี้วัด :</h4>
@@ -198,7 +199,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ขั้นตอนการดำเนินการ :</h4>
@@ -214,7 +215,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
@@ -226,7 +227,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>รายละเอียดความก้าวหน้า :</h4>
@@ -238,7 +239,7 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ปัญหา/อุปสรรค :</h4>
@@ -250,15 +251,15 @@ const  Managerreporttwo = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </Panel>
+          </Card>
 
-            <Dialog header="แน่ใจหรือไม่?" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter1('confirm')}>
-              <div className="field" style={{ 'textAlign': 'center' }}>
-                <i className="pi pi-exclamation-circle p-button-warning" style={{ 'fontSize': '8em', 'color': 'orange' }}></i>
-                <p style={{ marginTop: 25 }}><h4>คุณต้องการเปิดรายงานความก้าวหน้าไตรมาส 2 ใช่มั้ย</h4></p>
-              </div>
-            </Dialog>
-          </div>
+          <Dialog header="แน่ใจหรือไม่?" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter1('confirm')}>
+            <div className="field" style={{ 'textAlign': 'center' }}>
+              <i className="pi pi-exclamation-circle p-button-warning" style={{ 'fontSize': '8em', 'color': 'orange' }}></i>
+              <p style={{ marginTop: 25 }}><h4>คุณต้องการเปิดรายงานความก้าวหน้าไตรมาส 2 ใช่มั้ย</h4></p>
+            </div>
+          </Dialog>
         </div>
       </div>
     </>

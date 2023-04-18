@@ -3,7 +3,7 @@ const request = require('request')
 
 const getproject = (req, res) => {
     const ID = req.params.id;
-    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_user_project.user_id = ? AND tbl_project.status != 100",
+    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_project.status != 100 AND tbl_project.status = 4 AND tbl_project.status != 10 AND tbl_user_project.user_id = ?",
         [ID], (err, result) => {
             if (err) {
                 console.log(err);
@@ -14,9 +14,23 @@ const getproject = (req, res) => {
     console.log('id', ID)
 }
 
+const projectuser = (req, res) => {
+    const ID = req.params.id;
+    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_user_project.user_id = ? AND tbl_project.status != 100 AND tbl_project.status != 10",
+    [ID], 
+    (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+    console.log('id', ID)
+}
+
 const projectleader = (req, res) => {
     const ID = req.params.id;
-    db.query("SELECT * FROM tbl_project WHERE section_id = ? AND status != 100",
+    db.query("SELECT * FROM tbl_project WHERE section_id = ? AND status != 100 AND status != 10",
         [ID], (err, result) => {
             if (err) {
                 console.log(err);
@@ -25,6 +39,16 @@ const projectleader = (req, res) => {
             }
         });
     console.log('id', ID)
+}
+
+const projectdiector = (req, res) => {
+    db.query("SELECT * FROM tbl_project WHERE (status = 3 OR status = 4 OR status = 5) AND status != 100 AND status != 10", (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
 }
 
 const fiscalyear = (req, res) => {
@@ -38,7 +62,7 @@ const fiscalyear = (req, res) => {
 }
 
 const project = (req, res) => {
-    db.query("SELECT * FROM tbl_project WHERE status != 100", (err, result) => {
+    db.query("SELECT * FROM tbl_project WHERE status != 100 AND status != 10", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -321,7 +345,7 @@ const comment = (req, res) => {
 }
 
 const projecttor = (req, res) => {
-    db.query("SELECT * FROM tbl_project WHERE tor = 1 AND status != 100", (err, result) => {
+    db.query("SELECT * FROM tbl_project WHERE tor = 1 AND status != 100 AND status != 10", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -453,4 +477,92 @@ const closeproject = (req, res) => {
     console.log('newcloseproject', closeproject)
 }
 
-module.exports = { getproject, projectleader, fiscalyear, project, sectionproject, userproject, strategicplanproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject }
+const findproject = (req, res) => {
+    const year = req.params.year
+    const status = req.params.status
+    db.query("SELECT * FROM tbl_project   WHERE  status = ? and fiscalyear = ?",[status,year] , (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+           res.send(result);
+        }
+    })
+}
+
+const findprojectyear = (req, res) => {
+    const year = req.params.year
+    console.log('hfhbvchcn');
+    db.query("SELECT * FROM tbl_project  WHERE fiscalyear = ?",[year] , (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //console.log(result);
+           res.send(result);
+        }
+    })
+}
+
+const notproject = (req, res) => {
+    const ID = req.params.id;
+    const status = req.body.status;
+    db.query(
+        "UPDATE tbl_project SET status = ? WHERE project_id = ?",
+        [status, ID],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send(result)
+            }
+        }
+    )
+    console.log('status', ID)
+    console.log('newstatus', status)
+}
+
+const notcomment = (req, res) => {
+    const project = req.body.project_id
+    const comment = req.body.comment;
+    const user = req.body.user_id
+    const time_comment = req.body.time_comment
+    const date_comment = req.body.date_comment
+    console.log('comment', req.body)
+    db.query("INSERT INTO tbl_notproject (project_id, comment, user_id, time_comment, date_comment) VALUES (?, ?, ?, ?, ?)",
+        [project, comment, user, time_comment, date_comment],
+        (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send("Values Inserted")
+            }
+        })
+}
+const projectreport = (req, res) => {
+    const ID = req.params.id;
+    db.query("SELECT * FROM tbl_project LEFT JOIN tbl_user_project ON tbl_user_project.project_id = tbl_project.project_id WHERE tbl_project.status != 100 AND tbl_project.status = 4 AND tbl_project.status != 10 AND (tbl_project.status_report1 = 0 OR tbl_project.status_report2 = 0 OR tbl_project.status_report3 = 0 OR tbl_project.status_report4 = 0) AND tbl_user_project.user_id = ?",
+        [ID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
+    console.log('id', ID)
+}
+
+
+const pro = (req, res) => {
+    const ID = req.params.id;
+    db.query("SELECT * FROM tbl_project WHERE project_id = ?",
+    [ID], 
+    (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+    console.log('id', ID)
+}
+
+module.exports = { getproject, projectleader,projectuser, projectdiector  ,fiscalyear, project, sectionproject, userproject, strategicplanproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject, findproject, findprojectyear, notproject, notcomment, projectreport, pro }

@@ -16,7 +16,12 @@ import 'moment/locale/th'
 import { Card } from "primereact/card";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
-import { Col, Divider, Form, Input } from "antd";
+import { Col, notification, Form, Input, Tooltip } from "antd";
+import { ExclamationCircleFilled, MinusCircleOutlined, PlusOutlined, } from "@ant-design/icons"
+import { Modal } from "antd"
+import { Panel } from 'primereact/panel'
+
+const { confirm } = Modal
 
 const formItemLayout = {
   labelAlign: "left",
@@ -108,21 +113,38 @@ const Strategicplan = () => {
       });
   };
 
-  const addstrategic = (value) => {
+  const addstrategic = async (value) => {
     console.log(value);
     try {
-      axios.post("http://localhost:3001/plan/createstrategic", {
+      await axios.post("http://localhost:3001/plan/createstrategic", {
         fiscalyear: value.yearsfi,
         plan_name: value.planname,
-      });
-      getstrategic();
-      setValue1("");
+      }).then((res) => {
+        console.log(res);
+        if (res.data === 'ER_DUP_ENTRY') {
+          notification.error({
+            message: `${value.planname}`,
+            description: "มีข้อมูลอยู่แล้ว"
+
+          })
+          getstrategic()
+          setValue1("")
+        } else {
+          getstrategic()
+          setValue1("")
+        }
+      })
+
+      getstrategic()
+      setValue1("")
     } catch (e) {
+
     }
   };
-  const dialogFuncMap = {
-    'displayBasic': setDisplayBasic,
 
+  const onHide = () => {
+    setDisplayBasic(false)
+    form.resetFields()
   }
 
   const show = (id, name, time1, date1, time2, date2) => {
@@ -136,9 +158,9 @@ const Strategicplan = () => {
     console.log('ลอง', value1)
   };
 
-  const onHide = () => {
-    setDisplayBasic(false);
-  };
+  // const onHide = () => {
+  //   setDisplayBasic(false);
+  // };
   const updatesstatus = (ID, flag) => {
     console.log("id", ID)
 
@@ -176,27 +198,30 @@ const Strategicplan = () => {
   const actionTemplate = (node) => {
     return (
       <div>
-        <Button
+        <Tooltip placement="bottom" title={<span>แก้ไขแผนยุทธศาสตร์</span>} ><Button
           type="button"
           icon="pi pi-pencil"
           className="p-button-warning"
-          style={{ marginRight: ".5em" }}
+          style={{ marginRight: ".5em", height: '2.5em', width: '2.5em' }}
           onClick={() => show(node.fiscalyear_id, node.plan_name, node.director_of_time, node.director_of_date, node.ref_of_time, node.ref_of_date)}
         ></Button>
-        <Button
+        </Tooltip>
+        <Tooltip placement="bottom" title={<span>ลบแผนยุทธศาสตร์</span>} ><Button
           type="button"
           icon="pi pi-trash"
           className="p-button-danger"
+          style={{ height: '2.5em', width: '2.5em' }}
           onClick={() => {
-            deletestrategic(node.fiscalyear_id);
+            showConfirm(node.fiscalyear_id);
           }}
-        ></Button>
+        ></Button></Tooltip>
       </div>
     );
   };
   const updatestrategic = (f_id, value1, sg1, sg2, dates2, dates3) => {
-    const datess2 = moment(dates2).format('YYYY-MM-DD')
-    const datess3 = moment(dates3).format('YYYY-MM-DD')
+    onHide()
+    const datess2 = moment(dates2).add(543, 'year').format('YYYY-MM-DD')
+    const datess3 = moment(dates3).add(543, 'year').format('YYYY-MM-DD')
     axios.put(`http://localhost:3001/plan/updatestrategic/${f_id}`, {
       plan_name: value1,
       director_of_time: sg1,
@@ -204,17 +229,16 @@ const Strategicplan = () => {
       ref_of_time: sg2,
       ref_of_date: datess3
     })
-    onHide()
+    
     getstrategic();
 
   }
 
-
   const deletestrategic = (f_id) => {
     axios.delete(`http://localhost:3001/plan/deletestrategic/${f_id}`);
-    getstrategic();
-    alert(`Delete id${f_id} sucessful`);
-  };
+    getstrategic()
+
+  }
 
   const dateFormat1 = (rowData) => {
     if (rowData.director_of_date !== null) {
@@ -227,10 +251,10 @@ const Strategicplan = () => {
     } else return null;
   };
 
-  const confirm2 = (id, value1, sg1, sg2, dates2, dates3) => {
+  // const confirm2 = (id, value1, sg1, sg2, dates2, dates3) => {
+  //   updatestrategic(id, value1, sg1, sg2, dates2, dates3)
+  // };
 
-    updatestrategic(id, value1, sg1, sg2, dates2, dates3)
-  };
   const editime1 = () => {
     return (
       <div>
@@ -284,20 +308,60 @@ const Strategicplan = () => {
 
   const renderFooter = () => {
     return (
-
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => confirm2(id, value1, sg1, sg2, dates2, dates3)} autoFocus />
-
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
       </div>
-
-
     );
   }
 
   const onFinish = (value) => {
-    console.log(value)
-    addstrategic(value)
+    showConfirm2(value)
+  }
+
+  const showConfirm = (value) => {
+    confirm({
+      title: "ต้องการลบแผนยุทธศาสตร์ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        deletestrategic(value)
+
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm2 = (value) => {
+    confirm({
+      title: "ต้องการเพิ่มแผนยุทธศาสตร์ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      content: `${value.planname}`,
+      onOk() {
+        console.log("OK");
+        addstrategic(value)
+
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  }
+
+  const showConfirm3 = (value) => {
+    confirm({
+      title: "ต้องการจัดการข้อมูลแผนยุทธศาสตร์ใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        console.log("OK");
+        updatestrategic(value, value1, sg1, sg2, dates2, dates3)
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   }
 
   return (
@@ -306,170 +370,250 @@ const Strategicplan = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-            <h3>จัดการข้อมูลแผนยุทธ์ศาสตร์</h3>
-          </div>
+
           <Card>
-            <div align="left" style={{ marginTop: '.5em' }}>
-              <Form
-                form={form}
-                onFinish={onFinish}
-                name="dynamic_rule"
-                style={{
-                  maxWidth: '100%',
-                  border: 'none',
-                  boxShadow: 'none'
-                }}
-              >
-                <Form.Item
-                  {...formItemLayout}
-                  name="yearsfi"
-                  label="ปีงบประมาณ"
-                  rules={[
-                    {
-                      required: true,
-                      message: "ปีงบประมาณ",
-                    },
-                  ]}
+            <Panel header="จัดการแผนยุทธศาสตร์">
+
+
+              <div align="left" style={{ marginTop: '.5em' }}>
+                <Form
+                  form={form}
+                  onFinish={onFinish}
+                  name="dynamic_rule"
+                  style={{
+                    maxWidth: '100%',
+                    border: 'none',
+                    boxShadow: 'none'
+                  }}
                 >
-                  <Input size="large" placeholder="ปีงบประมาณ" style={{ width: '26em' }} />
-                </Form.Item>
-                <Form.Item
-                  {...formItemLayout}
-                  name="planname"
-                  label="แผนยุทธศาสตร์"
-                  rules={[
-                    {
-                      required: true,
-                      message: "กรุณาเพิ่มแผนยุทธศาสตร์",
-                    },
-                  ]}
-                >
-                  <Input size="large" placeholder="แผนยุทธศาสตร์" style={{ width: '25em' }} />
-                </Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="p-button-success"
-                  style={{ marginLeft: '73.7em' }}
-                  label="เพิ่ม"
-                />
-              </Form>
-              <Dialog
-                header="จัดการข้อมูลแผนยุทธ์ศาสตร์"
-                visible={displayBasic}
-                style={{ width: "50vw" }}
-                footer={renderFooter}
-                onHide={onHide}
-
-              >
-                <Card style={{ backgroundColor: 'var(--surface-100)' }}>
-                  <h>ชื่อแผนยุทธ์ศาสตร์</h>
-                  <div className="fit">
-
-                    <InputText style={inputStyle}
-                      value={value1}
-                      onChange={(e) => setValue1(e.target.value)}
-                      placeholder="แผนยุทธศาสตร์"
-                    ></InputText>
-                  </div>
-                </Card>
-                <Card style={{ marginTop: "30px", backgroundColor: 'var(--surface-100)' }}>
-                  <div>
-                    <h>ผ่านมติกรรมการบริหาร</h>
-                    <DataTable
-                      value={data}
-                      columnResizeMode="fit"
-                      showGridlines
-                      responsiveLayout="scroll"
-                      style={{ marginTop: "20px" }}
-                    >
-                      <Column
-                        body={editime1}
-                        header="ครั้งที่"
-                        style={{ textAlign: "center", width: "15%" }}
-                      />
-                      <Column
-                        body={editdate1}
-                        header="ครั้งที่"
-                        style={{ textAlign: "center", width: "15%" }}
-                      />
-                    </DataTable>
-                  </div>
-                  <div style={{ marginTop: "20px" }}>
-                    <h>ผ่านมติกรรมการประจำ</h>
-                    <DataTable
-                      value={data}
-                      columnResizeMode="fit"
-                      showGridlines
-                      responsiveLayout="scroll"
-                      style={{ marginTop: "20px" }}
-                    >
-                      <Column
-                        body={editime2}
-                        header="ครั้งที่"
-                        style={{ textAlign: "center", width: "15%" }}
-                      />
-                      <Column
-                        body={editdate2}
-                        header="ครั้งที่"
-                        style={{ textAlign: "center", width: "15%" }}
-                      />
-                    </DataTable>
-                  </div>
-                </Card>
-              </Dialog>
-
-              <div>
-                <div>
-                  <DataTable
-                    value={strategic}
-                    columnResizeMode="fit"
-                    showGridlines
-                    responsiveLayout="scroll"
-                    style={{ marginTop: "30px" }}
-                    dataKey="id"
-                    paginator rows={10}
-                    rowsPerPageOptions={[5, 10, 25]}
+                  <Form.Item
+                    {...formItemLayout}
+                    name="yearsfi"
+                    label="ปีงบประมาณ"
+                    rules={[
+                      {
+                        required: true,
+                        message: "ปีงบประมาณ",
+                      },
+                    ]}
                   >
-                    <Column field="plan_name" header="แผนยุทธศาสตร์" />
-                    <Column field={"fiscalyear"} header="ปีงบประมาณ" style={{ textAlign: "center" }} />
-                    <Column
-                      field="director_of_time"
-                      header="ผ่านมติกรรมการบริหาร (ครั้งที่)"
-                      style={{ textAlign: "center" }}
-                    />
-                    <Column
-                      field="director_of_date"
-                      header="ผ่านมติกรรมการบริหาร(วันที่)"
-                      body={dateFormat1}
-                      style={{ textAlign: "center" }}
-                    ></Column>
-                    <Column
-                      field="ref_of_time"
-                      header="ผ่านมติกรรมการประจำ (ครั้งที่)"
-                      style={{ textAlign: "center" }}
-                    />
-                    <Column
-                      field="ref_of_date"
-                      header="ผ่านมติกรรมการประจำ (วันที่)"
-                      body={dateFormat2}
-                      style={{ textAlign: "center" }}
-                    />
-                    <Column
-                      body={action}
-                      header="สถานะ"
-                      style={{ textAlign: "center", width: "15%" }}
-                    />
-                    <Column
-                      body={actionTemplate}
-                      header="จัดการ"
-                      style={{ textAlign: "center", width: "15%" }}
-                    />
-                  </DataTable>
+                    <Input size="large" placeholder="ปีงบประมาณ" style={{ width: '25em', marginLeft: '1em' }} />
+                  </Form.Item>
+                  <Form.Item
+                    {...formItemLayout}
+                    name="planname"
+                    label="แผนยุทธศาสตร์"
+                    rules={[
+                      {
+                        required: true,
+                        message: "กรุณาเพิ่มแผนยุทธศาสตร์",
+                      },
+                    ]}
+                  >
+                    <Input size="large" placeholder="แผนยุทธศาสตร์" style={{ width: '25em' }} />
+                  </Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="p-button-success"
+                    style={{ marginLeft: '62.25em', height: '2.5em' }}
+                    icon='pi pi-plus'
+                    label="เพิ่มแผนยุทธศาสตร์"
+                    onClick={() => showConfirm2()}
+                  />
+                </Form>
+
+                {/* <Dialog
+                  header="จัดการข้อมูลแผนยุทธ์ศาสตร์"
+                  visible={displayBasic}
+                  style={{ width: "50vw" }}
+                  footer={renderFooter}
+                  onHide={onHide}
+
+                >
+
+                  <Card style={{ backgroundColor: 'var(--surface-100)' }}>
+                    <h>ชื่อแผนยุทธ์ศาสตร์</h>
+                    <div className="fit">
+
+                      <InputText style={inputStyle}
+                        value={value1}
+                        onChange={(e) => setValue1(e.target.value)}
+                        placeholder="แผนยุทธศาสตร์"
+                      ></InputText>
+                    </div>
+                  </Card>
+                  <Card style={{ marginTop: "30px", backgroundColor: 'var(--surface-100)' }}>
+                    <div>
+                      <h>ผ่านมติกรรมการบริหาร</h>
+                      <DataTable
+                        value={data}
+                        columnResizeMode="fit"
+                        showGridlines
+                        responsiveLayout="scroll"
+                        style={{ marginTop: "20px" }}
+                      >
+                        <Column
+                          body={editime1}
+                          header="ครั้งที่"
+                          style={{ textAlign: "center", width: "15%" }}
+                        />
+                        <Column
+                          body={editdate1}
+                          header="ครั้งที่"
+                          style={{ textAlign: "center", width: "15%" }}
+                        />
+                      </DataTable>
+                    </div>
+                    <div style={{ marginTop: "20px" }}>
+                      <h>ผ่านมติกรรมการประจำ</h>
+                      <DataTable
+                        value={data}
+                        columnResizeMode="fit"
+                        showGridlines
+                        responsiveLayout="scroll"
+                        style={{ marginTop: "20px" }}
+                      >
+                        <Column
+                          body={editime2}
+                          header="ครั้งที่"
+                          style={{ textAlign: "center", width: "15%" }}
+                        />
+                        <Column
+                          body={editdate2}
+                          header="ครั้งที่"
+                          style={{ textAlign: "center", width: "15%" }}
+                        />
+                      </DataTable>
+                    </div>
+                  </Card>
+                </Dialog> */}
+
+                <div>
+                  <div>
+                    <DataTable
+                      value={strategic}
+                      columnResizeMode="fit"
+                      showGridlines
+                      responsiveLayout="scroll"
+                      style={{ marginTop: "30px" }}
+                      dataKey="id"
+                      paginator rows={10}
+                      rowsPerPageOptions={[5, 10, 25]}
+                    >
+                      <Column field="plan_name" header="แผนยุทธศาสตร์" sortable />
+                      {/* <Column field={"fiscalyear"} header="ปีงบประมาณ" style={{ textAlign: "center" }} /> */}
+                      <Column
+                        field="director_of_time"
+                        header="ผ่านมติกรรมการบริหาร (ครั้งที่)"
+                        sortable 
+                        style={{ textAlign: "center", width: "12.5%" }}
+                      />
+                      <Column
+                        field="director_of_date"
+                        header="ผ่านมติกรรมการบริหาร (วันที่)"
+                        sortable 
+                        body={dateFormat1}
+                        style={{ textAlign: "center", width: "12.5%" }}
+                      ></Column>
+                      <Column
+                        field="ref_of_time"
+                        header="ผ่านมติกรรมการประจำ (ครั้งที่)"
+                        sortable 
+                        style={{ textAlign: "center", width: "12%" }}
+                      />
+                      <Column
+                        field="ref_of_date"
+                        header="ผ่านมติกรรมการประจำ (วันที่)"
+                        sortable 
+                        body={dateFormat2}
+                        style={{ textAlign: "center", width: "12%" }}
+                      />
+                      <Column
+                        body={action}
+                        header="สถานะ"
+                        style={{ textAlign: "center", width: "13%" }}
+                      />
+                      <Column
+                        body={actionTemplate}
+                        header="จัดการ"
+                        style={{ textAlign: "center", width: "11.5%" }}
+                      />
+                    </DataTable>
+                  </div>
+                </div>
+
+                <div>
+                  <Modal
+                    title={<h4 className="m-0">{'จัดการข้อมูลแผนยุทธศาสตร์'}</h4>}
+                    open={displayBasic}
+                    onCancel={onHide}
+                    footer={null}
+                    width={700}
+                  >
+                    <Card style={{ backgroundColor: 'var(--surface-100)' }}>
+                      <h>ชื่อแผนยุทธ์ศาสตร์</h>
+                      <div className="fit">
+
+                        <InputText style={inputStyle}
+                          value={value1}
+                          onChange={(e) => setValue1(e.target.value)}
+                          placeholder="แผนยุทธศาสตร์"
+                        ></InputText>
+                      </div>
+                    </Card>
+                    <Card style={{ marginTop: "30px", backgroundColor: 'var(--surface-100)' }}>
+                      <div>
+                        <h>ผ่านมติกรรมการบริหาร</h>
+                        <DataTable
+                          value={data}
+                          columnResizeMode="fit"
+                          showGridlines
+                          responsiveLayout="scroll"
+                          style={{ marginTop: "20px" }}
+                        >
+                          <Column
+                            body={editime1}
+                            header="ครั้งที่"
+                            style={{ textAlign: "center", width: "15%" }}
+                          />
+                          <Column
+                            body={editdate1}
+                            header="ครั้งที่"
+                            style={{ textAlign: "center", width: "15%" }}
+                          />
+                        </DataTable>
+                      </div>
+                      <div style={{ marginTop: "20px" }}>
+                        <h>ผ่านมติกรรมการประจำ</h>
+                        <DataTable
+                          value={data}
+                          columnResizeMode="fit"
+                          showGridlines
+                          responsiveLayout="scroll"
+                          style={{ marginTop: "20px" }}
+                        >
+                          <Column
+                            body={editime2}
+                            header="ครั้งที่"
+                            style={{ textAlign: "center", width: "15%" }}
+                          />
+                          <Column
+                            body={editdate2}
+                            header="ครั้งที่"
+                            style={{ textAlign: "center", width: "15%" }}
+                          />
+                        </DataTable>
+                      </div>
+                    </Card>
+                    <div className="text-right mt-4">
+                      <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide} />
+                      <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
+                    </div>
+                  </Modal>
                 </div>
               </div>
-            </div>
+            </Panel>
           </Card>
         </div>
       </div>

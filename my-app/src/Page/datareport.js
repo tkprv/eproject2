@@ -14,20 +14,19 @@ import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { Card } from "primereact/card";
 import { getLocalId } from '../helper/utill'
+import { RedoOutlined } from '@ant-design/icons'
+import { Space, Table, Tooltip } from 'antd';
+import { Panel } from 'primereact/panel';
 
 const Datareport = () => {
-  const [fiscalyear, setFiscalyear] = useState([])
+
   const [projectmanager, setProjectmanager] = useState([])
-  const [selectedfiscalyear, setSelectedFiscalyear] = useState(null);
-  const [value2, setValue2] = useState('')
   const [displayBasic, setDisplayBasic] = useState(false)
-  const [status, setStatus] = useState('');
   const [menu, setMenu] = useState(false)
   let history = useHistory();
 
   const dialogFuncMap = {
     'displayBasic': setDisplayBasic,
-    'status': setStatus,
   }
 
   const toggleMobileMenu = () => {
@@ -35,6 +34,7 @@ const Datareport = () => {
   }
 
   const Status = (node) => {
+    console.log('node', node)
     if (node.status === 0) {
       return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag>
     } else if (node.status === 1) {
@@ -47,122 +47,113 @@ const Datareport = () => {
       return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
     } else if (node.status === 5) {
       return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
-    } else if (node.status === 6) {
+    } else if (node.status === 6 && node.status_evaluation === 3) {
       return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
-    } else if (node.status === 7) {
+    } else if (node.status === 7 && node.status_evaluation === 3) {
       return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
-    } else if (node.status === 8) {
+    } else if (node.status === 8 && node.status_evaluation === 3) {
       return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
-    } else if (node.status === 9) {
+    } else if (node.status === 9 && node.status_evaluation === 3) {
       return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
+    } else if (node.status_evaluation === 0 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
+      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ" rounded></Tag>
+    } else if (node.status_evaluation === 1 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ" rounded></Tag>
+    } else if ((node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
+      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ" rounded></Tag>
     } else {
       return node.status
     }
   }
 
   const report1 = (node) => {
-    if (node.status === 4 && node.report_one === 0 && node.open_reportone === 1) {
+    if (node.status === 4 && node.report_one === 0 && node.open_reportone === 1 && node.status_report1 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreportone", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreportone", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
-    } else if (node.status === 4 && node.report_one !== 0) {
+    } else if (node.status === 4 && node.report_one !== 0 && node.status_report1 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reportone", state: node })} />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreportone", state: node })} />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportone", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/editreportone", state: node })} /></Tooltip>
       </div>
     }
     else {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
     }
   }
 
   const report2 = (node) => {
-    if (node.status === 4 && node.report_two === 0 && node.open_reporttwo === 1) {
+    if (node.status === 4 && node.report_two === 0 && node.open_reporttwo === 1 && node.status_report2 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreporttwo", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreporttwo", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
-    } else if (node.status === 4 && node.report_two !== 0) {
+    } else if (node.status === 4 && node.report_two !== 0 && node.status_report2 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reporttwo", state: node })} />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreporttwo", state: node })} />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reporttwo", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/editreporttwo", state: node })} /></Tooltip>
       </div>
     } else {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
     }
   }
 
   const report3 = (node) => {
-    if (node.status === 4 && node.report_three === 0 && node.open_reportthree === 1) {
+    if (node.status === 4 && node.report_three === 0 && node.open_reportthree === 1 && node.status_report3 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreportthree", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreportthree", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
-    } else if (node.status === 4 && node.report_three !== 0) {
+    } else if (node.status === 4 && node.report_three !== 0 && node.status_report3 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reportthree", state: node })} />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreportthree", state: node })} />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportthree", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/editreportthree", state: node })} /></Tooltip>
       </div>
     } else {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
     }
   }
 
   const report4 = (node) => {
-    if (node.status === 4 && node.report_four === 0 && node.open_reportfour === 1) {
+    if (node.status === 4 && node.report_four === 0 && node.open_reportfour === 1 && node.status_report4 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/addreportfour", state: node })} />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreportfour", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
-    } else if (node.status === 4 && node.report_four !== 0) {
+    } else if (node.status === 4 && node.report_four !== 0 && node.status_report4 === 1) {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" onClick={() => history.push({ pathname: "/home/reportfour", state: node })} />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} onClick={() => history.push({ pathname: "/home/editreportfour", state: node })} />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportfour", state: node })} /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/editreportfour", state: node })} /></Tooltip>
       </div>
     }
     else {
       return <div>
-        <Button type="button" icon="pi pi-search" className="p-button-info" disabled />
-        <Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em' }} disabled />
-        <Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em' }} disabled />
+        <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+        <Tooltip placement="bottom" title={<span>แก้ไขรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
     }
-  }
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/datproject/fiscalyear", {})
-      .then((res) => {
-        setFiscalyear(res.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-  }, []);
-
-  const onsetFiscalyear = (e) => {
-    setSelectedFiscalyear(e.value);
   }
 
   useEffect(() => {
@@ -185,34 +176,21 @@ const Datareport = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-            <h3>จัดการรายงานความก้าวหน้า</h3>
-          </div>
           <Card>
-            <div className="text-left">
-              <div className="fit">
-                <h4>ปีงบประมาณ</h4>
-                <Dropdown value={selectedfiscalyear}
-                  options={fiscalyear}
-                  style={{ width: '10em' }}
-                  onChange={onsetFiscalyear}
-                  optionLabel="fiscalyear"
-                  placeholder="ทุกปี" />
-                <h4>สถานะ</h4>
-                <Dropdown value={value2} style={{ width: '30em' }} onChange={(e) => setValue2(e.target.value)} placeholder="ทุกสถานะ" />
-                <Button label="ค้นหา" className="p-button-success" style={{ marginLeft: '.8em' }} />
+            <Panel header='จัดการรายงานความก้าวหน้า'>
+              <div className="text-left">
+                <div style={{ marginTop: "1em" }}>
+                  <DataTable value={projectmanager} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
+                    <Column field="project_name" header="ชื่อโครงการ" />
+                    <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "12%" }} />
+                    <Column body={report1} header="รายงานความก้าวหน้าไตรมาส 1" style={{ textAlign: 'center', width: "17%" }} />
+                    <Column body={report2} header="รายงานความก้าวหน้าไตรมาส 2" style={{ textAlign: 'center', width: "17%" }} />
+                    <Column body={report3} header="รายงานความก้าวหน้าไตรมาส 3" style={{ textAlign: 'center', width: "17%" }} />
+                    <Column body={report4} header="รายงานความก้าวหน้าไตรมาส 4" style={{ textAlign: 'center', width: "17%" }} />
+                  </DataTable>
+                </div>
               </div>
-              <div style={{ marginTop: "2.5em" }}>
-                <DataTable value={projectmanager} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
-                  <Column field="project_name" header="ชื่อโครงการ" />
-                  <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "9.5%" }} />
-                  <Column body={report1} header="รายงานความก้าวหน้าไตรมาส 1" style={{ textAlign: 'center', width: "17%" }} />
-                  <Column body={report2} header="รายงานความก้าวหน้าไตรมาส 2" style={{ textAlign: 'center', width: "17%" }} />
-                  <Column body={report3} header="รายงานความก้าวหน้าไตรมาส 3" style={{ textAlign: 'center', width: "17%" }} />
-                  <Column body={report4} header="รายงานความก้าวหน้าไตรมาส 4" style={{ textAlign: 'center', width: "17%" }} />
-                </DataTable>
-              </div>
-            </div>
+            </Panel>
           </Card>
         </div>
       </div>

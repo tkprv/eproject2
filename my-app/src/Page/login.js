@@ -50,6 +50,7 @@ function Signin() {
   let history = useHistory();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [form] = Form.useForm();
   const [user, setUser] = useState({
     username: String,
     email: String,
@@ -127,15 +128,36 @@ function Signin() {
         <div className="form-div" style={{ marginLeft: '31em' }}>
           <form /* onSubmit={this.onSubmit} */>
             <h2 style={{ textAlign: "center" }}>เข้าสู่ระบบ</h2>
+            <Form
+              name="dynamic_form_item"
+              onFinish={onSubmit}
+              form={form}
+              layout="vertical"
+              size={'large'}
+              style={{
+                maxWidth: '100%',
+                border: 'none',
+                boxShadow: 'none'
+              }}
+            > 
             <div>
               <label style={{ marginTop: '1em' }}>ชื่อผู้ใช้งาน</label>
               <div style={{ marginTop: '.5em' }}>
+              <Form.Item
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'กรุณากรอกชื่อผู้ใช้งาน',
+                      }]}
+                  >
                 <InputText
                   type="Text"
                   name="username"
                   value={user.username}
                   onChange={onChange}
                 />
+                </Form.Item>
               </div>
             </div>
             <div>
@@ -182,6 +204,7 @@ function Signin() {
               <h5 style={{ marginTop: '.5em' }}>1. ข้อมูลแผนข้อมูลหน่วยงาน ติดต่อ : คุณนางศรินญา พงศ์สุริยา โทร.</h5><h5>2215</h5>
               <h5 style={{ marginTop: '.5em' }}>2. กรณีไม่พบข้อมูลบุคลากรหรือ Account หรือไม่สามารถใช้งานระบบ</h5><h5>ได้ติดต่อ : นางสาวกุณฑล กระบวนรัตน์ โทร. 2232</h5>
             </div>
+            </Form>
           </form>
         </div>
       </div>

@@ -6,8 +6,6 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-//import {User,Avatar_19,Avatar_07,Avatar_06,Avatar_14} from '../Entryfile/imagepath';
-//import '../Entryfile/imagepath';
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import "../Page/index.css"
@@ -16,7 +14,13 @@ import {
   BarChart, Bar, Cell, ResponsiveContainer,
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
+import { Card } from 'primereact/card';
+import logo from './font/Master Logo_KMUTNB_Thai PNG.png'
+import image from './font/123841312.jpeg'
+import image2 from './font/kmutnb.jpg'
 
+import { Row,Col } from 'antd'
+import { Carousel } from 'primereact/carousel';
 
 const barchartdata = [
   { y: '2006', "Total Income": 100, 'Total Outcome': 90 },
@@ -77,6 +81,16 @@ const AdminDashboard = () => {
     getLicense()
   }, [])
 
+  const cardStyle = { backgroundColor: '#7B8189' }
+ 
+    const contentStyle = {
+      height: '160px',
+      color: '#fff',
+      lineHeight: '160px',
+      textAlign: 'center',
+      background: '#364d79',
+    }
+ 
   const getLicense = async () => {
     try {
       //const { data } = await axios.get('http://localhost:5000/DB/notebook')
@@ -114,123 +128,33 @@ const AdminDashboard = () => {
         {/* Page Content */}
         <div className="content container-fluid">
           {/* Page Header */}
-          <div className="page-header">
-            <div className="row">
-              <div className="col-sm-12">
-                <h3 className="page-title">Welcome Admin!</h3>
-                <ul className="breadcrumb">
-                  <li className="breadcrumb-item active">Dashboard</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          {/* /Page Header */}
-          <div className="row">
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div className="card dash-widget">
-                <div className="card-body">
-                  <span className="dash-widget-icon"><i className="fa fa-cubes" /></span>
-                  <div className="dash-widget-info">
-                    {/* <h3>{IT.length}</h3> */}
-                    <span>IT</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div className="card dash-widget">
-                <div className="card-body">
-                  <span className="dash-widget-icon"><i className="fa fa-usd" /></span>
-                  <div className="dash-widget-info">
-                    <h3>SOON!</h3>
-                    {/* <h3>{License.length}</h3> */}
-                    <span>License</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div className="card dash-widget">
-                <div className="card-body">
-                  <span className="dash-widget-icon"><i className="fa fa-diamond" /></span>
-                  <div className="dash-widget-info">
-                    <h3>SOON!</h3>
-                    <span>Network</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div className="card dash-widget">
-                <div className="card-body">
-                  <span className="dash-widget-icon"><i className="fa fa-user" /></span>
-                  <div className="dash-widget-info">
-                    <h3>SOON!</h3>
-                    <span>User</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <div className="row">
-                <div className="col-md-6 text-center">
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">Activties</h3>
-                      {/* <div id="bar-charts" /> */}
-                      <ResponsiveContainer width='100%' height={300}>
-                      {/* ถ้าจะทำลบ > barchart ออก */}
-                        <BarChart> 
-
-                          {/* data={barchartdata}
-                          margin={{
-                            top: 5, right: 5, left: 5, bottom: 5,
-                          }}
-                        >
-                          <CartesianGrid />
-                          <XAxis dataKey="y" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Bar dataKey="Total Income" fill="#ff9b44" />
-                          <Bar dataKey="Total Outcome" fill="#fc6075" /> */}
-                        </BarChart>
-                      </ResponsiveContainer>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 text-center">
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">Assest Category</h3>
-                      <ResponsiveContainer width='100%' height={300}>
-                      <LineChart data={linechartdata}>
-                          {/* margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                        <CartesianGrid  />
-                        <XAxis dataKey="y" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="Total Sales" stroke="#ff9b44" fill="#ff9b44" strokeWidth={3} dot={{r : 3}} activeDot={{ r: 7 }} />
-                        <Line type="monotone" dataKey="Total Revenue" stroke="#fc6075" fill="#fc6075" strokeWidth={3} dot={{r : 3}} activeDot={{ r: 7 }} /> */}
-                      </LineChart>
-                      </ResponsiveContainer>
-                      
-                      {/* <div id="line-charts" /> */}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
+    <Card style={cardStyle}>
+    <Row>
+      <Col>
+      <div style={{ marginLeft: '50px' }}>
+        <img src={logo} width={150} height={50} alt=""  /> 
+       
         </div>
+        </Col>  
+        <Col>
+        <div style={{ marginLeft: '50px', marginTop: '20px', fontFamily: "'THSarabunNew', sans-serif", fontWeight: 'bold', fontSize: '26px', color: '#FFFFFF' }}>
+          <p>
+          มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ <br></br>
+          KING MONGKUT'S UNIVERSITY OF TECHNOLOGY NORTH BANGKOK<br></br>
+          ระบบบริหารและประเมินโครงการ   
+          </p>
+      </div>
+      </Col>
+      </Row>         
+      </Card>
+            <br></br>
+         <Card>
+           <Row>
+         <img src={image2} width={1600} height={1200} alt="" /> 
+         </Row>
+         </Card>
 
-
+        </div>
       </div>
     </div>
 

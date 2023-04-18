@@ -1,4 +1,15 @@
-import { Button, Select, Form, Radio, Input, Col, Row, InputNumber, Modal, Space } from 'antd';
+import {
+    Button,
+    Col,
+    Divider,
+    Form,
+    Input,
+    InputNumber,
+    Modal,
+    Radio,
+    Row,
+    Select,
+} from "antd";
 import { useEffect, useRef, useState } from 'react'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { Calendar } from 'primereact/calendar'
@@ -15,8 +26,8 @@ import moment from "moment"
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 
-const { confirm } = Modal
-
+const { Option } = Select;
+const { confirm } = Modal;
 
 
 const onPanelChange = (value, mode) => {
@@ -88,85 +99,98 @@ const formItemLayoutWithOutLabel2 = {
 
 
 const Newproject = () => {
-    //const [checkNick, setCheckNick] = useState(false);
     const [stopen, setStopen] = useState();
-    const [person, setPerson] = useState([])
-    const [workplan, setWorkplan] = useState([])
+    const [person, setPerson] = useState([]);
+    const [workplan, setWorkplan] = useState([]);
     const [strategic, setStrategic] = useState([]);
     const [integration, setIntegration] = useState([]);
-    const [year, setYear] = useState()
-    const [stselectfill, setStselectfill] = useState([])
-    const [selectissue, setSelectissue] = useState([])
-    const [selectgoa, setSelectgoa] = useState([])
-    const [newDatagoa, setNewDatagoa] = useState([])
+    const [status, setStatus] = useState();
+    const [stselectfill, setStselectfill] = useState([]);
     const [newtactic, setNewtactic] = useState([])
-    const [form] = Form.useForm()
-    const toast = useRef(null)
-    const [money, setMoney] = useState()
-    const pie = parseFloat(money, 10)
-    const moneyText = ThaiBaht(pie)
-    const [checkNick, setCheckNick] = useState(false)
-    const [selectintegration, setSelectintegration] = useState([])
-    const [alldata, setAalldata] = useState()
-    const [isSend, setIsSend] = useState(false)
+    const [getyear, setGetyear] = useState([])
+    const [form] = Form.useForm();
+    const toast = useRef(null);
+    const [money, setMoney] = useState();
+    const pie = parseFloat(money, 10);
+    const moneyText = ThaiBaht(pie);
+    const [checkNick, setCheckNick] = useState(false);
+    const [selectintegration, setSelectintegration] = useState([]);
+    const [selectedbudget, setSelectedbudget] = useState([]);
+    const [alldata, setAalldata] = useState();
+    const [strategicName, setStrategicName] = useState([]);
+    const [goalName, setGoalName] = useState([]);
+    const [disStrategicName, setDisStrategicName] = useState(true);
+    const [disGoalName, setDisGoalName] = useState(true);
+    const [disTacticName, setDisTacticName] = useState(true);
+    const [planname, setPlanname] = useState([])
+    const [plannamedefalse, setPlannamedefalse] = useState([]);
+    const [integra, setIntegra] = useState([])
+    const [isYearFiller, setIsYearFiller] = useState(false);
     const [menu, setMenu] = useState(false);
+
     const budget = [
-        { name: 'งบประมาณรายได้มหาลัย' },
-        { name: 'งบประมาณรายได้ของส่วนงาน' },
-        { name: 'งบประมาณรายได้ของแผ่นดิน' },
-        { name: 'งบอื่นๆ' },
-        { name: 'ไม่ได้ใช้งบประมาณ' }
-    ]
+        { name: "งบประมาณรายได้มหาลัย" },
+        { name: "งบประมาณรายได้ของส่วนงาน" },
+        { name: "งบประมาณรายได้ของแผ่นดิน" },
+        { name: "งบอื่นๆ" },
+        { name: "ไม่ได้ใช้งบประมาณ" },
+    ];
 
     const toggleMobileMenu = () => {
         setMenu(!menu)
     }
+
     useEffect(() => {
-        getstrategicid()
+        getstrategicid();
         Strategicdata();
         getintegration();
-        getheadprojects()
-        getworkplan()
-        getSectoin()
-    }, []);
+        getheadprojects();
+        getworkplan();
+        getSectoin();
+    }, [])
+
     useEffect(() => {
         form.setFieldsValue({ headproject: getLocalName() })
     }, [])
-    // useEffect(() =>{
 
-    //   },[])
+    useEffect(() => {
+        getyears()
+    }, [stopen])
 
-    const getSectoin = () => {
-        const id = getLocalSection()
-        console.log(id);
-        try {
-            axios.post('http://localhost:3001/new/section', {
-                section_id: id
-            }).then((data) => {
-                form.setFieldsValue({ Agency: data.data[0].section_name })
-
-            })
-        } catch (e) {
-        }
-    }
     const getheadprojects = () => {
         axios
             .get("http://localhost:3001/manageuser/person", {})
             .then((res) => {
-                const newdata = res.data
-                const data1 = newdata.filter((value) => value.displayname !== getLocalName())
+                const newdata = res.data;
+                const data1 = newdata.filter(
+                    (value) => value.displayname !== getLocalName()
+                );
                 setPerson(data1)
-                //onPersonpj(res.data)
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
+
+    const getSectoin = () => {
+        const id = getLocalSection()
+        try {
+            axios
+                .post("http://localhost:3001/new/section", {
+                    section_id: id,
+                })
+                .then((data) => {
+                    form.setFieldsValue({ Agency: data.data[0].section_name })
+
+                });
+        } catch (e) { }
+    };
+
     const getworkplan = () => {
         axios
             .get("http://localhost:3001/new/workplan", {})
             .then((res) => {
-                setWorkplan(res.data)
+                setWorkplan(res.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -199,290 +223,394 @@ const Newproject = () => {
         axios
             .get("http://localhost:3001/plan/strategic", {})
             .then((res) => {
-                Stopen(res.data);
+                Stopen(res.data)
             })
             .catch((error) => {
-                console.log(error);
-            });
-    };
+                console.log(error)
+            })
+    }
     const Stopen = (m) => {
         const rows = [];
         const collunm = m.find((obj) => {
             if (obj.flag === 1) {
                 rows.push(obj);
             }
-        });
-        setStopen(rows);
-    };
+        })
+        setStopen(rows)
+    }
+
+    const filterplanname = (value) => {
+        console.log(stopen);
+        const plannamefill = stopen.filter(
+            (stopen) => stopen.fiscalyear === value
+        )
+        setPlannamedefalse(plannamefill)
+
+    }
+
+    const getyears = () => {
+        console.log(stopen);
+        axios
+            .get("http://localhost:3001/plan/getyear", {})
+            .then((res) => {
+                //setYearsfical(res.data.years)
+                form.setFieldsValue({ yearsfi: res.data.years })
+                if (res.data.years) {
+                    const plannamefill = stopen.filter(
+                        (stopen) => stopen.fiscalyear === res.data.years
+                    )
+                    setPlannamedefalse(plannamefill)
+                }
+                // filterplanname(res.data.years)
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     const onStrategic = (e) => {
-        setYear(e.value)
+        setIsYearFiller(true)
+        const setst = stopen.filter(
+            (stopen) => stopen.fiscalyear === e
+        )
+        setPlanname(setst)
+    }
+
+    const onStrategic1 = (e) => {
         const setst = strategic.filter(
-            (strategic) => strategic.fiscalyear_id === e.value.fiscalyear_id
-        );
+            (strategic) => strategic.fiscalyear_id === e
+        )
         setStselectfill(setst);
-    };
+    }
+
     const onStrategic2 = (s) => {
-        //form.setFieldValue({selectissues:s.value})
-        //setSelectissue(s.value);
-        getdatagoa(s.value.strategic_id);
+        getdatagoa(s);
     }
     const onStrategic3 = (e) => {
-        //form.setFieldValue({selectgoa:e.value})
-        //setSelectgoa(e.value) tactic
-        gettactic(e.value.goal_id)
-    }
-    const onStrategic4 = (e) => {
-        //form.setFieldValue({tactic:e.value}) 
+        gettactic(e);
     }
 
+    const fiscalyearid = [...new Set(stopen?.map(({ fiscalyear }) => fiscalyear))]
 
     const getdatagoa = (id) => {
-
         axios
             .get(`http://localhost:3001/stg/goaal${id}`, {})
             .then((res) => {
-                setNewDatagoa(res.data);
+                setGoalName(res.data)
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
     const gettactic = (id) => {
         axios
             .get(`http://localhost:3001/stg/tactic2${id}`, {})
             .then((res) => {
                 setNewtactic(res.data)
-                console.log('res.data', res.data)
-
             })
             .catch((error) => {
-                console.log(error)
-            });
+                console.log(error);
+            })
+    }
+    const integrationfill = (value) => {
+        setSelectintegration(value)
+        const fillterin = integration.filter((integration) => integration.integration_name === value)
+        setIntegra(fillterin)
+    }
+
+    const createProject = async (alldata, amount) => {
+        console.log(alldata);
+        try {
+            let typepj = "";
+            if (alldata.radio === "0") {
+                typepj = "โครงการใหม่";
+            } else if (alldata.radio === "1") {
+                typepj = "โครงการต่อเนื่อง";
+            } else if (alldata.radio === "2") {
+                typepj = "งานประจำ";
+            } else if (alldata.radio === "3") {
+                typepj = "งานพัฒนา";
+            }
+            await axios
+                .post("http://localhost:3001/new/createnewproject", {
+                    fiscalyear_id: alldata.yearsfi,
+                    section_id: getLocalSection(),
+                    integration_id: integra[0].integration_id,
+                    workplan_id: alldata.selectedbudget === "ไม่ได้ใช้งบประมาณ" ? null : alldata.workplan2,
+                    project_name: alldata.projectname,
+                    type: typepj,
+                    integra_name:
+                        alldata.selectintegration === "อื่นๆ"
+                            ? alldata.newintegration
+                            : alldata.selectintegration === "ไม่มี" ? null : alldata.selectintegration,
+                    integra_subject: alldata.integrationdetail,
+                    rationale: alldata.reason,
+                    target_group: alldata.targetgroup,
+                    butget: alldata.selectedbudget === "ไม่ได้ใช้งบประมาณ" ? null : money,
+                    butget_char: alldata.selectedbudget === "ไม่ได้ใช้งบประมาณ" ? null : moneyText,
+                    tor: alldata.radioTor,
+                    source_name:
+                        alldata.selectedbudget === "ไม่ได้ใช้งบประมาณ"
+                            ? null
+                            : alldata.selectedbudget === "งบอื่นๆ" ? alldata.budgets : alldata.selectedbudget,
+                    status: status,
+                    out_plan: alldata.radiogroup,//ในนอก
+                    amount: amount
+                })
+                .then((res) => {
+                    createindic(res.data.insertId, alldata.indica);
+                    createStep(res.data.insertId, alldata);
+                    createUser(res.data.insertId, alldata.nameheadpj);
+                    createObject(res.data.insertId, alldata);
+                    strategicproject(res.data.insertId, alldata)
+                    createbenefit(res.data.insertId, alldata)
+                    // createPdf(res.data.insertId, alldata);
+                    if (alldata.selectedbudget !== 'ไม่ได้ใช้งบประมาณ') {
+                        createcharges(res.data.insertId, alldata)
+                    }
+                });
+        } catch (e) { console.log(e); }
     };
+    // const createPdf = (id, alldata) => {
+    //   axios.post("http://localhost:3001/pdf/createPdf", {
+    //     alldata: alldata,
+    //     id: id,
+    //   });
+    // };
 
-    const createProject = async (alldata) => {
+    const strategicproject = (id, alldata) => {
         try {
-            let typepj = ''
-            if (alldata.radio === '0') {
-                typepj = 'โครงการใหม่'
-            } else if (alldata.radio === '1') {
-                typepj = 'โครงการต่อเนื่อง'
-            } else if (alldata.radio === '2') {
-                typepj = 'งานประจำ'
-            } else if (alldata.radio === '3') {
-                typepj = 'งานพัฒนา'
-            }
-            console.log('ty', typepj);
-            console.log("alldata", alldata.selectyear.fiscalyear_id)
-            await axios.post('http://localhost:3001/new/createnewproject', {
-                fiscalyear_id: alldata.selectyear.fiscalyear_id,
-                section_id: getLocalSection(), //ผู้ใช้
-                //strategic_id : alldata.selectissue.strategic_id , 
-                //goal_id : alldata.selectgoa.goal_id ,
-                //tactic_id: tactic.tactic_id,//tactic_id ใส่ได้มากกว่า 1
-                integration_id: alldata.selectintegration.integration_id,
-                workplan_id: alldata.workplan2.workplan_id,
-
-                project_name: alldata.projectname,
-                //   //plan_name_main:  null,
-                type: typepj,
-                integra_name: alldata.selectintegration.integration_name === 'อื่นๆ' ? alldata.newintegration : alldata.selectintegration.integration_name,
-                integra_subject: alldata.integrationdetail,
-                rationale: alldata.reason,
-                target_group: alldata.targetgroup,
-                butget: money,
-                butget_char: moneyText,
-                tor: (alldata.radioTor === 'มี') ? 1 : 0,
-                //  // source: ,
-                source_name: alldata.selectedbudget.name === 'ไม่ได้ใช้งบประมาณ' ? null : alldata.selectedbudget.name,
-                status: 0, //1
-                out_plan: alldata.radiogroup //ในนอก
-
-            }).then((res) => {
-                console.log("res", res.data)
-                createindic(res.data.insertId, alldata.indica)
-                createStep(res.data.insertId, alldata)
-                createUser(res.data.insertId, alldata.nameheadpj)
-                createObject(res.data.insertId, alldata)
-                // sendEmail(alldata.nameheadpj.user_id)
-                //createstrategicproject(res.data.insertId)
-
-            })
-        }
-        catch (e) { }
-    }
-    const createStep = (id, alldata) => {
-        console.log('id', id)
-        console.log('alldata', alldata)
-        for (const value of alldata.rowsData) {
-
-            const datess2 = moment(value.start).format('YYYY-MM-DD')
-            const datess3 = moment(value.end).format('YYYY-MM-DD')
-
-            try {
-                axios.post('http://localhost:3001/new/newprojectstepe', {
-                    project_id: id,
-                    step_name: value.steps,
-                    start: datess2,
-                    stop: datess3
-                }).then((res) => {
-                    console.log("res", res.data)
-                })
-
-            }
-            catch (e) {
-            }
-        }
-
-    }
-    const createObject = (id, alldata) => {
-        for (const value of alldata.object) {
-            console.log("value", value)
-            try {
-                axios.post('http://localhost:3001/new/newobjective', {
-                    project_id: id,
-                    objective_name: value
-                }).then((res) => {
-                    console.log("res", res.data)
-                })
-
-            }
-            catch (e) {
-            }
-        }
-
-    }
-    const createUser = (id, alldata) => {
-        try {
-            axios.post('http://localhost:3001/new/userproject', {
+            axios.post('http://localhost:3001/new/strategicproject', {
                 project_id: id,
-                user_id: getLocalId()
-
+                plan_id: alldata.plan_name,
+                strategic_id: alldata.strategic_name,
+                goal_id: alldata.goal_name,
+                tactic_id: alldata.tactic_name
             })
-            if (alldata.length !== 0 && alldata !== null) {
-                for (const value of alldata) {
+            if (alldata.namestraegicproject.length !== 0 && alldata.namestraegicproject !== null) {
+                for (const value of alldata.namestraegicproject) {
+
                     try {
-                        axios.post('http://localhost:3001/new/userproject', {
-                            project_id: id,
-                            user_id: value.user_id
-                        }).then((data) => {
-                            console.log(data.data)
-                        })
-                    }
-                    catch (e) {
-                    }
+                        axios
+                            .post("http://localhost:3001/new/strategicproject", {
+                                project_id: id,
+                                plan_id: value.planname,
+                                strategic_id: value.selectgoa,
+                                goal_id: value.selectissues,
+                                tactic_id: value.tactic
+                            })
+                            .then((res) => {
+                            });
+                    } catch (e) { }
+
                 }
             }
         }
         catch (e) { }
     }
 
-    //   const sendEmail =(alldata)=>{
+    const createStep = (id, alldata) => {
 
-    //     try{
-    //         axios.post('http://localhost:3001/new/email',{
-    //           user_id: getLocalID()
+        for (const value of alldata.rowsData) {
+            const datess2 = moment(value.start).add(543, 'year').format("YYYY-MM-DD");
+            const datess3 = moment(value.end).add(543, 'year').format("YYYY-MM-DD");
 
-    //         })
-    //         if(alldata.length !== 0 && alldata !== null){
-    //           for(const value of alldata){
-    //             try {
-    //             axios.post('http://localhost:3001/new/email', {
-    //               user_id: value.user_id
-    //             }).then((data)=>{
-    //                 console.log(data.data)
-    //             })
-    //         } 
-    //         catch (e) {
-    //         }
-    //           }
-    //         }
-    //       }
-    //       catch (e) {}
-    // }
+            try {
+                axios
+                    .post("http://localhost:3001/new/newprojectstepe", {
+                        project_id: id,
+                        step_name: value.steps,
+                        start: datess2,
+                        stop: datess3,
+                    })
+                    .then((res) => {
+                        console.log("res", res.data);
+                    });
+            } catch (e) { }
+        }
+    }
+    //createbenefit
+    const createbenefit = (id, alldata) => {
+
+        for (const value of alldata.sakes) {
+
+            try {
+                axios
+                    .post("http://localhost:3001/new/sakes", {
+                        project_id: id,
+                        benefit_name: value
+                    })
+                    .then((res) => {
+                        console.log("res", res.data);
+                    });
+            } catch (e) { }
+        }
+    }
+    const createObject = (id, alldata) => {
+
+        for (const value of alldata.object) {
+            try {
+                axios
+                    .post("http://localhost:3001/new/newobjective", {
+                        project_id: id,
+                        objective_name: value,
+                    })
+                    .then((res) => {
+                    });
+            } catch (e) { }
+        }
+    };
+
+    const createcharges = (id, alldata) => {
+
+        for (const value of alldata.budget) {
+            console.log('eee', value.Quarter1)
+            try {
+                axios
+                    .post("http://localhost:3001/new/charges", {
+                        project_id: id,
+                        charges_name_head: value.exbudget,
+                        charges_name: value.category,
+                        quarter_one: value.Quarter1,
+                        quarter_two: value.Quarter2,
+                        quarter_three: value.Quarter3,
+                        quarter_four: value.Quarter4,
+                    })
+                    .then((res) => {
+                    });
+            } catch (e) { }
+        }
+    };
+    const createUser = (id, alldata) => {
+
+        try {
+            axios.post("http://localhost:3001/new/userproject", {
+                project_id: id,
+                user_id: getLocalId()
+            });
+            if (alldata.length !== 0 && alldata !== null) {
+                for (const value of alldata) {
+                    try {
+                        axios
+                            .post("http://localhost:3001/new/userproject", {
+                                project_id: id,
+                                user_id: value.user_id,
+                            })
+                            .then((data) => {
+                            });
+                    } catch (e) { }
+                }
+            }
+        } catch (e) { }
+    };
+
     const createindic = (id, alldata) => {
-
         for (const value of alldata) {
             try {
-                axios.post('http://localhost:3001/new/newprojectindic', {
-                    project_id: id,
-                    indic_project: value.indicas,
-                    unit: value.countunit,
-                    cost: value.tagetvalue
-                }).then((res) => {
-                    console.log(res.data)
-                })
-
-            }
-            catch (e) {
-            }
+                axios
+                    .post("http://localhost:3001/new/newprojectindic", {
+                        project_id: id,
+                        indic_project: value.indicas,
+                        unit: value.countunit,
+                        cost: value.tagetvalue,
+                    })
+                    .then((res) => {
+                    });
+            } catch (e) { }
         }
-
-    }
-
-
-
-
-
-
-
+    };
 
     useEffect(() => {
-        form.validateFields(['nickname'])
-    }, [checkNick, form])
+        form.validateFields(["nickname"]);
+    }, [checkNick, form]);
 
-    const showConfirm = () => {
+    const showConfirm = (value) => {
         confirm({
-            title: 'Do you Want to delete these items?',
-            icon: <ExclamationCircleFilled />,
-            content: 'Some descriptions',
+            title: "Do you Want to delete these items?",
+            icon: <ExclamationCircleFilled style={{ verticalAlign: 'middle' }} />,
+            content: "Some descriptions",
             onOk() {
-                console.log('OK');
-                createProject()
+                console.log("OK");
+                createProject(value)
+
+
+                toast.current.show({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "บันทึกสำเร็จ",
+                    life: 3000,
+                })
             },
             onCancel() {
-                console.log('Cancel');
+                console.log("Cancel");
             },
-        })
-    }
+        });
+    };
 
     const handleMoney = (e) => {
         setMoney(e.target.value)
-        form.setFieldsValue({ amount: e.target.value.replace(/[^0-9]*$/, '') })
-    }
+        form.setFieldsValue({ amount: e.target.value.replace(/[^0-9]*$/, "") })
 
+    }
 
     const onFinish = async (value) => {
-        console.log('value', value)
+
         let amount = 0
-        for (const item of value.budget) {
-            console.log(item)
-            let num1 = item.Quarter1 !== undefined ? item.Quarter1 : 0
-            let num2 = item.Quarter2 !== undefined ? item.Quarter2 : 0
-            let num3 = item.Quarter3 !== undefined ? item.Quarter3 : 0
-            let num4 = item.Quarter4 !== undefined ? item.Quarter4 : 0
-            // amount += Number(item.Quarter1)+Number(item.Quarter2)+Number(item.Quarter3)+Number(item.Quarter4)
-            amount += num1 + num2 + num3 + num4
-        }
-        console.log('amm', amount)
-        if (amount <= value.amount) {
-            setAalldata(value)
-            createProject(value)
-            //setMoneyQ()
-            // save into database
-            toast.current.show({ severity: 'success', summary: 'Success', detail: 'บันทึกสำเร็จ', life: 3000 })
-            //showConfirm()
+        if (selectedbudget === 'ไม่ได้ใช้งบประมาณ') {
+            showConfirm(value)
         } else {
-            toast.current.show({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'รายจ่ายมากกว่าปริมาณการงบประมาณ',
-                life: 3000
-            })
+            for (const item of value.budget) {
+                console.log(item)
+                let num1 = item.Quarter1 !== undefined ? item.Quarter1 : 0
+                let num2 = item.Quarter2 !== undefined ? item.Quarter2 : 0
+                let num3 = item.Quarter3 !== undefined ? item.Quarter3 : 0
+                let num4 = item.Quarter4 !== undefined ? item.Quarter4 : 0
+                amount += num1 + num2 + num3 + num4;
+            }
+            if (amount === Number(value.amount) || amount === 0) {
+                setAalldata(value)
+                showConfirm(value, amount)
+                // createProject(value)
+
+            } else {
+                toast.current.show({
+                    severity: "error",
+                    summary: "Error",
+                    detail: "รายจ่ายไม่ตรงกับงบประมาณที่กำหนด",
+                    life: 3000,
+                });
+            }
         }
+
+    };
+    const onChangeTactic = (value) => {
+        gettactic(value);
+        setDisTacticName(false);
+    };
+    const onChangeGoal = (value) => {
+        getdatagoa(value);
+        setDisGoalName(false);
+    };
+
+    const onChangeStrategic = () => {
+        setDisStrategicName(false);
     }
-    //console.log('all',alldata.selectyear.fiscalyear_id)
+    const getStrategic = (value) => {
+        setDisStrategicName(false);
+    };
+
+    const onChangePlan_name = (value) => {
+        const setst = strategic.filter(
+            (strategic) => strategic.fiscalyear_id === value
+        );
+        setStrategicName(setst);
+        console.log(setst);
+        form.setFieldsValue({ plan_name: value });
+        getStrategic(value);
+    }
+
+    console.log(status);
 
 
 
@@ -515,7 +643,21 @@ const Newproject = () => {
                                     },
                                 ]}
                             >
-                                <Dropdown options={stopen} onChange={onStrategic} optionLabel="fiscalyear" placeholder="ปีงบประมาณ" className="w-full md:w-14rem" />
+                                <Select
+                                    size="large"
+                                    style={{
+                                        width: 260,
+                                        marginLeft: '8.9em'
+                                    }}
+                                    onChange={onStrategic}
+                                >
+                                    <Option value={null}>---- กรุณาเลือกปีงบประมาณ ----</Option>
+                                    {fiscalyearid?.map((value) => (
+                                        <Option key={value} value={value}>
+                                            {value}
+                                        </Option>
+                                    ))}
+                                </Select>
                             </Form.Item>
                             <Form.Item
                                 {...formItemLayout}
@@ -610,112 +752,313 @@ const Newproject = () => {
                                 )}
                             </Form.List>
 
+                            <div className="fit" style={{ marginLeft: '3em' }}>
+                                <div className="grid p-fluid">
+                                    <div className="col-12 md:col-3">
+                                        {isYearFiller === true ? <Form.Item
+                                            name="plan_name"
+                                            label="แผนยุทธศาสตร์"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "กรุณาเลือกแผนยุทธศาสตร์",
+                                                },
+                                            ]}
+                                        >
+                                            <Select
+                                                size="large"
+                                                style={{
+                                                    width: 490, marginLeft: '10em'
+                                                }}
+                                                placeholder="---- กรุณาเลือกแผนยุทธศาสตร์ ----"
+                                                onChange={onChangePlan_name}
+                                            >
+                                                {" "}
+                                                <Option value={null}>---- กรุณาเลือกแผนยุทธศาสตร์ ----</Option>
+                                                {planname?.map((value) => (
+                                                    <Option key={value.fiscalyear_id} value={value.fiscalyear_id}>
+                                                        {value.plan_name}
+                                                    </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item> :
+                                            <Form.Item
+                                                {...formItemLayout}
+                                                name="plan_name"
+                                                label="แผนยุทธศาสตร์"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "กรุณาเลือกแผนยุทธศาสตร์",
+                                                    },
+                                                ]}
+                                            >
+                                                <Select
+                                                    size="large"
+                                                    style={{
+                                                        width: 490, marginLeft: '7.6em'
+                                                    }}
+                                                    placeholder="---- กรุณาเลือกแผนยุทธศาสตร์ ----"
+                                                    onChange={onChangePlan_name}
+                                                >
+                                                    {" "}
+                                                    <Option value={null}>---- กรุณาเลือกแผนยุทธศาสตร์ ----</Option>
+                                                    {plannamedefalse?.map((value) => (
+                                                        <Option key={value.fiscalyear_id} value={value.fiscalyear_id}>
+                                                            {value.plan_name}
+                                                        </Option>
+                                                    ))}
+                                                </Select>
+                                            </Form.Item>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="fit" style={{ marginLeft: '6.3em' }}>
+                                <div className="grid p-fluid">
+                                    <div className="col-12 md:col-5">
+                                        <Form.Item
+                                            {...formItemLayout}
+                                            name="strategic_name"
+                                            label="ประเด็นยุทธศาสตร์"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "กรุณาเลือกประเด็นยุทธศาสตร์",
+                                                },
+                                            ]}
+                                        >
+                                            <Select
+                                                size="large"
+                                                style={{
+                                                    width: 490,
+                                                }}
+                                                defaultValue={null}
+                                                placeholder="---- กรุณาเลือกประเด็นยุทธศาสตร์ ----"
+                                                onChange={onChangeGoal}
+                                                disabled={disStrategicName}
+                                            >
+                                                <Option value={null}>---- กรุณาเลือกประเด็นยุทธศาสตร์ ----</Option>
+                                                {strategicName?.map((value) => (
+                                                    <Option key={value.strategic_id} value={value.strategic_id}>
+                                                        {value.strategic_name}
+                                                    </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="fit" style={{ marginLeft: '6.3em' }}>
+                                <div className="grid p-fluid">
+                                    <div className="col-12 md:col-5">
+                                        <Form.Item
+                                            {...formItemLayout}
+                                            name="goal_name"
+                                            label="เป้าประสงต์"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "กรุณาเลือกเป้าประสงค์",
+                                                },
+                                            ]}
+                                        >
+                                            <Select
+                                                size="large"
+                                                style={{
+                                                    width: 490,
+                                                }}
+                                                defaultValue={null}
+                                                placeholder="---- กรุณาเลือกเป้าประสงค์ ----"
+                                                onChange={onChangeTactic}
+                                                // options={goalName}
+                                                disabled={disGoalName}
+                                            >
+                                                {" "}
+                                                <Option value={null}>---- กรุณาเลือกเป้าประสงค์ ----</Option>
+                                                {goalName?.map((value) => (
+                                                    <Option key={value.goal_id} value={value.goal_id}>
+                                                        {value.goal_name}
+                                                    </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="fit" style={{ marginLeft: '6.3em' }}>
+                                <div className="grid p-fluid">
+                                    <div className="col-12 md:col-5">
+                                        <Form.Item
+                                            {...formItemLayout}
+                                            name="tactic_name"
+                                            label="กลยุทธ์"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "กรุณาเลือกกลยุทธ์",
+                                                },
+                                            ]}
+                                        >
+                                            <Select
+                                                size="large"
+                                                style={{
+                                                    width: 490,
+                                                }}
+                                                defaultValue={null}
+                                                placeholder="---- กรุณาเลือกกลยุทธ์ ----"
+                                                disabled={disTacticName}
+                                            >
+                                                <Option value={null}>---- กรุณาเลือกกลยุทธ์ ----</Option>
+                                                {newtactic?.map((value) => (
+                                                    <Option key={value.tactic_id} value={value.tactic_id}>
+                                                        {value.tactic_name}
+                                                    </Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="fit" style={{ marginLeft: '4.5em' }}>
+                                <div className="grid p-fluid">
+                                    <div className="col-12 md:col-9">
+                                        <Form.List name="namestraegicproject">
+                                            {(fields, { add, remove }, { errors }) => (
+                                                <>
+                                                    <Col>
+                                                        {fields.map((field, index) => (
+                                                            <Form.Item required={false} key={field.key}>
+                                                                <Divider orientation="left">
+                                                                    แผนยุทธศาสตร์ ประเด็นยุทธศาสตร์ เป้าประสงค์ กลยุทธ์ที่ {index + 2}
+                                                                </Divider>
+                                                                <Form.Item
+                                                                    Label="planname"
+                                                                    name={[field.name, "planname"]}
+                                                                    validateTrigger={["onChange", "onBlur"]}
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: "กรุณาเลือกแผนยุทธ์ศาสตร์",
+                                                                        },
+                                                                    ]}
+                                                                >
+                                                                    <Select
+                                                                        size="large"
+                                                                        style={{ width: 490, marginLeft: '13.9em' }}
+                                                                        placeholder="---- กรุณาเลือกแผนยุทธ์ศาสตร์ ----"
+                                                                        options={planname?.map((item) => ({
+                                                                            value: item.fiscalyear_id,
+                                                                            label: item.plan_name,
+                                                                        }))}
+                                                                        onChange={onStrategic1}
+                                                                    />
+                                                                </Form.Item>
+                                                                <Form.Item
+                                                                    Label="selectissues"
+                                                                    name={[field.name, "selectissues"]}
+                                                                    validateTrigger={["onChange", "onBlur"]}
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: "กรุณาเลือกการประเด็นยุทธ์ศาสตร์",
+                                                                        },
+                                                                    ]}
+                                                                >
+                                                                    <Select
+                                                                        size="large"
+                                                                        style={{ width: 490, marginLeft: '13.9em' }}
+                                                                        placeholder="---- กรุณาเลือกการประเด็นยุทธ์ศาสตร์ ----"
+                                                                        options={stselectfill?.map((item) => ({
+                                                                            value: item.strategic_id,
+                                                                            label: item.strategic_name,
+                                                                        }))}
+                                                                        onChange={onStrategic2} />
+                                                                </Form.Item>
+                                                                <Form.Item
+                                                                    Label="selectgoa"
+                                                                    name={[field.name, "selectgoa"]}
+                                                                    validateTrigger={["onChange", "onBlur"]}
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: "กรุณาเลือกเป้าประสงค์",
+                                                                        },
+                                                                    ]}
+                                                                >
+                                                                    <Select
+                                                                        size="large"
+                                                                        style={{ width: 490, marginLeft: '13.9em' }}
+                                                                        placeholder="---- กรุณาเลือกเป้าประสงค์----"
+                                                                        options={goalName?.map((item) => ({
+                                                                            value: item.goal_id,
+                                                                            label: item.goal_name,
+                                                                        }))}
+                                                                        onChange={onStrategic3}
+                                                                    />
+                                                                </Form.Item>
 
-
-
-
-
-
-
-
-
-
-
-                            {/* <Form.List
-                    name="selectissue"
-                    {...formItemLayout}
-                >
-                    {(fields, {add, remove}, {errors}) => (
-                        <>
-                            {fields.map((field, index) => (
-                                <Form.Item
-                                    {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                    label={index === 0 ? 'ประเด็นยุทธ์ศาสตร์ ' : ''}
-                                    required={false}
-                                    key={field.key}
-                                >
-                                    <Form.Item
-                                        {...field}
-                                        Label = 'selectissues'
-                                        name={[field.name, 'selectissues']}
-                                        validateTrigger={['onChange', 'onBlur']}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                whitespace: true,
-                                                message: 'Please input passenger\'s name or delete this field.',
-                                            },
-                                        ]}
-                                        noStyle
-                                    >
-                                        <Dropdown
-                    options={stselectfill}
-                    onChange={onStrategic2}
-                    optionLabel="strategic_name"
-                    placeholder="ประเด็นยุทธ์ศาสตร์"
-                  />
-                                    </Form.Item>
-                                    <Form.Item
-                                        {...field}
-                                        Label = 'selectgoa'
-                                        name={[field.name, 'selectgoa']}
-                                        validateTrigger={['onChange', 'onBlur']}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                whitespace: true,
-                                                message: 'Please input passenger\'s name or delete this field.',
-                                            },
-                                        ]}
-                                        noStyle
-                                    >
-                                         <Dropdown
-                    
-                    options={newDatagoa}
-                    onChange={onStrategic3} 
-                    // onChange={(e) => setSelectgoa(e.value)}
-                    optionLabel="goal_name"
-                    placeholder="เป้าประสงค์"
-                  />
-                                    </Form.Item>
-                                    <Form.Item
-                                        {...field}
-                                        Label = 'tactic'
-                                        name={[field.name, 'tactic']}
-                                        validateTrigger={['onChange', 'onBlur']}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                whitespace: true,
-                                                message: 'Please input passenger\'s name or delete this field.',
-                                            },
-                                        ]}
-                                        noStyle
-                                    >
-                                       <MultiSelect  options={newtactic} optionLabel="tactic_name" 
-                filter placeholder="tactic" maxSelectedLabels={8}  />
-
-                                    </Form.Item>
-
-
-                                    {fields.length > 1 ? (
-                                        <MinusCircleOutlined
-                                            className="dynamic-delete-button"
-                                            onClick={() => remove(field.name)}
-                                        />
-                                    ) : null}
-                                </Form.Item>
-                            ))}
-                            <Form.Item {...formItemLayoutWithOutLabel2} >
-                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined/>}>
-                                    Add sights
-                                </Button>
-                                <Form.ErrorList errors={errors}/>
-                            </Form.Item>
-                        </>
-                    )}
-                </Form.List>
-         */}
+                                                                <Form.Item
+                                                                    Label="tactic"
+                                                                    name={[field.name, "tactic"]}
+                                                                    validateTrigger={["onChange", "onBlur"]}
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: "กรุณาเลือกลยุทธ์",
+                                                                        },
+                                                                    ]}
+                                                                >
+                                                                    <Select
+                                                                        size="large"
+                                                                        style={{ width: 490, marginLeft: '13.9em' }}
+                                                                        placeholder="---- กรุณาเลือกลยุทธ์----"
+                                                                        options={newtactic?.map((item) => ({
+                                                                            value: item.tactic_id,
+                                                                            label: item.tactic_name,
+                                                                        }))} />
+                                                                    {/* <Button
+                                                                        type={"primary"}
+                                                                        ghost
+                                                                        onClick={() => remove(field.name)}
+                                                                        style={{ marginLeft: '.5em', height: '2.8em' }}
+                                                                        icon={<MinusCircleOutlined style={{ verticalAlign: 'middle' }} />}
+                                                                    >
+                                                                        ลบ
+                                                                    </Button> */}
+                                                                </Form.Item>
+                                                                <Col>
+                                                                    <Form.Item>
+                                                                        <Button
+                                                                            type={"primary"}
+                                                                            ghost
+                                                                            onClick={() => remove(field.name)}
+                                                                            icon={<MinusCircleOutlined style={{ verticalAlign: 'middle' }} />}
+                                                                        >
+                                                                            ลบ
+                                                                        </Button>
+                                                                    </Form.Item>
+                                                                </Col>
+                                                            </Form.Item>
+                                                        ))}
+                                                    </Col>
+                                                    <Form.Item>
+                                                        <Button
+                                                            type="dashed"
+                                                            onClick={() => add()}
+                                                            block
+                                                            style={{ width: '32em' }}
+                                                            icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
+                                                        >
+                                                            เพิ่มแผนยุทธศาสตร์ ประเด็นยุทธศาสตร์ เป้าประสงค์ กลยุทธ์
+                                                        </Button>
+                                                        <Form.ErrorList errors={errors} />
+                                                    </Form.Item>
+                                                </>
+                                            )}
+                                        </Form.List>
+                                    </div>
+                                </div>
+                            </div>
                             <Form.Item {...formItemLayout}
                                 name="radiogroup"
                                 label="ประเภทโครงการ"
@@ -1327,13 +1670,27 @@ const Newproject = () => {
                                 </Radio.Group>
                             </Form.Item>
 
-                            <Form.Item>
-                                <div style={{ marginTop: '1.5em', marginLeft: '85em', marginBottom: '1.5em' }} >
-                                    <Button type="primary" htmlType="submit" className="login-form-button" >
-                                        บันทึก
-                                    </Button>
-                                </div>
-                            </Form.Item>
+                            <div className="text-center mt-2 ">
+                                <Button
+                                    size="large"
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="login-form-button mr-2"
+                                    onClick={(value) => setStatus(100)}
+                                >
+                                    บันทึก
+                                </Button>
+                                <Button
+                                    size="large"
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="login-form-button"
+                                    onClick={(value) => setStatus(0)}
+
+                                >
+                                    ส่ง
+                                </Button>
+                            </div>
 
                         </Form>
                     </div>

@@ -4,6 +4,8 @@ const dataproject = require('../Services/dataproject');
 
 Router.get('/projectmanager/:id',dataproject.getproject)
 Router.get('/projectleader/:id',dataproject.projectleader)
+Router.get('/projectuser/:id',dataproject.projectuser)
+Router.get('/projectdirector',dataproject.projectdiector)
 Router.get('/fiscalyear',dataproject.fiscalyear)
 Router.get('/project',dataproject.project)
 Router.get('/sectionproject/:id',dataproject.sectionproject)
@@ -32,5 +34,11 @@ Router.put('/openreporttwo/:id',dataproject.openreporttwo)
 Router.put('/openreportthree/:id',dataproject.openreportthree)
 Router.put('/openreportfour/:id',dataproject.openreportfour)
 Router.put('/closeproject/:id',dataproject.closeproject)
+Router.get('/findproject/:year/:status',dataproject.findproject)
+Router.get('/findprojectyear/:year',dataproject.findprojectyear)
+Router.put('/notproject/:id',dataproject.notproject)
+Router.post('/notcomment',dataproject.notcomment)
+Router.get('/projectreport/:id',dataproject.projectreport)
+Router.get('/pro/:id',dataproject.pro)
 
 module.exports = Router

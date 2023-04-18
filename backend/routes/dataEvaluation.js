@@ -6,5 +6,7 @@ Router.get('/showobjective/:id',dataevaluation.showobjective)
 Router.put('/updateobjective/:id',dataevaluation.updateobjective)
 Router.post('/addprojectevaluation',dataevaluation.addprojectevaluation)
 Router.get('/estimateproject/:id',dataevaluation.estimateproject)
+Router.put('/updatestatus/:id',dataevaluation.updatestatus)
+Router.put('/editprojectevaluation/:id',dataevaluation.editprojectevaluation)
 
 module.exports = Router

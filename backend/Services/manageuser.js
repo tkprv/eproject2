@@ -21,15 +21,15 @@ const api = (req,res)=> {
             
     })
 }
+
 const person = (req,res)=> {
-    db.query("SELECT * FROM tbl_user LEFT JOIN tbl_section on tbl_user.section_id = tbl_section.section_id ", (err, result) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.send(result);
-        }
-      });
-    
+  db.query("SELECT * FROM tbl_user LEFT JOIN tbl_section on tbl_user.section_id = tbl_section.section_id ORDER BY displayname ASC", (err, result) => {
+      if (err) {
+        console.log(err)
+      } else {
+        res.send(result)
+      }
+    })
 }
 
 const updateuser = (req,res)=> {

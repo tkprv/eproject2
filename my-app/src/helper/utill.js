@@ -47,3 +47,15 @@ export const getLocalResponsible = () => {
 export const getLocalAdmin = () => {
     return localStorage.getItem('admin')
 }
+
+export const removeLocalUser = () => {
+    localStorage.removeItem('id')
+    localStorage.removeItem('name')
+    localStorage.removeItem('section')
+    localStorage.removeItem('director')
+    localStorage.removeItem('manager')
+    localStorage.removeItem('supervisor')
+    localStorage.removeItem('supplies')
+    localStorage.removeItem('responsible')
+    localStorage.removeItem('admin')
+}

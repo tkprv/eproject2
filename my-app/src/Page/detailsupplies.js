@@ -14,6 +14,9 @@ import { Card } from "primereact/card";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { getLocalId } from '../helper/utill';
+import Reportproject from './reportproject';
+import ExportButton from './doc'
+import { Panel } from 'primereact/panel';
 
 const Detailsupplies = () => {
   const location = useLocation()
@@ -282,286 +285,290 @@ const Detailsupplies = () => {
             <div style={{ marginTop: '2em' }} >
               <TabView>
                 <TabPanel header="รายละเอียดโครงการ">
-                  <div align="left">
-                    <h3>รายละเอียดโครงการ</h3>
-                    <Card>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ปีงบประมาณ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {location.state.fiscalyear} </h4>
-                          </div>
+                  <Panel header='รายละเอียดโครงการ'>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        < Reportproject id={location.state.project_id} />
+                        < ExportButton id={location.state.project_id} />
+                      </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ปีงบประมาณ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {location.state.fiscalyear} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ชื่อโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {location.state.project_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ชื่อโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {location.state.project_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>หน่วยงานที่รับผิดชอบโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {sectionproject?.section_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>หน่วยงานที่รับผิดชอบโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {sectionproject?.section_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ผู้รับผิดชอบโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            {userproject.map((value) => {
-                              return <h4> {value?.fname + ' ' + value?.lname} </h4>
-                            })}
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ผู้รับผิดชอบโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          {userproject.map((value) => {
+                            return <h4> {value?.fname + ' ' + value?.lname} </h4>
+                          })}
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {fiscalyearandplanname?.plan_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {fiscalyearandplanname?.plan_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-4">
-                            <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
-                          </div>
-                          <div className="col-12 md:col-8">
-                            <h4> {strategicproject?.strategic_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-4">
+                          <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                        </div>
+                        <div className="col-12 md:col-8">
+                          <h4> {strategicproject?.strategic_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-4">
-                            <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
-                          </div>
-                          <div className="col-12 md:col-8">
-                            <h4> {goalproject?.goal_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-4">
+                          <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                        </div>
+                        <div className="col-12 md:col-8">
+                          <h4> {goalproject?.goal_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-4">
-                            <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
-                          </div>
-                          <div className="col-12 md:col-8">
-                            <h4> {tacticproject?.tactic_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-4">
+                          <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                        </div>
+                        <div className="col-12 md:col-8">
+                          <h4> {tacticproject?.tactic_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ประเภทของโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {(location.state.out_plan === 1) ? 'โครงการนอกแผน' : 'โครงการในแผน'} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ประเภทของโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {(location.state.out_plan === 1) ? 'โครงการนอกแผน' : 'โครงการในแผน'} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ลักษณะโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {location.state.type} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ลักษณะโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {location.state.type} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>การบูรณาการโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {integrationproject?.integration_name} </h4>
-                            <InputTextarea value={location.state.integra_subject} rows={5} cols={30} />
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>การบูรณาการโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {integrationproject?.integration_name} </h4>
+                          <h4>
+                            <InputTextarea value={location.state.integra_subject} rows={5} cols={30} disabled />
+                          </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>หลักการและเหตุผล :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <InputTextarea value={location.state.rationale} onChange={(e) => setValue1(e.target.value)} rows={8} cols={50} />
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>หลักการและเหตุผล :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4>
+                            <InputTextarea value={location.state.rationale} onChange={(e) => setValue1(e.target.value)} rows={8} cols={50} disabled />
+                          </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>วัตถุประสงค์ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            {objectiveproject.map((value) => {
-                              return <h4> {value?.objective_name} </h4>
-                            })}
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>วัตถุประสงค์ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          {objectiveproject.map((value) => {
+                            return <h4> {value?.objective_name} </h4>
+                          })}
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ตัวชี้วัดความสำเร็จระดับโครงการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4>
-                              <DataTable value={indicproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="indic_project" header="ตัวชี้วัดความสำเร็จ" />
-                                <Column field="unit" header="หน่วยนับ" />
-                                <Column field="cost" header="ค่าเป้าหมาย" />
-                              </DataTable>
-                            </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ตัวชี้วัดความสำเร็จระดับโครงการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4>
+                            <DataTable value={indicproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                              <Column field="indic_project" header="ตัวชี้วัดความสำเร็จ" />
+                              <Column field="unit" header="หน่วยนับ" />
+                              <Column field="cost" header="ค่าเป้าหมาย" />
+                            </DataTable>
+                          </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>กลุ่มเป้าหมาย :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {location.state.target_group} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>กลุ่มเป้าหมาย :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {location.state.target_group} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ขั้นตอนการดำเนินการ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4>
-                              <DataTable value={stepproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="step_name" header="ขั้นตอนการดำเนินการ/รายการกิจกรรม" />
-                                <Column field="start" header="เริ่มต้น" />
-                                <Column field="stop" header="สิ้นสุด" />
-                              </DataTable>
-                            </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ขั้นตอนการดำเนินการ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4>
+                            <DataTable value={stepproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                              <Column field="step_name" header="ขั้นตอนการดำเนินการ/รายการกิจกรรม" />
+                              <Column field="start" header="เริ่มต้น" />
+                              <Column field="stop" header="สิ้นสุด" />
+                            </DataTable>
+                          </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>แหล่งเงิน/ประเภทงบประมาณที่ใช้ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {location.state.source_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>แหล่งเงิน/ประเภทงบประมาณที่ใช้ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {location.state.source_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ปริมาณการงบประมาณที่ใช้ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {location.state.butget} บาท</h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ปริมาณการงบประมาณที่ใช้ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {location.state.butget} บาท</h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>แผนงาน :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4> {workplanproject?.workplan_name} </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>แผนงาน :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4> {workplanproject?.workplan_name} </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ประเภทการใช้จ่าย :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4>
-                              <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
-                                <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
-                                <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
-                                <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
-                                <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
-                                <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />
-                                <Column field="quarter_four" header="แผ่นการใช้จ่ายไตรมาส 4" />
-                              </DataTable>
-                            </h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ประเภทการใช้จ่าย :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4>
+                            <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                              <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
+                              <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
+                              <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
+                              <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
+                              <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />
+                              <Column field="quarter_four" header="แผ่นการใช้จ่ายไตรมาส 4" />
+                            </DataTable>
+                          </h4>
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>ประโยชน์ที่คาดว่าจะได้รับ :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            {benefitproject.map((value) => {
-                              return <h4> {value?.benefit_name} </h4>
-                            })}
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>ประโยชน์ที่คาดว่าจะได้รับ :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          {benefitproject.map((value) => {
+                            return <h4> {value?.benefit_name} </h4>
+                          })}
                         </div>
                       </div>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-3">
-                            <h4>เอกสาร TOR :</h4>
-                          </div>
-                          <div className="col-12 md:col-9">
-                            <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <i className="pi pi-file-pdf" style={{ fontSize: '2rem', color: 'red', marginRight: '.1em' }}></i>}</h4>
-                          </div>
+                    </div>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-3">
+                          <h4>เอกสาร TOR :</h4>
+                        </div>
+                        <div className="col-12 md:col-9">
+                          <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <i className="pi pi-file-pdf" style={{ fontSize: '2rem', color: 'red', marginRight: '.1em' }}></i>}</h4>
                         </div>
                       </div>
-                      <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/dataleader" })} />
-                      </div>
-                    </Card>
-                  </div>
+                    </div>
+                    <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
+                      <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/dataleader" })} />
+                    </div>
+                  </Panel>
                 </TabPanel>
                 <TabPanel header="ความคิดเห็นโครงการ">
-                  <div align="left">
-                    <h3>ความคิดเห็นโครงการ</h3>
-                    <Card>
-                      <div className="fit">
-                        <div className="grid p-fluid">
-                          <div className="col-12 md:col-10">
-                            <DataTable value={commentproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
-                              <Column field="comment" header="ความคิดเห็น" style={{ width: '25em' }} />
-                              <Column field="fname" header="ชื่อ" style={{ width: '16em' }} />
-                              <Column field="lname" header="นามสกุล" style={{ width: '16em' }} />
-                              <Column body={workposition} header="ตำแหน่ง" style={{ width: '12em' }} />
-                              <Column field="date_comment" header="วันที่แสดงความคิดเห็น" style={{ textAlign: 'center', width: '18em' }} />
-                              <Column field="time_comment" header="เวลาที่แสดงความคิดเห็น" style={{ textAlign: 'center', width: '18em' }} />
-                            </DataTable>
-                          </div>
+                  <Panel header='ความคิดเห็นโครงการ'>
+                    <div className="fit">
+                      <div className="grid p-fluid">
+                        <div className="col-12 md:col-10">
+                          <DataTable value={commentproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
+                            <Column field="comment" header="ความคิดเห็น" style={{ width: '25em' }} />
+                            <Column field="fname" header="ชื่อ" style={{ width: '16em' }} />
+                            <Column field="lname" header="นามสกุล" style={{ width: '16em' }} />
+                            <Column body={workposition} header="ตำแหน่ง" style={{ width: '12em' }} />
+                            <Column field="date_comment" header="วันที่แสดงความคิดเห็น" style={{ textAlign: 'center', width: '18em' }} />
+                            <Column field="time_comment" header="เวลาที่แสดงความคิดเห็น" style={{ textAlign: 'center', width: '18em' }} />
+                          </DataTable>
                         </div>
                       </div>
-                      <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                        <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/dataleader" })} />
-                      </div>
-                    </Card>
-                  </div>
+                    </div>
+                    <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
+                      <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/dataleader" })} />
+                    </div>
+                  </Panel>
                 </TabPanel>
               </TabView>
             </div>
