@@ -186,7 +186,7 @@ const integrationproject = (req, res) => {
 const objectiveproject = (req, res) => {
     const ID = req.params.id;
     db.query(
-        "SELECT tbl_project.project_id, tbl_objective.objective_id, tbl_objective.objective_name FROM tbl_objective LEFT JOIN tbl_project ON tbl_project.project_id = tbl_objective.project_id WHERE tbl_objective.project_id = ?",
+        "SELECT tbl_project.project_id, tbl_objective.objective_id, tbl_objective.objective_name, tbl_objective.obtain FROM tbl_objective LEFT JOIN tbl_project ON tbl_project.project_id = tbl_objective.project_id WHERE tbl_objective.project_id = ?",
         [ID],
         (err, result) => {
             if (err) {
@@ -478,25 +478,11 @@ const closeproject = (req, res) => {
 }
 
 const findproject = (req, res) => {
-    const year = req.params.year
     const status = req.params.status
-    db.query("SELECT * FROM tbl_project   WHERE  status = ? and fiscalyear = ?",[status,year] , (err, result) => {
+    db.query("SELECT * FROM tbl_project   WHERE  status = ? ",[status] , (err, result) => {
         if (err) {
             console.log(err);
         } else {
-           res.send(result);
-        }
-    })
-}
-
-const findprojectyear = (req, res) => {
-    const year = req.params.year
-    console.log('hfhbvchcn');
-    db.query("SELECT * FROM tbl_project  WHERE fiscalyear = ?",[year] , (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            //console.log(result);
            res.send(result);
         }
     })
@@ -565,4 +551,4 @@ const pro = (req, res) => {
     console.log('id', ID)
 }
 
-module.exports = { getproject, projectleader,projectuser, projectdiector  ,fiscalyear, project, sectionproject, userproject, strategicplanproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject, findproject, findprojectyear, notproject, notcomment, projectreport, pro }
+module.exports = { getproject, projectleader,projectuser, projectdiector  ,fiscalyear, project, sectionproject, userproject, strategicplanproject, strategicproject, goalproject, tacticproject, integrationproject, objectiveproject, indicproject, stepproject, workplanproject, chargesproject, benefitproject, commentproject, confirmproject, noconfirmproject, comment, projecttor, deleteprojectid, deleteproject, showproject, openreportone, openreporttwo, openreportthree, openreportfour, closeproject, findproject, notproject, notcomment, projectreport, pro }

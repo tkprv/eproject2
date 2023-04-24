@@ -81,6 +81,15 @@ const Detailshowprojectevaluation = () => {
         setMenu(!menu)
     }
 
+    const obtain = (node) => {
+        console.log('no', node)
+        if (node.obtain === 1) {
+            return 'บรรลุ'
+        } else if (node.obtain === 0) {
+            return 'ไม่บรรลุ'
+        }
+    }
+
     const onClick = (name, position) => {
         dialogFuncMap[`${name}`](true);
 
@@ -426,10 +435,10 @@ const Detailshowprojectevaluation = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {strategicproject.map((value) => {
                                             return <h4> {value?.strategic_name} </h4>
                                         })}
@@ -438,10 +447,10 @@ const Detailshowprojectevaluation = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>เป้าประสงค์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {goalproject.map((value) => {
                                             return <h4> {value?.goal_name} </h4>
                                         })}
@@ -450,10 +459,10 @@ const Detailshowprojectevaluation = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>กลยุทธ์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {tacticproject.map((value) => {
                                             return <h4> {value?.tactic_name} </h4>
                                         })}
@@ -496,9 +505,12 @@ const Detailshowprojectevaluation = () => {
                                         <h4>วัตถุประสงค์ :</h4>
                                     </div>
                                     <div className="col-12 md:col-9">
-                                        {objectiveproject.map((value) => {
-                                            return <h4> {value?.objective_name}  {(value?.obtain === 1) ? 'บรรลุ' : 'ไม่บรรลุ'}</h4>
-                                        })}
+                                        <h4>
+                                            <DataTable value={objectiveproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                                                <Column field="objective_name" header="วัตถุประสงค์" />
+                                                <Column body={obtain} header="การบรรลุวัตถุประสงค์" />
+                                            </DataTable>
+                                        </h4>
                                     </div>
                                 </div>
                             </div>

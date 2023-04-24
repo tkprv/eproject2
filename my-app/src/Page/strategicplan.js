@@ -140,6 +140,8 @@ const Strategicplan = () => {
     } catch (e) {
 
     }
+    getstrategic()
+    setValue1("")
   };
 
   const onHide = () => {
@@ -305,18 +307,9 @@ const Strategicplan = () => {
     );
   };
 
-
-  const renderFooter = () => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
-      </div>
-    );
-  }
-
   const onFinish = (value) => {
-    showConfirm2(value)
+    addstrategic(value)
+    getstrategic()
   }
 
   const showConfirm = (value) => {
@@ -324,45 +317,15 @@ const Strategicplan = () => {
       title: "ต้องการลบแผนยุทธศาสตร์ใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         deletestrategic(value)
-
       },
       onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
 
-  const showConfirm2 = (value) => {
-    confirm({
-      title: "ต้องการเพิ่มแผนยุทธศาสตร์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      content: `${value.planname}`,
-      onOk() {
-        console.log("OK");
-        addstrategic(value)
-
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm3 = (value) => {
-    confirm({
-      title: "ต้องการจัดการข้อมูลแผนยุทธศาสตร์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updatestrategic(value, value1, sg1, sg2, dates2, dates3)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
 
   return (
     <>
@@ -373,8 +336,6 @@ const Strategicplan = () => {
 
           <Card>
             <Panel header="จัดการแผนยุทธศาสตร์">
-
-
               <div align="left" style={{ marginTop: '.5em' }}>
                 <Form
                   form={form}
@@ -412,82 +373,16 @@ const Strategicplan = () => {
                   >
                     <Input size="large" placeholder="แผนยุทธศาสตร์" style={{ width: '25em' }} />
                   </Form.Item>
+                  <div className="text-left mt-1">
                   <Button
                     type="primary"
                     htmlType="submit"
                     className="p-button-success"
-                    style={{ marginLeft: '62.25em', height: '2.5em' }}
+                    style={{height: '2.5em' }}
                     icon='pi pi-plus'
                     label="เพิ่มแผนยุทธศาสตร์"
-                    onClick={() => showConfirm2()}
-                  />
+                  /> </div>
                 </Form>
-
-                {/* <Dialog
-                  header="จัดการข้อมูลแผนยุทธ์ศาสตร์"
-                  visible={displayBasic}
-                  style={{ width: "50vw" }}
-                  footer={renderFooter}
-                  onHide={onHide}
-
-                >
-
-                  <Card style={{ backgroundColor: 'var(--surface-100)' }}>
-                    <h>ชื่อแผนยุทธ์ศาสตร์</h>
-                    <div className="fit">
-
-                      <InputText style={inputStyle}
-                        value={value1}
-                        onChange={(e) => setValue1(e.target.value)}
-                        placeholder="แผนยุทธศาสตร์"
-                      ></InputText>
-                    </div>
-                  </Card>
-                  <Card style={{ marginTop: "30px", backgroundColor: 'var(--surface-100)' }}>
-                    <div>
-                      <h>ผ่านมติกรรมการบริหาร</h>
-                      <DataTable
-                        value={data}
-                        columnResizeMode="fit"
-                        showGridlines
-                        responsiveLayout="scroll"
-                        style={{ marginTop: "20px" }}
-                      >
-                        <Column
-                          body={editime1}
-                          header="ครั้งที่"
-                          style={{ textAlign: "center", width: "15%" }}
-                        />
-                        <Column
-                          body={editdate1}
-                          header="ครั้งที่"
-                          style={{ textAlign: "center", width: "15%" }}
-                        />
-                      </DataTable>
-                    </div>
-                    <div style={{ marginTop: "20px" }}>
-                      <h>ผ่านมติกรรมการประจำ</h>
-                      <DataTable
-                        value={data}
-                        columnResizeMode="fit"
-                        showGridlines
-                        responsiveLayout="scroll"
-                        style={{ marginTop: "20px" }}
-                      >
-                        <Column
-                          body={editime2}
-                          header="ครั้งที่"
-                          style={{ textAlign: "center", width: "15%" }}
-                        />
-                        <Column
-                          body={editdate2}
-                          header="ครั้งที่"
-                          style={{ textAlign: "center", width: "15%" }}
-                        />
-                      </DataTable>
-                    </div>
-                  </Card>
-                </Dialog> */}
 
                 <div>
                   <div>
@@ -545,7 +440,7 @@ const Strategicplan = () => {
 
                 <div>
                   <Modal
-                    title={<h4 className="m-0">{'จัดการข้อมูลแผนยุทธศาสตร์'}</h4>}
+                    title={<p className="m-0">{'จัดการข้อมูลแผนยุทธศาสตร์'}</p>}
                     open={displayBasic}
                     onCancel={onHide}
                     footer={null}
@@ -579,7 +474,7 @@ const Strategicplan = () => {
                           />
                           <Column
                             body={editdate1}
-                            header="ครั้งที่"
+                            header="วันที่"
                             style={{ textAlign: "center", width: "15%" }}
                           />
                         </DataTable>
@@ -600,15 +495,15 @@ const Strategicplan = () => {
                           />
                           <Column
                             body={editdate2}
-                            header="ครั้งที่"
+                            header="วันที่"
                             style={{ textAlign: "center", width: "15%" }}
                           />
                         </DataTable>
                       </div>
                     </Card>
                     <div className="text-right mt-4">
-                      <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide} />
-                      <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
+                      <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em'}} onClick={onHide} />
+                      <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategic(id, value1, sg1, sg2, dates2, dates3)} autoFocus />
                     </div>
                   </Modal>
                 </div>

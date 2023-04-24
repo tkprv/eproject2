@@ -63,7 +63,7 @@ const Detailmanager = () => {
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState(false);
-
+  const [pro, setPro] = useState();
   let history = useHistory();
 
   const toggleMobileMenu = () => {
@@ -72,6 +72,7 @@ const Detailmanager = () => {
 
   console.log('44', location.state)
   useEffect(() => {
+    showproject()
     getsection()
     getuser()
     getstrategicplan()
@@ -228,50 +229,17 @@ const Detailmanager = () => {
     );
   }
 
-  // const renderFooter = (name) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={() => onHide(name)} />
-  //       <Button label="ส่ง" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em', width: '17%' }} onClick={() => confirmproject(location.state.project_id, 3)} />
-  //     </div>
-  //   );
-  // }
-
-  // const renderFooter1 = (id) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onhide} />
-  //       <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
-  //     </div>
-  //   );
-  // }
-
-  // const renderFooter2 = (id) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onhide} />
-  //       <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
-  //     </div>
-  //   );
-  // }
-
-  // const renderFooter3 = (id) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onhide} />
-  //       <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updategoal(id, Selectedgoal)} autoFocus />
-  //     </div>
-  //   );
-  // }
-
-  // const renderFooter4 = (id) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onhide} />
-  //       <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatetactic(id, Selectedtactic)} autoFocus />
-  //     </div>
-  //   );
-  // }
+  const showproject = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/pro/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setPro(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('pro', pro)
 
   const getsection = async () => {
     axios
@@ -440,7 +408,7 @@ const Detailmanager = () => {
   }
 
   const confirmproject = async (id, n) => {
-    handleCancel()
+
     const time1 = moment(times1).add(543, 'year').format('h:mm:ss');
     const date1 = moment(dates1).add(543, 'year').format('YYYY-MM-DD')
     axios
@@ -448,6 +416,8 @@ const Detailmanager = () => {
         status: n
       })
     await iscomment(id, time1, date1)
+    handleCancel()
+    showproject()
     sendEmailtodairector()
   }
 
@@ -473,6 +443,7 @@ const Detailmanager = () => {
       }).catch((error) => {
         console.log(error)
       });
+    getcomment()
   }
 
   const showplan = (item) => {
@@ -511,6 +482,7 @@ const Detailmanager = () => {
         plan_id: Selectedplanname.fiscalyear_id
       })
     onHide1()
+    getstrategicplan()
   }
 
   const showstrategic = (item) => {
@@ -549,6 +521,7 @@ const Detailmanager = () => {
         strategic_id: Selectedstrategic.strategic_id
       })
     onHide2()
+    getstrategic()
   }
 
   const showgoal = (item) => {
@@ -581,12 +554,13 @@ const Detailmanager = () => {
   }
 
   const updategoal = (id, Selectedgoal) => {
-    onHide3()
+
     axios
       .put(`http://localhost:3001/editmanager/updategoal/${planid}`, {
         goal_id: Selectedgoal.goal_id
       })
-
+    onHide3()
+    getgoal()
   }
 
   const showtactic = (item) => {
@@ -619,83 +593,13 @@ const Detailmanager = () => {
   }
 
   const updatetactic = (id, Selectedtactic) => {
-    onHide4()
+
     axios
       .put(`http://localhost:3001/editmanager/updatetactic/${planid}`, {
         tactic_id: Selectedtactic.tactic_id
       })
-  }
-
-  const showConfirm1 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขแผนยุทธศาสตร์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updatestrategicplan(value, Selectedplanname)
-
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm2 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขประเด็นยุทธศาสตร์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updatestrategic(value, Selectedstrategic)
-
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm3 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขเป้าประสงค์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updategoal(value, Selectedgoal)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm4 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขกลยุทธ์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updatetactic(value, Selectedtactic)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm5 = (value) => {
-    confirm({
-      title: "ต้องการยืนยันการอนุมัติโครงการใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        confirmproject(value, 3)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
+    onHide4()
+    gettactic()
   }
 
 
@@ -711,8 +615,8 @@ const Detailmanager = () => {
                 <Panel header='รายละเอียดโครงการ'>
                   <div className="fit">
                     <div className="grid p-fluid">
-                        < Reportproject id={location.state.project_id} />
-                        < ExportButton id={location.state.project_id} />
+                      < Reportproject id={location.state.project_id} />
+                      < ExportButton id={location.state.project_id} />
                     </div>
                   </div>
                   <div className="fit">
@@ -760,7 +664,7 @@ const Detailmanager = () => {
                   <div className="fit">
                     <div className="grid p-fluid">
                       <div className="col-12 md:col-3">
-                        <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
+                        <h4>แผนยุทธ์ศาสตร์ :</h4>
                       </div>
                       <div className="col-12 md:col-9">
                         {strategicplanproject.map((value) => {
@@ -771,10 +675,10 @@ const Detailmanager = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
                       </div>
-                      <div className="col-12 md:col-6">
+                      <div className="col-12 md:col-9">
                         {strategicproject.map((value) => {
                           return <h4> {value?.strategic_name} </h4>
                         })}
@@ -783,10 +687,10 @@ const Detailmanager = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>เป้าประสงค์ :</h4>
                       </div>
-                      <div className="col-12 md:col-6">
+                      <div className="col-12 md:col-9">
                         {goalproject.map((value) => {
                           return <h4> {value?.goal_name} </h4>
                         })}
@@ -795,10 +699,10 @@ const Detailmanager = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>กลยุทธ์ :</h4>
                       </div>
-                      <div className="col-12 md:col-6">
+                      <div className="col-12 md:col-9">
                         {tacticproject.map((value) => {
                           return <h4> {value?.tactic_name} </h4>
                         })}
@@ -967,7 +871,7 @@ const Detailmanager = () => {
                         <h4>เอกสาร TOR :</h4>
                       </div>
                       <div className="col-12 md:col-9">
-                      <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <Tag className="mr-2" severity="success" value="มีเอกสาร" rounded></Tag>}</h4>
+                        <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <Tag className="mr-2" severity="success" value="มีเอกสาร" rounded></Tag>}</h4>
                       </div>
                     </div>
                   </div>
@@ -1020,7 +924,7 @@ const Detailmanager = () => {
                   <div className="fit">
                     <div className="grid p-fluid">
                       <div className="col-12 md:col-3">
-                        <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
+                        <h4>แผนยุทธ์ศาสตร์ :</h4>
                       </div>
                       <div className="col-12 md:col-8">
                         <h4>
@@ -1034,8 +938,8 @@ const Detailmanager = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4 >ประเด็นยุทธ์ศาสตร์ :</h4>
                       </div>
                       <div className="col-12 md:col-8">
                         <h4>
@@ -1049,8 +953,8 @@ const Detailmanager = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>เป้าประสงค์ :</h4>
                       </div>
                       <div className="col-12 md:col-8">
                         <h4>
@@ -1064,8 +968,8 @@ const Detailmanager = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>กลยุทธ์ :</h4>
                       </div>
                       <div className="col-12 md:col-8">
                         <h4>
@@ -1254,15 +1158,12 @@ const Detailmanager = () => {
                       </div>
                       <div className="col-12 md:col-9">
                         {(location.state.status === 0) ? <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag> :
-                          (location.state.status === 1) ? <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '7em', height: '2.5em' }} onClick={showModal} /> :
+                          (location.state.status === 1) ? <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '8.5em', height: '2.5em' }} onClick={showModal} /> :
                             (location.state.status === 2) ? <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag> :
                               (location.state.status === 3) ? <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา" rounded></Tag> :
                                 (location.state.status === 4) ? <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag> :
                                   <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>}
 
-                        {/* <Dialog header="ข้อมูลที่ถูกแก้ไข" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter('confirm')}>
-                          <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={71.5} />
-                        </Dialog> */}
                         <div>
                           <Modal
                             title={<p className="m-0">{'ข้อมูลที่ถูกแก้ไข'}</p>}
@@ -1273,8 +1174,8 @@ const Detailmanager = () => {
                           >
                             <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={69.2} />
                             <div className="text-right mt-4">
-                              <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '19.5em' }} onClick={handleCancel} />
-                              <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm5(location.state.project_id)} autoFocus />
+                              <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={handleCancel} />
+                              <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => confirmproject(location.state.project_id, 3)} autoFocus />
                             </div>
                           </Modal>
                         </div>
@@ -1304,77 +1205,6 @@ const Detailmanager = () => {
               </TabPanel>
             </TabView>
 
-            {/* <Dialog
-              style={{ width: '500px', width: "50vw" }} header="เแก้ไขแผนยุทธศาสตร์" modal className="p-fluid"
-              visible={visible1}
-              footer={renderFooter1}
-              onHide={onhide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h4>แผนยุทธศาสตร์ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '30em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-
-            <Dialog
-              style={{ width: '500px', width: "50vw" }} header="เแก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
-              visible={visible2}
-              footer={renderFooter2}
-              onHide={onhide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h4>ประเด็นยุทธศาสตร์ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '30em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-
-            <Dialog
-              style={{ width: '500px', width: "50vw" }} header="เแก้ไขเป้าประสงค์" modal className="p-fluid"
-              visible={visible3}
-              footer={renderFooter3}
-              onHide={onhide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h4>เป้าประสงค์ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '30em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-
-            <Dialog
-              style={{ width: '500px', width: "50vw" }} header="เแก้ไขเกลยุทธ์" modal className="p-fluid"
-              visible={visible4}
-              footer={renderFooter4}
-              onHide={onhide}
-            >
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
-                <div className="grid p-fluid">
-                  <div className="col-12 md:col-3">
-                    <h4>กลยุทธ์ :</h4>
-                  </div>
-                  <div className="col-12 md:col-1">
-                    <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '30em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
-                  </div>
-                </div>
-              </div>
-            </Dialog> */}
             <div>
               <Modal
                 title={<h4 className="m-0">{'จัดการข้อมูลแผนยุทธศาสตร์'}</h4>}
@@ -1385,8 +1215,8 @@ const Detailmanager = () => {
               >
                 <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '40em', marginTop: '1em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
                 <div className="text-right mt-4">
-                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide1} />
-                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm1(id)} autoFocus />
+                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide1} />
+                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
                 </div>
               </Modal>
             </div>
@@ -1401,8 +1231,8 @@ const Detailmanager = () => {
               >
                 <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '40em', marginTop: '1em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
                 <div className="text-right mt-4">
-                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide2} />
-                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm2(id)} autoFocus />
+                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide2} />
+                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
                 </div>
               </Modal>
             </div>
@@ -1417,8 +1247,8 @@ const Detailmanager = () => {
               >
                 <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '40em', marginTop: '1em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
                 <div className="text-right mt-4">
-                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide3} />
-                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
+                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide3} />
+                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updategoal(id, Selectedgoal)} autoFocus />
                 </div>
               </Modal>
             </div>
@@ -1433,8 +1263,8 @@ const Detailmanager = () => {
               >
                 <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '40em', marginTop: '1em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
                 <div className="text-right mt-4">
-                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide4} />
-                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm4(id)} autoFocus />
+                  <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide4} />
+                  <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatetactic(id, Selectedtactic)} autoFocus />
                 </div>
               </Modal>
             </div>

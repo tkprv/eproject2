@@ -24,6 +24,7 @@ const Detailsupplies = () => {
   const [noconfirm, setNoconfirm] = useState('');
   const [position, setPosition] = useState('center');
   const [fiscalyearandplanname, setFiscalyearandplanname] = useState([]);
+  const [strategicplanproject, setStrategicplanproject] = useState([]);
   const [sectionproject, setSectionproject] = useState([]);
   const [userproject, setUserproject] = useState([]);
   const [strategicproject, setStrategicproject] = useState([]);
@@ -50,6 +51,7 @@ const Detailsupplies = () => {
     getfiscalyearandplanname()
     getsection()
     getuser()
+    getstrategicplan()
     getstrategic()
     getgoal()
     gettactic()
@@ -143,9 +145,21 @@ const Detailsupplies = () => {
   }
   console.log('22', userproject)
 
+  const getstrategicplan = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/strategicplanproject/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setStrategicplanproject(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('11', strategicplanproject)
+
   const getstrategic = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.strategic_id}`)
+      .get(`http://localhost:3001/dataproject/strategicproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setStrategicproject(res.data)
@@ -157,7 +171,7 @@ const Detailsupplies = () => {
 
   const getgoal = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/goalproject/${location.state.goal_id}`)
+      .get(`http://localhost:3001/dataproject/goalproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setGoalproject(res.data)
@@ -169,7 +183,7 @@ const Detailsupplies = () => {
 
   const gettactic = async () => {
     await axios
-      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.tactic_id}`)
+      .get(`http://localhost:3001/dataproject/tacticproject/${location.state.project_id}`)
       .then((res) => {
         console.log(res.data.data)
         setTacticproject(res.data)
@@ -335,45 +349,53 @@ const Detailsupplies = () => {
                       </div>
                     </div>
                     <div className="fit">
-                      <div className="grid p-fluid">
-                        <div className="col-12 md:col-3">
-                          <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
-                        </div>
-                        <div className="col-12 md:col-9">
-                          <h4> {fiscalyearandplanname?.plan_name} </h4>
-                        </div>
+                    <div className="grid p-fluid">
+                      <div className="col-12 md:col-3">
+                        <h4>แผนยุทธ์ศาสตร์ :</h4>
+                      </div>
+                      <div className="col-12 md:col-9">
+                        {strategicplanproject.map((value) => {
+                          return <h4> {value?.plan_name} </h4>
+                        })}
                       </div>
                     </div>
-                    <div className="fit">
-                      <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
-                          <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
-                        </div>
-                        <div className="col-12 md:col-8">
-                          <h4> {strategicproject?.strategic_name} </h4>
-                        </div>
+                  </div>
+                  <div className="fit">
+                    <div className="grid p-fluid">
+                      <div className="col-12 md:col-3">
+                        <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
+                      </div>
+                      <div className="col-12 md:col-9">
+                        {strategicproject.map((value) => {
+                          return <h4> {value?.strategic_name} </h4>
+                        })}
                       </div>
                     </div>
-                    <div className="fit">
-                      <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
-                          <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
-                        </div>
-                        <div className="col-12 md:col-8">
-                          <h4> {goalproject?.goal_name} </h4>
-                        </div>
+                  </div>
+                  <div className="fit">
+                    <div className="grid p-fluid">
+                      <div className="col-12 md:col-3">
+                        <h4 >เป้าประสงค์ :</h4>
+                      </div>
+                      <div className="col-12 md:col-9">
+                        {goalproject.map((value) => {
+                          return <h4> {value?.goal_name} </h4>
+                        })}
                       </div>
                     </div>
-                    <div className="fit">
-                      <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
-                          <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
-                        </div>
-                        <div className="col-12 md:col-8">
-                          <h4> {tacticproject?.tactic_name} </h4>
-                        </div>
+                  </div>
+                  <div className="fit">
+                    <div className="grid p-fluid">
+                      <div className="col-12 md:col-3">
+                        <h4>กลยุทธ์ :</h4>
+                      </div>
+                      <div className="col-12 md:col-9">
+                        {tacticproject.map((value) => {
+                          return <h4> {value?.tactic_name} </h4>
+                        })}
                       </div>
                     </div>
+                  </div>
                     <div className="fit">
                       <div className="grid p-fluid">
                         <div className="col-12 md:col-3">

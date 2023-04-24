@@ -10,7 +10,6 @@ import moment from "moment";
 import { useLocation } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import { Tag } from 'primereact/tag';
-import { Card } from "primereact/card";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { getLocalId } from '../helper/utill';
@@ -39,8 +38,8 @@ const Detaildirector = () => {
   const [benefitproject, setBenefitproject] = useState([]);
   const [comment, setComment] = useState('');
   const [commentproject, setCommentproject] = useState([]);
-  const [id, setId] = useState("")
   const [notcomment, setNotcomment] = useState([]);
+  const [pro, setPro] = useState();
   const [times1, setTimes1] = useState()
   const [dates1, setDates1] = useState()
   const [times2, setTimes2] = useState()
@@ -54,6 +53,7 @@ const Detaildirector = () => {
 
   console.log('44', location.state)
   useEffect(() => {
+    showproject()
     getsection()
     getuser()
     getstrategicplan()
@@ -106,23 +106,18 @@ const Detaildirector = () => {
     }
   }
 
-  // const renderFooter1 = (name) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => onHide(name)} />
-  //       <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" onClick={() => confirmproject(location.state.project_id, 4)} />
-  //     </div>
-  //   );
-  // }
 
-  // const renderFooter2 = (name) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => onHide(name)} />
-  //       <Button label="ส่ง" icon="pi pi-check" className="p-button-success" style={{ width: '17%' }} onClick={() => noconfirmproject(location.state.project_id, 5)} />
-  //     </div>
-  //   );
-  // }
+  const showproject = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/pro/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setPro(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('22', pro)
 
   const getsection = async () => {
     axios
@@ -294,6 +289,7 @@ const Detaildirector = () => {
       .put(`http://localhost:3001/dataproject/confirmproject/${id}`, {
         status: n
       })
+    showproject()
     sendEmailuser(n)
   }
 
@@ -306,6 +302,7 @@ const Detaildirector = () => {
         status: n
       })
     await iscomment(id, time1, date1)
+    showproject()
     sendEmailuser(n)
   }
 
@@ -331,13 +328,15 @@ const Detaildirector = () => {
         status: n
       })
     await isnotcomment(id, time2, date2)
+    showproject()
+    sendEmailuser(n)
   }
 
   const isnotcomment = async (id, time2, date2) => {
     axios
       .post(`http://localhost:3001/dataproject/notcomment`, {
         project_id: id,
-        comment: comment,
+        comment: notcomment,
         user_id: getLocalId(),
         time_comment: time2,
         date_comment: date2
@@ -353,6 +352,7 @@ const Detaildirector = () => {
       }).catch((error) => {
         console.log(error)
       });
+    getcomment()
   }
   console.log('103', commentproject)
 
@@ -361,40 +361,14 @@ const Detaildirector = () => {
       title: "ต้องการอนุมัติโครงการใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
       content: 'คุณต้องการอนุมัติโครงการนี้ไปยังผู้รับผิดชอบโครงการ',
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         confirmproject(value, 4)
       },
       onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm2 = (value) => {
-    confirm({
-      title: "ต้องการให้แก้ไขข้อมูลโครงการใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        noconfirmproject(value, 5)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm3 = (value) => {
-    confirm({
-      title: "ต้องการไม่อนุมัติโครงการใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        notproject(value, 10)
-      },
-      onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
@@ -461,7 +435,7 @@ const Detaildirector = () => {
                     <div className="fit">
                       <div className="grid p-fluid">
                         <div className="col-12 md:col-3">
-                          <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
+                          <h4>แผนยุทธ์ศาสตร์ :</h4>
                         </div>
                         <div className="col-12 md:col-9">
                           {strategicplanproject.map((value) => {
@@ -472,10 +446,10 @@ const Detaildirector = () => {
                     </div>
                     <div className="fit">
                       <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
-                          <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                        <div className="col-12 md:col-3">
+                          <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
                         </div>
-                        <div className="col-12 md:col-6">
+                        <div className="col-12 md:col-9">
                           {strategicproject.map((value) => {
                             return <h4> {value?.strategic_name} </h4>
                           })}
@@ -484,10 +458,10 @@ const Detaildirector = () => {
                     </div>
                     <div className="fit">
                       <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
-                          <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                        <div className="col-12 md:col-3">
+                          <h4>เป้าประสงค์ :</h4>
                         </div>
-                        <div className="col-12 md:col-6">
+                        <div className="col-12 md:col-9">
                           {goalproject.map((value) => {
                             return <h4> {value?.goal_name} </h4>
                           })}
@@ -496,10 +470,10 @@ const Detaildirector = () => {
                     </div>
                     <div className="fit">
                       <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
-                          <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                        <div className="col-12 md:col-3">
+                          <h4>กลยุทธ์ :</h4>
                         </div>
-                        <div className="col-12 md:col-6">
+                        <div className="col-12 md:col-9">
                           {tacticproject.map((value) => {
                             return <h4> {value?.tactic_name} </h4>
                           })}
@@ -508,7 +482,7 @@ const Detaildirector = () => {
                     </div>
                     <div className="fit">
                       <div className="grid p-fluid">
-                        <div className="col-12 md:col-4">
+                        <div className="col-12 md:col-3">
                           <h4>ประเภทของโครงการ :</h4>
                         </div>
                         <div className="col-12 md:col-9">
@@ -668,7 +642,7 @@ const Detaildirector = () => {
                           <h4>เอกสาร TOR :</h4>
                         </div>
                         <div className="col-12 md:col-9">
-                        <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <Tag className="mr-2" severity="success" value="มีเอกสาร" rounded></Tag>}</h4>
+                          <h4>{location.state.tor === 0 ? <Tag className="mr-2" severity="danger" value="ยังไม่มีเอกสาร" rounded></Tag> : <Tag className="mr-2" severity="success" value="มีเอกสาร" rounded></Tag>}</h4>
                         </div>
                       </div>
                     </div>
@@ -685,23 +659,9 @@ const Detaildirector = () => {
                           {(location.state.status === 0) ? <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag> :
                             (location.state.status === 1) ? <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag> :
                               (location.state.status === 2) ? <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag> :
-                                (location.state.status === 3) ? <div> <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '8em', height: '2.5em' }} onClick={() => showConfirm1(location.state.project_id)} /> <Button label="แก้ไข" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', width: '8em', height: '2.5em' }} onClick={showModal1} /> <Button label="ไม่อนุมัติ" icon="pi pi-times" className="p-button-danger" style={{ marginLeft: '.5em', width: '8em', height: '2.5em' }} onClick={showModal2} /></div> :
+                                (location.state.status === 3) ? <div> <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '8.5em', height: '2.5em' }} onClick={() => showConfirm1(location.state.project_id)} /> <Button label="แก้ไข" icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', width: '8.5em', height: '2.5em' }} onClick={showModal1} /> <Button label="ไม่อนุมัติ" icon="pi pi-times" className="p-button-danger" style={{ marginLeft: '.5em', width: '8.5em', height: '2.5em' }} onClick={showModal2} /></div> :
                                   (location.state.status === 4) ? <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag> :
                                     <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>}
-
-                          {/* <Dialog header="แน่ใจหรือไม่?" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter1('confirm')}>
-                              <div className="field" style={{ 'textAlign': 'center' }}>
-                                <i className="pi pi-exclamation-circle p-button-warning" style={{ 'fontSize': '8em', 'color': 'orange' }}></i>
-                                <p style={{ marginTop: 25 }}><h5>คุณต้องการอนุมัติโครงการนี้ไปยังผู้รับผิดชอบโครงการ</h5></p>
-                              </div>
-                            </Dialog>
-                          </div>
-                          <div className="col-12 md:col-2">
-
-                            <Dialog header="เนื่องจาก" visible={noconfirm} onHide={() => onHide('noconfirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter2('noconfirm')}>
-                              <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={71.5} />
-                            </Dialog>
-                          </div> */}
                           <div>
                             <Modal
                               title={<p className="m-0">{'เนื่องจาก'}</p>}
@@ -712,8 +672,8 @@ const Detaildirector = () => {
                             >
                               <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={69.2} />
                               <div className="text-right mt-4">
-                                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '19.5em' }} onClick={handleCancel1} />
-                                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm2(location.state.project_id)} autoFocus />
+                                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={handleCancel1} />
+                                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => noconfirmproject(location.state.project_id, 5)} autoFocus />
                               </div>
                             </Modal>
                           </div>
@@ -725,10 +685,12 @@ const Detaildirector = () => {
                               footer={null}
                               width={600}
                             >
-                              <InputTextarea value={notcomment} onChange={(e) => setNotcomment(e.target.value)} rows={8} cols={69.2} />
+                              <div>
+                                <InputTextarea value={notcomment} onChange={(e) => setNotcomment(e.target.value)} rows={8} cols={69.2} />
+                              </div>
                               <div className="text-right mt-4">
-                                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '19.5em' }} onClick={handleCancel2} />
-                                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(location.state.project_id)} autoFocus />
+                                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={handleCancel2} />
+                                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => notproject(location.state.project_id, 10)} autoFocus />
                               </div>
                             </Modal>
                           </div>
@@ -752,9 +714,6 @@ const Detaildirector = () => {
                           </DataTable>
                         </div>
                       </div>
-                    </div>
-                    <div style={{ marginTop: '2em', marginLeft: '82.5em' }} >
-                      <Button label="ย้อนกลับ" className="p-button-warning" onClick={() => history.push({ pathname: "/home/datadirector" })} />
                     </div>
                   </Panel>
                 </TabPanel>

@@ -7,7 +7,6 @@ const nodemailer = require("nodemailer")
 const multer = require('multer')
 const path = require('path')
 
-
 const email =(req,res) =>{ 
     const project_id = req.params.id
     const project_name = req.params.name

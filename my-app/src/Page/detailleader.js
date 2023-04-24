@@ -48,10 +48,12 @@ const Detailleader = () => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const [menu, setMenu] = useState(false);
+  const [pro, setPro] = useState();
   let history = useHistory();
 
   console.log('44', location.state)
   useEffect(() => {
+    showproject()
     getsection()
     getuser()
     getstrategicplan()
@@ -113,23 +115,17 @@ const Detailleader = () => {
     }
   }
 
-  // const renderFooter1 = (name) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{height: '2.5em' }} onClick={() => onHide(name)} />
-  //       <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{height: '2.5em' }} onClick={() => confirmproject(location.state.project_id, 1)} />
-  //     </div>
-  //   );
-  // }
-
-  // const renderFooter2 = (name) => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{height: '2.5em' }} onClick={() => onHide(name)} />
-  //       <Button label="ส่ง" icon="pi pi-check" className="p-button-success" style={{height: '2.5em', width: '17%' }} onClick={() => noconfirmproject(location.state.project_id, 2)} />
-  //     </div>
-  //   );
-  // }
+  const showproject = () => {
+    axios
+      .get(`http://localhost:3001/dataproject/pro/${location.state.project_id}`, {})
+      .then((res) => {
+        console.log(res.data)
+        setPro(res.data)
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
+  console.log('22', pro)
 
   const getsection = async () => {
     axios
@@ -301,7 +297,9 @@ const Detailleader = () => {
       .put(`http://localhost:3001/dataproject/confirmproject/${id}`, {
         status: n
       })
+    showproject()
     sendEmail(n)
+
   }
 
   const noconfirmproject = async (id, n) => {
@@ -313,6 +311,7 @@ const Detailleader = () => {
         status: n
       })
     await iscomment(id, time1, date1)
+    showproject()
     sendEmail(n)
   }
 
@@ -338,6 +337,7 @@ const Detailleader = () => {
       }).catch((error) => {
         console.log(error)
       });
+      getcomment()
   }
   console.log('66', commentproject)
 
@@ -346,26 +346,15 @@ const Detailleader = () => {
       title: "ต้องการอนุมัติโครงการใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
       content: 'คุณต้องการอนุมัติโครงการนี้ไปยังเจ้าหน้าที่ฝ่ายแผน',
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         confirmproject(value, 1)
+        showproject()
       },
       onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm2 = (value) => {
-    confirm({
-      title: "ต้องการไม่อนุมัติโครงการใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        noconfirmproject(value, 2)
-      },
-      onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
@@ -431,7 +420,7 @@ const Detailleader = () => {
                   <div className="fit">
                     <div className="grid p-fluid">
                       <div className="col-12 md:col-3">
-                        <h4>ชื่อแผนยุทธ์ศาสตร์ :</h4>
+                        <h4>แผนยุทธ์ศาสตร์ :</h4>
                       </div>
                       <div className="col-12 md:col-9">
                         {strategicplanproject.map((value) => {
@@ -442,10 +431,10 @@ const Detailleader = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
                       </div>
-                      <div className="col-12 md:col-6">
+                      <div className="col-12 md:col-9">
                         {strategicproject.map((value) => {
                           return <h4> {value?.strategic_name} </h4>
                         })}
@@ -454,10 +443,10 @@ const Detailleader = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>เป้าประสงค์ :</h4>
                       </div>
-                      <div className="col-12 md:col-6">
+                      <div className="col-12 md:col-9">
                         {goalproject.map((value) => {
                           return <h4> {value?.goal_name} </h4>
                         })}
@@ -466,10 +455,10 @@ const Detailleader = () => {
                   </div>
                   <div className="fit">
                     <div className="grid p-fluid">
-                      <div className="col-12 md:col-4">
-                        <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                      <div className="col-12 md:col-3">
+                        <h4>กลยุทธ์ :</h4>
                       </div>
-                      <div className="col-12 md:col-6">
+                      <div className="col-12 md:col-9">
                         {tacticproject.map((value) => {
                           return <h4> {value?.tactic_name} </h4>
                         })}
@@ -655,26 +644,20 @@ const Detailleader = () => {
                         <h4>พิจารณาโครงการ :</h4>
                       </div>
                       <div className="col-12 md:col-9">
-                        {(location.state.status === 0) ? <div> <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '8em', height: '2.5em' }} onClick={() => showConfirm1(location.state.project_id)} /> <Button label="ไม่อนุมัติ" icon="pi pi-times" className="p-button-danger" style={{ marginLeft: '.5em', width: '8em', height: '2.5em' }} onClick={showModal} /> </div> :
+                        {(location.state.status === 0) ? <div> <Button label="อนุมัติ" icon="pi pi-check" className="p-button-success" style={{ width: '8.5em', height: '2.5em' }} onClick={() => showConfirm1(location.state.project_id)} /> <Button label="ไม่อนุมัติ" icon="pi pi-times" className="p-button-danger" style={{ marginLeft: '.5em', width: '8.5em', height: '2.5em' }} onClick={showModal} /> </div> :
                           (location.state.status === 1) ? <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag> :
                             (location.state.status === 2) ? <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag> :
                               (location.state.status === 3) ? <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา" rounded></Tag> :
                                 (location.state.status === 4) ? <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag> :
-                                  <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>}
-
-                        {/* <Dialog header="แน่ใจหรือไม่?" visible={confirm} onHide={() => onHide('confirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter1('confirm')}>
-                              <div className="field" style={{ 'textAlign': 'center' }}>
-                                <i className="pi pi-exclamation-circle p-button-warning" style={{ 'fontSize': '8em', 'color': 'orange' }}></i>
-                                <p style={{ marginTop: 25 }}><h5>คุณต้องการอนุมัติโครงการนี้ไปยังเจ้าหน้าที่ฝ่ายแผน</h5></p>
-                              </div>
-                            </Dialog> */}
+                                  (location.state.status === 6 && location.state.status_evaluation === 3) ? <Tag className="mr-2" value='ปิดโครงการ/เสร็จตามระยะเวลา' rounded></Tag> :
+                                    (location.state.status === 7 && location.state.status_evaluation === 3) ? <Tag className="mr-2" value='ปิดโครงการ/ไม่เป็นไปตามระยะเวลา' rounded></Tag> :
+                                      (location.state.status === 8 && location.state.status_evaluation === 3) ? <Tag className="mr-2" value='ปิดโครงการ/ขอเลื่อน' rounded></Tag> :
+                                        (location.state.status === 9 && location.state.status_evaluation === 3) ? <Tag className="mr-2" value='ปิดโครงการ/ขอยกเลิก' rounded></Tag> :
+                                          (location.state.status_evaluation === 0 && (location.state.status == 6 || Location.state.status === 7 || location.state.status === 8 || location.state.status === 9)) ? <Tag className="mr-2" severity="warning" value='รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ' rounded></Tag> :
+                                            (location.state.status_evaluation === 1 && (location.state.status == 6 || Location.state.status === 7 || location.state.status === 8 || location.state.status === 9)) ? <Tag className="mr-2" severity="warning" value='รอผู้บริหารอนุมัติปิดโครงการ' rounded></Tag> :
+                                              ((location.state.status_evaluation === 2 || location.state.status_evaluation === 4) && (location.state.status == 6 || Location.state.status === 7 || location.state.status === 8 || location.state.status === 9)) ? <Tag className="mr-2" severity="danger" value='แก้ไขเอกสารประเมินโครงการ' rounded></Tag> :
+                                                <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>}
                       </div>
-                      {/* <div className="col-12 md:col-2">
-
-                            <Dialog header="เนื่องจาก" visible={noconfirm} onHide={() => onHide('noconfirm')} breakpoints={{ '950x': '75vw' }} style={{ width: '40vw' }} footer={renderFooter2('noconfirm')}>
-                              <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={71.5} />
-                            </Dialog>
-                          </div> */}
                       <div>
                         <Modal
                           title={<p className="m-0">{'เนื่องจาก'}</p>}
@@ -685,8 +668,8 @@ const Detailleader = () => {
                         >
                           <InputTextarea value={comment} onChange={(e) => setComment(e.target.value)} rows={8} cols={69.2} />
                           <div className="text-right mt-4">
-                            <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '19.5em' }} onClick={handleCancel} />
-                            <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm2(location.state.project_id)} autoFocus />
+                            <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={handleCancel} />
+                            <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => noconfirmproject(location.state.project_id, 2)} autoFocus />
                           </div>
                         </Modal>
                       </div>

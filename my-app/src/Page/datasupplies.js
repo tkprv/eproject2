@@ -15,6 +15,7 @@ import Sidebar from '../initialpage/Sidebar/sidebar';
 import { Card } from "primereact/card";
 import { Space, Table, Tooltip } from 'antd';
 import { RedoOutlined } from '@ant-design/icons'
+import { Panel } from 'primereact/panel';
 
 const Datasupplies = () => {
   const [fiscalyear, setFiscalyear] = useState([])
@@ -76,18 +77,18 @@ const Datasupplies = () => {
     } else if (node.status === 9 && node.status_evaluation === 3) {
       return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก"></Tag>
     } else if (node.status_evaluation === 0 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ"></Tag>
     } else if (node.status_evaluation === 1 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ" rounded></Tag>
-    } else if (( node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ"></Tag>
+    } else if ((node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
+      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ"></Tag>
     } else {
       return node.status
     }
   }
 
   const report1 = (node) => {
-    if (node.report_one === 0) {
+    if (node.report_one === 0 && node.status_report1 === 0) {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
     } else {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportone", state: node })} /></Tooltip>
@@ -95,7 +96,7 @@ const Datasupplies = () => {
   }
 
   const report2 = (node) => {
-    if (node.report_two === 0) {
+    if (node.report_two === 0 && node.status_report2 === 0) {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
     } else {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reporttwo", state: node })} /></Tooltip>
@@ -103,7 +104,7 @@ const Datasupplies = () => {
   }
 
   const report3 = (node) => {
-    if (node.report_three === 0) {
+    if (node.report_three === 0 && node.status_report3 === 0) {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
     } else {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportthree", state: node })} /></Tooltip>
@@ -111,7 +112,7 @@ const Datasupplies = () => {
   }
 
   const report4 = (node) => {
-    if (node.report_four === 0) {
+    if (node.report_four === 0 && node.status_report4 === 0) {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
     } else {
       return <Tooltip placement="bottom" title={<span>รายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-search" className="p-button-secondary" style={{ height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportfour", state: node })} /></Tooltip>
@@ -151,23 +152,11 @@ const Datasupplies = () => {
 
   const findProject = () => {
 
-    if (status.code === "50") {
-      {
-        console.log('hhhhh');
-        axios.get(`http://localhost:3001/dataproject/findprojectyear/${selectedfiscalyear.fiscalyear}`,)
-          .then((res) => {
-            setProject(res.data)
-            console.log('log', res.data)
-          })
-      }
-    } else {
-      axios.get(`http://localhost:3001/dataproject/findproject/${selectedfiscalyear.fiscalyear}/${status.code}`,
-      ).then((res) => {
-        setProject(res.data)
-        //console.log('log', res.data)
-      })
-    }
-
+    axios.get(`http://localhost:3001/dataproject/findproject/${status.code}`,
+    ).then((res) => {
+      setProject(res.data)
+      //console.log('log', res.data)
+    })
   }
 
   return (
@@ -176,34 +165,33 @@ const Datasupplies = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-            <h3>ข้อมูลโครงการ</h3>
-          </div>
+
           <Card>
-            <div align='left'>
-              <div className="fit">
-                <h4>ปีงบประมาณ
-                  <Dropdown value={selectedfiscalyear} options={fiscalyear} style={{ width: '10em', marginLeft: '1em', marginRight: '4em' }} onChange={onsetFiscalyear} optionLabel="fiscalyear" placeholder="ทุกปี" />
-                  สถานะ
-                  <Dropdown value={status} style={{ width: '30em', marginLeft: '1em' }} onChange={(e) => setStatus(e.target.value)} placeholder="สถานะโครงการ" options={findStatus} optionLabel="name" />
-                  <Button label="ค้นหา" onClick={findProject} className="p-button-success" style={{ marginLeft: ".8em" }} />
-                  <Tooltip title='โครงการทั้งหมด'>
-                    <Button style={{ marginTop: '5px', marginLeft: '3px' }} onClick={Project} type="primary" size="large" icon={<RedoOutlined />} />
-                  </Tooltip>
-                </h4>
+            <Panel header='ข้อมูลโครงการ'>
+              <div align='left'>
+                <div className="fit">
+                  <h4>
+                    สถานะ
+                    <Dropdown value={status} style={{ width: '30em', marginLeft: '1em' }} onChange={(e) => setStatus(e.target.value)} placeholder="สถานะโครงการ" options={findStatus} optionLabel="name" />
+                    <Button label="ค้นหา" onClick={findProject} className="p-button-success" style={{ marginLeft: ".8em" }} />
+                    <Tooltip title='โครงการทั้งหมด'>
+                      <Button style={{ marginTop: '5px', marginLeft: '3px' }} onClick={Project} type="primary" size="large" icon={<RedoOutlined />} />
+                    </Tooltip>
+                  </h4>
+                </div>
+                <div style={{ marginTop: "2.5em" }}>
+                  <DataTable value={project} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
+                    <Column field="project_name" header="ชื่อโครงการ" />
+                    <Column body={detailproject} header="รายละเอียดโครงการ" style={{ textAlign: 'center', width: "15%" }} />
+                    <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "22%" }} />
+                    <Column body={report1} header="รายงานความก้าวหน้าไตรมาส 1" style={{ textAlign: 'center', width: "11%" }} />
+                    <Column body={report2} header="รายงานความก้าวหน้าไตรมาส 2" style={{ textAlign: 'center', width: "11%" }} />
+                    <Column body={report3} header="รายงานความก้าวหน้าไตรมาส 3" style={{ textAlign: 'center', width: "11%" }} />
+                    <Column body={report4} header="รายงานความก้าวหน้าไตรมาส 4" style={{ textAlign: 'center', width: "11%" }} />
+                  </DataTable>
+                </div>
               </div>
-              <div style={{ marginTop: "2.5em" }}>
-                <DataTable value={project} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
-                  <Column field="project_name" header="ชื่อโครงการ" />
-                  <Column body={detailproject} header="รายละเอียดโครงการ" style={{ textAlign: 'center', width: "15%" }} />
-                  <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "22%" }} />
-                  <Column body={report1} header="รายงานความก้าวหน้าไตรมาส 1" style={{ textAlign: 'center', width: "11%" }} />
-                  <Column body={report2} header="รายงานความก้าวหน้าไตรมาส 2" style={{ textAlign: 'center', width: "11%" }} />
-                  <Column body={report3} header="รายงานความก้าวหน้าไตรมาส 3" style={{ textAlign: 'center', width: "11%" }} />
-                  <Column body={report4} header="รายงานความก้าวหน้าไตรมาส 4" style={{ textAlign: 'center', width: "11%" }} />
-                </DataTable>
-              </div>
-            </div>
+            </Panel>
           </Card>
         </div>
       </div>

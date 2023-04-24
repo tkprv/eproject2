@@ -85,9 +85,14 @@ const createuser = (req,res)=> {
       [secid,user,fname,lname,email,director,manager,supervisor,supplies,responsible,admin,flag,displayname],
       (err, result) => {
         if (err) {
-          console.log('5',err);
+          if (err.code === 'ER_DUP_ENTRY') {
+            res.send(err.code)
+            console.log('Duplicate data');
+          } else {
+            console.log(err);
+          }
         } else {
-          res.send("Values Inserted");
+          console.log('Data inserted successfully');
         }
       }
     );

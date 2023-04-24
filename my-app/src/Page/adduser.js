@@ -144,15 +144,16 @@ const Adduser = ({ getuser }) => {
 
     const onPositionChange = () => {
 
-        console.log('position', selectposition)
     }
 
     const saveProduct = async (value) => {
-        console.log(value)
-        // setCheckedList([])
-        // setRole(null)
-        // setIsModalOpen(false)
-        // setLoading(false)
+        setCheckedList([])
+        setRole(null)
+        setIsModalOpen(false)
+        setLoading(false)
+
+      if(test1 === 'success'){
+
         try {
             const { data } = await axios.post('http://localhost:3001/manageuser/create', {
                 section_id: value.radioRole === 'ผู้บริหาร' ? 0 : selectposition.section_id,
@@ -179,46 +180,50 @@ const Adduser = ({ getuser }) => {
             })
 
             const datauser = await data
+           
             if (datauser.success) {
+                toast.current.show({severity:'success', summary: 'Success', detail:'เพิ่มผู้ใช้สำเร็จ', life: 3000});
                 setCheckedList([])
                 setRole(null)
                 setIsModalOpen(false)
                 setLoading(false)
             } else {
-                // Registration failed
-                if (datauser.err.includes('Duplicate entry') && datauser.err.includes('username')) {
+                if (datauser === 'ER_DUP_ENTRY') {
                     toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'มีข้อมูลผู้ใช้นี้แล้ว', life: 3000 });
                     setLoading(true)
                 } else {
                     console.log('erroe');
                 }
             }
+
         } catch (e) {
             console.log(e)
         }
         handleCancel()
+      }else{
+         toast.current.show({
+                severity: 'warn',
+                summary: "warn",
+                detail: "ไม่มีข้อมูลของผู้ใช้นี้",
+                life: 3000,
+            })}
+       
     }
 
     const apiuser = async (value) => {
-        console.log('user', value)
         try {
             const dataapi = axios.post('http://localhost:3001/manageuser/api', {
                 username: value
-            }).then((res) => {
-                console.log()
+            })
+            .then((res) => { 
                 if (res.data.api_status === 'success') {
                     setFilteredResults(res.data.userInfo)
                 }
                 else {
-                    setLoading(false)
-                    toast.current.show({
-                        severity: 'warn',
-                        summary: "warn",
-                        detail: "ไม่มีข้อมูลของผู้ใช้นี้",
-                        life: 3000,
-                    })
+                    setLoading(false)                        
+                    
                 }
-
+                setTest1(res.data.api_status)
             })
             setLoading(false)
 
@@ -245,9 +250,9 @@ const Adduser = ({ getuser }) => {
 
 
     const handleNum = (e) => {
-        console.log(e.target.value)
         setLoading(true)
-            apiuser(e.target.value)
+        
+        apiuser(e.target.value)
     }
 
     const onChange = (checkedValues) => {
@@ -257,18 +262,7 @@ const Adduser = ({ getuser }) => {
         }
     }
 
-    const showConfirm = () => {
-        confirm({
-            title: 'ต้องการเพิ่มผู้ใช้งานใช่มั้ย?',
-            icon: <ExclamationCircleFilled />,
-            onOk() {
-                console.log('Ok');
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-        });
-    }
+   
 
     return (
         <div className="datatable-crud-demo">
@@ -314,7 +308,7 @@ const Adduser = ({ getuser }) => {
                             // }
                         ]}
                     >
-                        <Input maxLength={14} onChange={handleNum} />
+                        <Input onChange={handleNum} />
                     </Form.Item>
                     <div className="text-center">
                         <Spin size="large" spinning={loading} />
@@ -433,7 +427,6 @@ const Adduser = ({ getuser }) => {
                             size="large"
                             htmlType="submit"
                             style={{ width: '4.5em' }}
-                            onClick={() => showConfirm() }
                         >
                             เพิ่ม
                         </Button>

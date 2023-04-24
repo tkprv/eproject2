@@ -108,15 +108,6 @@ const Addreportthree = () => {
     );
   }
 
-  // const renderFooter1 = (id) => {
-  //   return (
-  //     <div>
-  //       <Button type="button" icon="pi pi-download" label='จัดเก็บ' className="p-button-help" onClick={() => createresult(id, addresult, checked1, 0)} />
-  //       <Button type="button" icon="pi pi-send" label='ส่ง' style={{ width: '7em', marginLeft: '.4em' }} onClick={() => createresult(id, addresult, checked1, 1)} autoFocus />
-  //     </div>
-  //   );
-  // }
-
   const addTableRows1 = () => {
     setRowsData1([...rowsData1, rowsInput1])
   }
@@ -201,6 +192,7 @@ const Addreportthree = () => {
         createproblemthree(res.data.insertId)
       })
     await updatereportthree(id, statusreport)
+    getindic()
   }
 
   const updatereportthree = async (id, statusreport) => {
@@ -288,24 +280,28 @@ const Addreportthree = () => {
   };
 
   const createresult = (id, addresult, checked1) => {
-    onHide2()
+
     axios.put(`http://localhost:3001/addreport/createresult/${resultid}`, {
       result: addresult,
       achieve: (checked1 === true) ? 1 : 0
     })
+    onHide2()
+    getindic()
   };
 
   const showConfirm1 = (value) => {
     confirm({
       title: "ต้องการจัดเก็บรายงานความก้าวหน้าไตรมาส 3 ใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         createquarterchargestthree(value, 0)
 
       },
       onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
@@ -314,40 +310,14 @@ const Addreportthree = () => {
     confirm({
       title: "ต้องการส่งรายงานความก้าวหน้าไตรมาส 3 ใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         createquarterchargestthree(value, 1)
       },
       onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm3 = (value) => {
-    confirm({
-      title: "ต้องการจัดเก็บข้อมูลผลตามตัวชี้วัด และบรรลุตามตัวชี้วัดใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        createresult(value, addresult, checked1)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm4 = (value) => {
-    confirm({
-      title: "ต้องการส่งข้อมูลผลตามตัวชี้วัด และบรรลุตามตัวชี้วัดใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        createresult(value, addresult, checked1)
-      },
-      onCancel() {
-        console.log("Cancel");
+        console.log("ยกลิก");
       },
     });
   }
@@ -360,7 +330,7 @@ const Addreportthree = () => {
         <div className="page-wrapper">
           <Card>
             <Panel header='รายงานความก้าวหน้าไตรมาส 3'>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ชื่อโครงการ :</h4>
@@ -370,7 +340,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>งบประมาณที่จัดสรร :</h4>
@@ -380,7 +350,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลการใช้จ่าย :</h4>
@@ -390,7 +360,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลตามตัวชี้วัด :</h4>
@@ -408,7 +378,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ขั้นตอนการดำเนินการ :</h4>
@@ -424,7 +394,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
@@ -437,7 +407,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>รายละเอียดความก้าวหน้า :</h4>
@@ -455,7 +425,7 @@ const Addreportthree = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ปัญหา/อุปสรรค :</h4>
@@ -488,36 +458,35 @@ const Addreportthree = () => {
               footer={null}
               width={700}
             >
-              <h4>ผลตามตัวชี้วัด</h4>
-              <InputText
-                value={addresult}
-                onChange={(e) => setAddresult(e.target.value)}
-                placeholder="ผลตามตัวชี้วัด"
-              />
-              <h4 style={{ marginTop: '.5em' }}>บรรลุตามตัวชี้วัด</h4>
-              <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ผลตามตัวชี้วัด :</h4>
+                  </div>
+                  <div className="col-12 md:col-3">
+                    <InputText
+                      value={addresult}
+                      onChange={(e) => setAddresult(e.target.value)}
+                      placeholder="ผลตามตัวชี้วัด"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4 style={{ marginTop: '1em' }}>บรรลุตามตัวชี้วัด :</h4>
+                  </div>
+                  <div className="col-12 md:col-3">
+                    <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} style={{ marginTop: '1em' }} />
+                  </div>
+                </div>
+              </div>
               <div className="text-right mt-4">
-                <Button type="button" icon="pi pi-download" label='จัดเก็บ' className="p-button-help" style={{ height: '2.5em' }} onClick={() => showConfirm3(resultid)} />
-                <Button type="button" icon="pi pi-send" label='ส่ง' style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} className="p-button-info" onClick={() => showConfirm4(resultid)} autoFocus />
+                <Button type="button" icon="pi pi-check" label='บันทึก' style={{ width: '7em', height: '2.5em' }} className="p-button-success" onClick={() => createresult(resultid, addresult, checked1)} autoFocus />
               </div>
             </Modal>
           </div>
-
-          {/* <Dialog
-              style={{ width: '450px', width: "50vw" }} header="เพิ่มผลตามตัวชี้วัด และบรรลุตามตัวชี้วัด" modal className="p-fluid"
-              visible={visible1}
-              footer={renderFooter1}
-              onHide={onHide}
-            >
-              <h4>ผลตามตัวชี้วัด</h4>
-              <InputText
-                value={addresult}
-                onChange={(e) => setAddresult(e.target.value)}
-                placeholder="ผลตามตัวชี้วัด"
-              />
-              <h4 style={{ marginTop: '.5em' }}>บรรลุตามตัวชี้วัด</h4>
-              <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
-            </Dialog> */}
         </div>
       </div>
     </>

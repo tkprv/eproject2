@@ -13,5 +13,7 @@ Router.put('/updatest/:ID',managepland.updatest)
 Router.post('/createstid',managepland.createstid)
 Router.post('/datast/:id',managepland.datast)
 Router.get('/getyear',managepland.getyears)
+Router.put('/updateyears/:id',managepland.updateyears)
+Router.get('/redatast/:id',managepland.redatast)
 
 module.exports=Router

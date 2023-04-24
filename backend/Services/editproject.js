@@ -205,9 +205,14 @@ const showchargeshead = (req, res) => {
 const updatechargeshead = (req, res) => {
     const ID = req.params.id;
     const chargeshead = req.body.charges_name_head;
+    const charges = req.body.charges_name;
+    const quarterone = req.body.quarter_one;
+    const quartertwo = req.body.quarter_two;
+    const quarterthree = req.body.quarter_three;
+    const quarterfour = req.body.quarter_four;
     db.query(
-        "UPDATE tbl_charges SET charges_name_head = ? WHERE charges_id = ?",
-        [chargeshead, ID],
+        "UPDATE tbl_charges SET charges_name_head = ?, charges_name = ?, quarter_one = ?, quarter_two = ?, quarter_three = ?, quarter_four = ? WHERE charges_id = ?",
+        [chargeshead, charges, quarterone, quartertwo, quarterthree, quarterfour, ID],
         (err, result) => {
             if (err) {
                 console.log(err)
@@ -218,27 +223,6 @@ const updatechargeshead = (req, res) => {
     )
     console.log('chargeshead', ID)
     console.log('newchargeshead', chargeshead)
-}
-
-const updatecharges = (req, res) => {
-    const ID = req.params.id;
-    const charges = req.body.charges_name;
-    const quarterone = req.body.quarter_one;
-    const quartertwo = req.body.quarter_two;
-    const quarterthree = req.body.quarter_three;
-    const quarterfour = req.body.quarter_four;
-    db.query(
-        "UPDATE tbl_charges SET charges_name = ?, quarter_one = ?, quarter_two = ?, quarter_three = ?, quarter_four = ? WHERE charges_id = ?",
-        [charges, quarterone, quartertwo, quarterthree, quarterfour, ID],
-        (err, result) => {
-            if (err) {
-                console.log(err)
-            } else {
-                res.send(result)
-            }
-        }
-    )
-    console.log('charges', ID)
     console.log('newcharges', charges)
     console.log('newquaterone', quarterone)
     console.log('newquatertwo', quartertwo)
@@ -322,4 +306,4 @@ const updateproject = (req, res) => {
     console.log('newstatus', status)
 }
 
-module.exports = { strategicid, strategic, sectionpro, showuserpro, userpro, updateuserproject, integrationpro, showobjective, updateobjective, showindicpro, updateindicpro, showstep, updatestep, workplanpro, showchargeshead, updatechargeshead, updatecharges, showbenefit, updatebenefit, updateproject }
+module.exports = { strategicid, strategic, sectionpro, showuserpro, userpro, updateuserproject, integrationpro, showobjective, updateobjective, showindicpro, updateindicpro, showstep, updatestep, workplanpro, showchargeshead, updatechargeshead, showbenefit, updatebenefit, updateproject }

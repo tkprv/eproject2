@@ -12,6 +12,7 @@ import Sidebar from '../initialpage/Sidebar/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Panel } from 'primereact/panel';
 import { ExclamationCircleFilled } from '@ant-design/icons'
+import { Column } from 'primereact/column'
 import { Modal } from 'antd'
 const { confirm } = Modal
 
@@ -55,6 +56,15 @@ const Editprojectevaluationmanager = () => {
         dialogFuncMap[`${name}`](false);
     }
 
+    const obtain = (node) => {
+        console.log('no', node)
+        if (node.obtain === 1) {
+            return 'บรรลุ'
+        } else if (node.obtain === 0) {
+            return 'ไม่บรรลุ'
+        }
+    }
+    
     const getsection = async () => {
         axios
             .get(`http://localhost:3001/dataproject/sectionproject/${location.state.section_id}`, {})
@@ -167,13 +177,15 @@ const Editprojectevaluationmanager = () => {
         confirm({
             title: 'คุณต้องการอนุมัติการปิดโครงการนี้ใช่มั้ย?',
             icon: <ExclamationCircleFilled style={{ verticalAlign: 'middle' }} />,
+            okText: 'ตกลง',
+            cancelText: 'ยกเลิก',
             onOk() {
-                console.log('OK')
+                console.log('ตกลง')
                 updatestatusconfirm(value, 1)
 
             },
             onCancel() {
-                console.log('Cancel')
+                console.log('ยกเลิก')
             },
         })
     }
@@ -182,13 +194,15 @@ const Editprojectevaluationmanager = () => {
         confirm({
             title: 'คุณต้องการไม่อนุมัติการปิดโครงการนี้ใช่มั้ย?',
             icon: <ExclamationCircleFilled style={{ verticalAlign: 'middle' }} />,
+            okText: 'ตกลง',
+            cancelText: 'ยกเลิก',
             onOk() {
-                console.log('OK')
+                console.log('ตกลง')
                 updatestatusconfirm(value, 2)
 
             },
             onCancel() {
-                console.log('Cancel')
+                console.log('ยกเลิก')
             },
         })
     }
@@ -199,13 +213,6 @@ const Editprojectevaluationmanager = () => {
                 status_evaluation: n
             })
     }
-
-    // const updatestatusnoconfirm = (id, n) => {
-    //     axios
-    //         .put(`http://localhost:3001/dataevaluation/updatestatus/${id}`, {
-    //             status_evaluation: n
-    //         })
-    // }
 
 
     return (
@@ -248,10 +255,10 @@ const Editprojectevaluationmanager = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {strategicproject.map((value) => {
                                             return <h4> {value?.strategic_name} </h4>
                                         })}
@@ -260,10 +267,10 @@ const Editprojectevaluationmanager = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>เป้าประสงค์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {goalproject.map((value) => {
                                             return <h4> {value?.goal_name} </h4>
                                         })}
@@ -272,10 +279,10 @@ const Editprojectevaluationmanager = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>กลยุทธ์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {tacticproject.map((value) => {
                                             return <h4> {value?.tactic_name} </h4>
                                         })}
@@ -318,9 +325,12 @@ const Editprojectevaluationmanager = () => {
                                         <h4>วัตถุประสงค์ :</h4>
                                     </div>
                                     <div className="col-12 md:col-9">
-                                        {objectiveproject.map((value) => {
-                                            return <h4> {value?.objective_name}  {(value?.obtain === 1) ? 'บรรลุ' : 'ไม่บรรลุ'}</h4>
-                                        })}
+                                        <h4>
+                                            <DataTable value={objectiveproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
+                                                <Column field="objective_name" header="วัตถุประสงค์" />
+                                                <Column body={obtain} header="การบรรลุวัตถุประสงค์" />
+                                            </DataTable>
+                                        </h4>
                                     </div>
                                 </div>
                             </div>
@@ -391,7 +401,7 @@ const Editprojectevaluationmanager = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div style={{ marginTop: '2em', marginLeft: '44em' }} >
+                            <div className="text-right mt-4">
                                 <h4>
                                     <Button type="button" icon="pi pi-times" label='ไม่อนุมัติการปิดโครงการ' className="p-button-danger" style={{ marginLeft: '.4em', height: '2.5em' }} onClick={() => { showNoconfirm(location.state.project_id) }} />
                                     <Button type="button" icon="pi pi-check" label='อนุมัติการปิดโครงการ' className="p-button-success" style={{ marginLeft: '.4em', height: '2.5em', width: '15em' }} onClick={() => { showConfirm(location.state.project_id) }} />

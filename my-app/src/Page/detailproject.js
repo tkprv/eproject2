@@ -654,12 +654,6 @@ const Detailproject = () => {
                           </Button>
                         )
                       })}
-                      {/* { <Button disabled = {openFile === null } onClick={openfile}> openfile</Button>
-      } */}
-                      {/* {userInfo.filepreview !== null ? 
-        <img className="previewimg"  src={userInfo.filepreview} alt="UploadImage" />
-      : null} */}
-
                     </div>
                   </Panel>
                 </TabPanel>}

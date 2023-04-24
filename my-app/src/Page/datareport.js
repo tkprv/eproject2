@@ -36,38 +36,38 @@ const Datareport = () => {
   const Status = (node) => {
     console.log('node', node)
     if (node.status === 0) {
-      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา"></Tag>
     } else if (node.status === 1) {
-      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag>
+      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ"></Tag>
     } else if (node.status === 2) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย"></Tag>
     } else if (node.status === 3) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา"></Tag>
     } else if (node.status === 4) {
-      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ"></Tag>
     } else if (node.status === 5) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร"></Tag>
     } else if (node.status === 6 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา"></Tag>
     } else if (node.status === 7 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา"></Tag>
     } else if (node.status === 8 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน"></Tag>
     } else if (node.status === 9 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก"></Tag>
     } else if (node.status_evaluation === 0 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ"></Tag>
     } else if (node.status_evaluation === 1 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ"></Tag>
     } else if ((node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ"></Tag>
     } else {
       return node.status
     }
   }
 
   const report1 = (node) => {
-    if (node.status === 4 && node.report_one === 0 && node.open_reportone === 1 && node.status_report1 === 1) {
+    if (node.status === 4 && node.report_one === 0 && node.open_reportone === 1) {
       return <div>
         <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 1</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreportone", state: node })} /></Tooltip>
@@ -90,7 +90,7 @@ const Datareport = () => {
   }
 
   const report2 = (node) => {
-    if (node.status === 4 && node.report_two === 0 && node.open_reporttwo === 1 && node.status_report2 === 1) {
+    if (node.status === 4 && node.report_two === 0 && node.open_reporttwo === 1) {
       return <div>
         <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 2</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreporttwo", state: node })} /></Tooltip>
@@ -112,7 +112,7 @@ const Datareport = () => {
   }
 
   const report3 = (node) => {
-    if (node.status === 4 && node.report_three === 0 && node.open_reportthree === 1 && node.status_report3 === 1) {
+    if (node.status === 4 && node.report_three === 0 && node.open_reportthree === 1) {
       return <div>
         <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 3</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreportthree", state: node })} /></Tooltip>
@@ -134,7 +134,7 @@ const Datareport = () => {
   }
 
   const report4 = (node) => {
-    if (node.status === 4 && node.report_four === 0 && node.open_reportfour === 1 && node.status_report4 === 1) {
+    if (node.status === 4 && node.report_four === 0 && node.open_reportfour === 1) {
       return <div>
         <Tooltip placement="bottom" title={<span>ดูรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-search" className="p-button-info" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>เพิ่มรายงานความก้าวหน้าไตรมาส 4</span>} ><Button type="button" icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => history.push({ pathname: "/home/addreportfour", state: node })} /></Tooltip>

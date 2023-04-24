@@ -1,7 +1,7 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Radio, Row, Select, } from 'antd'
+import { Button, Col, Form, Input, InputNumber, Modal, DatePicker, Radio, notification, Row, Select, Space } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { ExclamationCircleFilled, MinusCircleOutlined, PlusOutlined, } from '@ant-design/icons'
-import { Calendar } from 'primereact/calendar'
+import { useHistory } from "react-router-dom";
 import axios from 'axios'
 import { Toast } from 'primereact/toast'
 import { getLocalName } from "../helper/utill"
@@ -10,8 +10,8 @@ import { getLocalId } from '../helper/utill';
 import moment from 'moment'
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
-import { Card } from 'primereact/card';
-import { Panel } from 'primereact/panel';
+import { Card } from 'primereact/card'
+import { Panel } from 'primereact/panel'
 
 const { Option } = Select
 const { confirm } = Modal
@@ -46,47 +46,12 @@ const formItemLayout1 = {
 
 }
 
-const tailFormItemLayout = {
-    labelCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 8,
-        },
-        offset: 15,
-    },
-    wrapperCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 16,
-        },
-    },
-
-}
-
-const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 20,
-            offset: 5,
-        },
-    },
-}
 const formItemLayoutWithOutLabel2 = {
     wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
-        offset: 5,
+        offset: 4,
     },
-
-
 }
 
 const Newproject = () => {
@@ -119,7 +84,8 @@ const Newproject = () => {
     const [isYearFiller, setIsYearFiller] = useState(false)
     const [datapand, setDatapand] = useState([])
     const [menu, setMenu] = useState(false)
-
+    const [radioValue, setRadioValue] = useState('0');
+    const [projectid, setProjectid] = useState()
     const budget = [
         { name: 'งบประมาณรายได้มหาลัย' },
         { name: 'งบประมาณรายได้ของส่วนงาน' },
@@ -127,6 +93,8 @@ const Newproject = () => {
         { name: 'งบอื่นๆ' },
         { name: 'ไม่ได้ใช้งบประมาณ' },
     ]
+
+    let history = useHistory()
 
     const toggleMobileMenu = () => {
         setMenu(!menu)
@@ -152,17 +120,17 @@ const Newproject = () => {
 
     const getheadprojects = () => {
         axios
-            .get("http://localhost:3001/manageuser/person", {})
+            .get('http://localhost:3001/manageuser/person', {})
             .then((res) => {
-                const newdata = res.data;
+                const newdata = res.data
                 const data1 = newdata.filter(
                     (value) => value.displayname !== getLocalName()
-                );
+                )
                 setPerson(data1)
             })
             .catch((error) => {
-                console.log(error);
-            });
+                console.log(error)
+            })
     }
 
     const getSectoin = () => {
@@ -263,8 +231,6 @@ const Newproject = () => {
                 console.log(error)
             })
     }
-
-
     const onStrategic = (e) => {
         setIsYearFiller(true)
         const setst = stopen.filter(
@@ -361,9 +327,20 @@ const Newproject = () => {
                     strategicproject(res.data.insertId, alldata)
                     createbenefit(res.data.insertId, alldata)
                     sendEmail(res.data.insertId, alldata)
+                    setProjectid(res.data.insertId)
                     if (alldata.selectedbudget !== 'ไม่ได้ใช้งบประมาณ') {
                         createcharges(res.data.insertId, alldata)
                     }
+                })
+                .then(() => {
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'ส่งโครงการสำเร็จ',
+                        life: 3000,
+                    })
+                    history.push({ pathname: "/Page/Dataproject"})
+
                 })
         } catch (e) {
             console.log(e)
@@ -388,17 +365,16 @@ const Newproject = () => {
                 goal_id: alldata.goal_name,
                 tactic_id: alldata.tactic_name
             })
-            if (alldata.namestraegicproject.length !== 0 && alldata.namestraegicproject !== null) {
-                for (const value of alldata.namestraegicproject) {
-
+            if (alldata.listplan.length !== 0 && alldata.listplan !== null) {
+                for (const value of alldata.listplan) {
                     try {
                         axios
                             .post('http://localhost:3001/new/strategicproject', {
                                 project_id: id,
-                                plan_id: value.planname,
-                                strategic_id: alldata.selectgoa,
-                                goal_id: alldata.selectissues,
-                                tactic_id: alldata.tactic
+                                plan_id: value.plan_name,
+                                strategic_id: value.strategic_name,
+                                goal_id: value.goal_name,
+                                tactic_id: value.tactic_name
                             })
                             .then((res) => {
                             })
@@ -511,7 +487,8 @@ const Newproject = () => {
     }
 
     const createcharges = (id, alldata) => {
-
+    console.log('id', id)
+        console.log('data', alldata)
         for (const value of alldata.budget) {
             console.log('eee', value.Quarter1)
             try {
@@ -532,7 +509,6 @@ const Newproject = () => {
         }
     }
     const createUser = (id, alldata) => {
-
         try {
             axios.post('http://localhost:3001/new/userproject', {
                 project_id: id,
@@ -544,7 +520,7 @@ const Newproject = () => {
                         axios
                             .post('http://localhost:3001/new/userproject', {
                                 project_id: id,
-                                user_id: value.user_id,
+                                user_id: alldata,
                             })
                             .then((data) => {
                             })
@@ -587,6 +563,101 @@ const Newproject = () => {
         }
 
     }
+
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // const [userInfo, setuserInfo] = useState({
+    //     file: [],
+    //     filepreview: null,
+    // });
+
+    // const handleInputChange = (event, status) => {
+    //     if (status === 1) {
+    //         const file = event.target.files[0];
+    //         const maxSize = 5 * 1024 * 1024
+    //         if (file.size > maxSize) {
+    //             showConfirm44()
+    //             event.target.value = null
+    //         }
+    //         console.log(event);
+    //         setuserInfo({
+    //             ...userInfo,
+    //             file: event.target.files[0],
+    //             filepreview: URL.createObjectURL(event.target.files[0]),
+    //         })
+    //     } else {
+    //         event.target.value = null
+    //     }
+
+
+    // }
+
+    // const [isSucces, setSuccess] = useState(null);
+    // const showConfirm44 = (value, amount) => {
+    //     confirm({
+    //         title: "ไม่สามารถอัพไฟล์ได้",
+    //         icon: <ExclamationCircleFilled />,
+    //         content: "ไฟล์ต้องมีขนาดน้อยกว่า 5MB",
+    //         onOk() {
+    //             console.log("OK")
+
+    //         },
+    //         onCancel() {
+    //             console.log("Cancel")
+    //         },
+    //     });
+    // };
+    // const [openFile, setOpenFile] = useState(null)
+
+    // const submit = async (id) => {
+    //     const formdata = new FormData();
+    //     var blob = new Blob([userInfo], { type: 'file/pdf' });
+    //     var blobUrl = URL.createObjectURL(blob);
+    //     console.log('blob', blob);
+    //     console.log('blobURL', blobUrl);
+    //     formdata.append('avatar', userInfo.file);
+
+    //     const image = { headers: { "Content-Type": "multipart/form-data" } }
+    //     axios.post("http://localhost:3001/torupload", {
+
+    //         userInfo, project_id: projectid
+
+    //     }).then(res => {
+    //         // if (res) {
+    //         notification.success({
+    //             message: "สำเร็จ",
+    //             description:
+    //                 'อัปโหลดไฟล์สำเร็จ',
+    //         })
+    //         getfile()
+    //         //  }
+    //     })
+
+    // }
+
+
+    // const getfile = () => {
+    //     axios
+    //         .get(`http://localhost:3001/getpdf/${projectid}`, {})
+    //         .then((res) => {
+    //             setOpenFile(res.data)
+    //             console.log(res.data)
+
+    //         })
+    //         .catch((error) => {
+    //             console.log(error)
+    //         })
+    // }
+    // const openfile = (url) => {
+    //     window.open(url)
+
+    // }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
     useEffect(() => {
@@ -640,7 +711,6 @@ const Newproject = () => {
             if (amount === Number(value.amount) || amount === 0) {
                 setAalldata(value)
                 showConfirm(value)
-                // createProject(value)
 
             } else {
                 toast.current.show({
@@ -687,7 +757,7 @@ const Newproject = () => {
             <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
                 <div className="page-wrapper">
                     <Card>
-                        <Panel header='สร้างโครงการ'>
+                        <Panel header="สร้างโครงการ">
                             <Toast ref={toast} />
                             <Form
                                 form={form}
@@ -695,6 +765,9 @@ const Newproject = () => {
                                 name="dynamic_rule"
                                 style={{
                                     maxWidth: '100%',
+                                    border: 'none',
+                                    boxShadow: 'none'
+
                                 }}
                                 layout="horizontal"
                             >
@@ -737,7 +810,8 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Input placeholder="กรุณาเพิ่มชื่อโครงการ" style={{ width: '35em', marginLeft: '9em' }} />
+                                    <Input placeholder="กรุณาเพิ่มชื่อโครงการ"
+                                        style={{ width: '35em', marginLeft: '9em' }} />
                                 </Form.Item>
                                 <Form.Item
                                     {...formItemLayout1}
@@ -765,63 +839,68 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Input placeholder="headproject" disabled style={{ width: '35em', marginLeft: '5.4em' }} />
+                                    <Input placeholder="headproject" disabled
+                                        style={{ width: '35em', marginLeft: '5.4em' }} />
                                 </Form.Item>
-                                <Form.List name="nameheadpj" {...formItemLayout}>
+                                <Form.List name="nameheadpj">
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
                                             {fields.map((field, index) => (
                                                 <Form.Item
-                                                    {...(index === 0
-                                                        ? formItemLayout
-                                                        : formItemLayoutWithOutLabel)}
-                                                    label={index === 0 ? 'ผู้รับผิดชอบโครงการ ' : ''}
                                                     required={false}
                                                     key={field.key}
+                                                    wrapperCol={{
+                                                        flex: 1,
+                                                    }}
                                                 >
-                                                    <Form.Item
-                                                        {...field}
-                                                        name="nameheadpj"
-                                                        //  validateTrigger={['onChange', 'onBlur']}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                // whitespace: true,
-                                                                message:
-                                                                    'กรุณาเลือกผู้รับผิดชอบโครงการ',
-                                                            },
-                                                        ]}
-                                                        noStyle
-                                                    ><Select
-                                                            size="large"
-                                                            style={{ width: 490 }}
-                                                            placeholder="---- กรุณาเลือกผู้รับผิดชอบโครงการ ----"
-                                                            options={person?.map((item) => ({
-                                                                value: item.user_id,
-                                                                label: item.displayname,
-                                                            }))}
-                                                        />
-                                                    </Form.Item>
+                                                    <Row>
+                                                        <Space align="start">
+                                                            <Form.Item
+                                                                {...field}
+                                                                {...formItemLayout1}
+                                                                label={`ผู้รับผิดชอบโครงการคนที่ ${index + 2}`}
+                                                                rules={[
+                                                                    {
+                                                                        required: true,
+                                                                        message: 'กรุณาเลือกแผนยุทธศาสตร์',
+                                                                    },
+                                                                ]}
+                                                                style={{ marginLeft: '2.5em' }}
+                                                            >
+                                                                <Select
+                                                                    size="large"
+                                                                    style={{ width: 490, marginLeft: '2.2em' }}
+                                                                    placeholder="---- กรุณาเลือกผู้รับผิดชอบโครงการ ----"
+                                                                    options={person?.map((item) => ({
+                                                                        value: item.user_id,
+                                                                        label: item.displayname,
+                                                                    }))}
+                                                                />
+                                                            </Form.Item>
 
-                                                    <MinusCircleOutlined
-                                                        className="dynamic-delete-button"
-                                                        onClick={() => remove(field.name)}
-                                                        style={{ marginLeft: '.5em' }}
-                                                    />
+                                                            <MinusCircleOutlined
+                                                                onClick={() => remove(field.name)}
+                                                                style={{ marginLeft: '.5em', marginTop: '1em' }}
+                                                            />
+                                                        </Space>
+                                                    </Row>
                                                 </Form.Item>
+
                                             ))}
-                                            <Form.Item {...formItemLayoutWithOutLabel2}>
+                                            <Form.Item {...formItemLayout1} label="เพิ่มข้อมูล"
+                                                style={{ marginLeft: '3.3em' }}>
                                                 <Button
                                                     type="dashed"
                                                     onClick={() => add()}
                                                     block
                                                     icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
-                                                    style={{ width: '35em' }}
+                                                    style={{ width: '35em', marginLeft: '9.4em' }}
                                                 >
                                                     เพิ่มผู้รับผิดชอบโครงการ
                                                 </Button>
                                                 <Form.ErrorList errors={errors} />
                                             </Form.Item>
+
                                         </>
                                     )}
                                 </Form.List>
@@ -980,22 +1059,6 @@ const Newproject = () => {
                                             </Option>
                                         )}
                                     </Select>
-                                    {/*<Select*/}
-                                    {/*    size="large"*/}
-                                    {/*    style={{*/}
-                                    {/*        width: 400,*/}
-                                    {/*    }}*/}
-                                    {/*    defaultValue={null}*/}
-                                    {/*    placeholder="---- กรุณาเลือกกลยุทธ์ ----"*/}
-                                    {/*    disabled={disTacticName}*/}
-                                    {/*>*/}
-                                    {/*    <Option value={null}>---- กรุณาเลือกกลยุทธ์ ----</Option>*/}
-                                    {/*    {newtactic?.map((value) => (*/}
-                                    {/*        <Option key={value.tactic_id} value={value.tactic_id}>*/}
-                                    {/*            {value.tactic_name}*/}
-                                    {/*        </Option>*/}
-                                    {/*    ))}*/}
-                                    {/*</Select>*/}
                                 </Form.Item>
 
                                 <Form.List name="listplan">
@@ -1032,9 +1095,11 @@ const Newproject = () => {
                                                             onChange={onChangePlan_name}
                                                         >
                                                             {' '}
-                                                            <Option value={null}>---- กรุณาเลือกแผนยุทธศาสตร์ ----</Option>
+                                                            <Option value={null}>---- กรุณาเลือกแผนยุทธศาสตร์
+                                                                ----</Option>
                                                             {plannamedefalse?.map((value) => (
-                                                                <Option key={value.fiscalyear_id} value={value.fiscalyear_id}>
+                                                                <Option key={value.fiscalyear_id}
+                                                                    value={value.fiscalyear_id}>
                                                                     {value.plan_name}
                                                                 </Option>
                                                             ))}
@@ -1063,9 +1128,11 @@ const Newproject = () => {
                                                             onChange={onChangeGoal}
                                                             disabled={disStrategicName}
                                                         >
-                                                            <Option value={null}>---- กรุณาเลือกประเด็นยุทธศาสตร์ ----</Option>
+                                                            <Option value={null}>---- กรุณาเลือกประเด็นยุทธศาสตร์
+                                                                ----</Option>
                                                             {strategicName?.map((value) => (
-                                                                <Option key={value.strategic_id} value={value.strategic_id}>
+                                                                <Option key={value.strategic_id}
+                                                                    value={value.strategic_id}>
                                                                     {value.strategic_name}
                                                                 </Option>
                                                             ))}
@@ -1095,7 +1162,8 @@ const Newproject = () => {
                                                             disabled={disGoalName}
                                                         >
                                                             {' '}
-                                                            <Option value={null}>---- กรุณาเลือกเป้าประสงค์ ----</Option>
+                                                            <Option value={null}>---- กรุณาเลือกเป้าประสงค์
+                                                                ----</Option>
                                                             {goalName?.map((value) => (
                                                                 <Option key={value.goal_id} value={value.goal_id}>
                                                                     {value.goal_name}
@@ -1135,15 +1203,25 @@ const Newproject = () => {
                                                         </Select>
                                                     </Form.Item>
                                                     <Form.Item {...formItemLayoutWithOutLabel2}>
-                                                        <MinusCircleOutlined onClick={() => remove(name)} style={{ marginLeft: '.5em' }} />
+                                                        <MinusCircleOutlined onClick={() => remove(name)}
+                                                            style={{ marginLeft: '.5em' }} />
                                                     </Form.Item>
                                                 </Form.Item>
                                             ))}
-                                            <Form.Item {...formItemLayoutWithOutLabel2}>
-                                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />} style={{ width: '35em' }}>
+                                            <Form.Item {...formItemLayout1} label="เพิ่มข้อมูล"
+                                                style={{ marginLeft: '3.3em' }}>
+                                                <Button
+                                                    type="dashed"
+                                                    onClick={() => add()}
+                                                    block
+                                                    icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
+                                                    style={{ width: '35em', marginLeft: '9.4em' }}
+                                                >
                                                     เพิ่มแผนยุทธศาสตร์
                                                 </Button>
+                                                {/* <Form.ErrorList errors={errors}/> */}
                                             </Form.Item>
+
                                         </>
                                     )}
                                 </Form.List>
@@ -1160,11 +1238,15 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Radio.Group>
-                                        <Radio value="1" style={{ marginLeft: '7em' }}>โครงการในแผน</Radio>
-                                        <Radio value="0">โครงการนอกแผน</Radio>
-                                    </Radio.Group>
+                                    <Row>
+                                        <Radio.Group>
+                                            <Radio value="1" style={{ marginLeft: '7em' }}>โครงการในแผน</Radio>
+                                            <br />
+                                            <Radio value="0" style={{ marginLeft: '7em', marginTop: '.5em' }}>โครงการนอกแผน</Radio>
+                                        </Radio.Group>
+                                    </Row>
                                 </Form.Item>
+
                                 <Form.Item
                                     {...formItemLayout1}
                                     name="radio"
@@ -1175,11 +1257,12 @@ const Newproject = () => {
                                     <Radio.Group>
                                         <Radio value="0" style={{ marginLeft: '7em' }}>โครงการใหม่</Radio>
                                         <br />
-                                        <Radio value="1" style={{ marginLeft: '7em', marginTop: '.5em' }}>โครงการต่อเนื่อง</Radio>
+                                        <Radio value="1"
+                                            style={{ marginLeft: '7em', marginTop: '.5em' }}>โครงการต่อเนื่อง</Radio>
                                         <br />
                                         <Radio value="2" style={{ marginLeft: '7em', marginTop: '.5em' }}>งานประจำ</Radio>
                                         <br />
-                                        <Radio value="3" style={{ marginLeft: '7em', marginTop: '.5em' }} >งานพัฒนา</Radio>
+                                        <Radio value="3" style={{ marginLeft: '7em', marginTop: '.5em' }}>งานพัฒนา</Radio>
                                     </Radio.Group>
                                 </Form.Item>
                                 <Form.Item
@@ -1221,7 +1304,8 @@ const Newproject = () => {
                                         ]}
                                         style={{ marginLeft: '2.5em' }}
                                     >
-                                        <Input placeholder="กรุณาเพิ่มชื่อบูรณาการ" style={{ width: '35em', marginLeft: '8.6em' }} />
+                                        <Input placeholder="กรุณาเพิ่มชื่อบูรณาการ"
+                                            style={{ width: '35em', marginLeft: '8.6em' }} />
                                     </Form.Item>
                                 )}
                                 {selectintegration !== 'ไม่มี' && (
@@ -1231,7 +1315,8 @@ const Newproject = () => {
                                         label="เรื่อง/วิชา/คณะ"
                                         style={{ marginLeft: '3.3em' }}
                                     >
-                                        <Input.TextArea style={{ width: '35em', height: '6em', marginLeft: '7.6em' }} showCount />
+                                        <Input.TextArea style={{ width: '35em', height: '6em', marginLeft: '7.6em' }}
+                                            showCount />
                                     </Form.Item>
                                 )}
                                 <Form.Item
@@ -1246,7 +1331,8 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Input.TextArea style={{ width: '35em', height: '10em', marginLeft: '5.8em' }} showCount />
+                                    <Input.TextArea style={{ width: '35em', height: '10em', marginLeft: '5.8em' }}
+                                        showCount />
                                 </Form.Item>
                                 <Form.Item
                                     {...formItemLayout1}
@@ -1264,55 +1350,54 @@ const Newproject = () => {
                                 </Form.Item>
                                 <Form.List
                                     name="object"
-                                    {...formItemLayout}
-                                    label="วัตถุประสงค์"
                                 >
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
+                                            {/*{fields.map(({key, name, ...restField}) => (*/}
                                             {fields.map((field, index) => (
                                                 <Form.Item
-                                                    {...(index === 0
-                                                        ? formItemLayout
-                                                        : formItemLayoutWithOutLabel)}
-                                                    label={index === 0 ? 'วัตถุประสงค์ ' : ''}
                                                     required={false}
                                                     key={field.key}
+                                                    wrapperCol={{
+                                                        flex: 1,
+                                                    }}
                                                 >
-                                                    <Form.Item
-                                                        {...field}
-                                                        validateTrigger={['onChange', 'onBlur']}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                whitespace: true,
-                                                                message:
-                                                                    'กรุณาเพิ่มวัตถุประสงค์',
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Input
-                                                            placeholder="วัตถุประสงค์ "
-                                                            style={{
-                                                                width: '35em'
-                                                            }}
-                                                        />
-                                                    </Form.Item>
-                                                    <Form.Item>
-                                                        <MinusCircleOutlined
-                                                            className="dynamic-delete-button"
-                                                            onClick={() => remove(field.name)}
-                                                            style={{ marginLeft: '.5em' }}
-                                                        />
-                                                    </Form.Item>
+                                                    <Row>
+                                                        <Form.Item
+                                                            {...field}
+                                                            {...formItemLayout1}
+                                                            label={`วัตถุประสงค์ตัวที่ ${index + 2}`}
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    message: 'กรุณาเลือกแผนยุทธศาสตร์',
+                                                                },
+                                                            ]}
+                                                            style={{ marginLeft: '2.5em' }}
+                                                        >
+                                                            <Input
+                                                                placeholder="วัตถุประสงค์ "
+                                                                style={{
+                                                                    width: '35em', marginLeft: '6em'
+                                                                }}
+                                                            />
+                                                        </Form.Item>
+                                                        <Form.Item {...formItemLayoutWithOutLabel2}>
+                                                            <MinusCircleOutlined onClick={() => remove(field.name)}
+                                                                style={{ marginLeft: '.5em' }} />
+                                                        </Form.Item>
+                                                    </Row>
                                                 </Form.Item>
                                             ))}
-                                            <Form.Item {...formItemLayoutWithOutLabel2}>
+
+                                            <Form.Item {...formItemLayout1} label="เพิ่มข้อมูล"
+                                                style={{ marginLeft: '3.3em' }}>
                                                 <Button
                                                     type="dashed"
                                                     onClick={() => add()}
                                                     block
                                                     icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
-                                                    style={{ width: '35em' }}
+                                                    style={{ width: '35em', marginLeft: '9.4em' }}
                                                 >
                                                     เพิ่มวัตถุประสงค์
                                                 </Button>
@@ -1333,7 +1418,8 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Input style={{ width: '35em', marginLeft: '6.25em' }} placeholder="ตัวชี้วัดความสำเร็จ" />
+                                    <Input style={{ width: '35em', marginLeft: '6.25em' }}
+                                        placeholder="ตัวชี้วัดความสำเร็จ" />
                                 </Form.Item>
                                 <Form.Item
                                     {...formItemLayout1}
@@ -1365,48 +1451,43 @@ const Newproject = () => {
                                 </Form.Item>
                                 <Form.List
                                     name="indica"
-
-                                    {...formItemLayout}
                                 >
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
                                             {fields.map((field, index) => (
-
                                                 <Form.Item
-                                                    {...(index === 0
-                                                        ? formItemLayout
-                                                        : formItemLayoutWithOutLabel)}
-                                                    label={index === 0 ? 'ตัวชี้วัดความสำเร็จ ' : ''}
                                                     required={false}
                                                     key={field.key}
+                                                    wrapperCol={{
+                                                        flex: 1,
+                                                    }}
+                                                    {...formItemLayout1}
+                                                    style={{ marginLeft: '2.5em' }}
                                                 >
                                                     <Form.Item
                                                         {...field}
-                                                        Label="indicas"
+                                                        label="ตัวชี้วัดความสำเร็จ"
                                                         name={[field.name, 'indicas']}
-                                                        validateTrigger={['onChange', 'onBlur']}
                                                         rules={[
                                                             {
                                                                 required: true,
-                                                                whitespace: true,
                                                                 message:
                                                                     'กรุณาเพิ่มตัวชี้วัดความสำเร็จ',
                                                             },
                                                         ]}
-                                                        noStyle
+
                                                     >
                                                         <Input
                                                             placeholder="ตัวชี้วัดความสำเร็จ "
                                                             style={{
-                                                                width: '35em', marginBottom: '1em'
+                                                                width: '35em', marginLeft: '6em'
                                                             }}
                                                         />
                                                     </Form.Item>
                                                     <Form.Item
                                                         {...field}
-                                                        Label="countunit"
+                                                        label="หน่วยนับ"
                                                         name={[field.name, 'countunit']}
-                                                        validateTrigger={['onChange', 'onBlur']}
                                                         rules={[
                                                             {
                                                                 required: true,
@@ -1415,20 +1496,18 @@ const Newproject = () => {
                                                                     'กรุณาเพิ่มหน่วยนับ',
                                                             },
                                                         ]}
-                                                        noStyle
                                                     >
                                                         <Input
                                                             placeholder="หน่วยนับ "
                                                             style={{
-                                                                width: '35em', marginBottom: '1em'
+                                                                width: '35em', marginLeft: '10em'
                                                             }}
                                                         />
                                                     </Form.Item>
                                                     <Form.Item
                                                         {...field}
-                                                        Label="tagetvalue"
+                                                        label="ค่าเป้าหมาย"
                                                         name={[field.name, 'tagetvalue']}
-                                                        validateTrigger={['onChange', 'onBlur']}
                                                         rules={[
                                                             {
                                                                 required: true,
@@ -1437,34 +1516,31 @@ const Newproject = () => {
                                                                     'กรุณาเพิ่มค่าเป้าหมาย',
                                                             },
                                                         ]}
-                                                        noStyle
                                                     >
                                                         <Input
                                                             placeholder="ค่าเป้าหมาย "
                                                             style={{
-                                                                width: '35em',
+                                                                width: '35em', marginLeft: '8.8em'
                                                             }}
                                                         />
                                                     </Form.Item>
 
-
-                                                    <MinusCircleOutlined
-                                                        className="dynamic-delete-button"
-                                                        onClick={() => remove(field.name)}
-                                                        style={{ marginLeft: '.5em' }}
-                                                    />
-
+                                                    <Form.Item {...formItemLayoutWithOutLabel2}>
+                                                        <MinusCircleOutlined onClick={() => remove(field.name)}
+                                                            style={{ marginLeft: '10em' }}
+                                                        />
+                                                    </Form.Item>
                                                 </Form.Item>
-
-
                                             ))}
-                                            <Form.Item {...formItemLayoutWithOutLabel2}>
+
+                                            <Form.Item {...formItemLayout1} label="เพิ่มข้อมูล"
+                                                style={{ marginLeft: '3.3em' }}>
                                                 <Button
                                                     type="dashed"
                                                     onClick={() => add()}
                                                     block
                                                     icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
-                                                    style={{ width: '35em' }}
+                                                    style={{ width: '35em', marginLeft: '9.4em' }}
                                                 >
                                                     เพิ่มตัวชี้วัดความสำเร็จ
                                                 </Button>
@@ -1499,7 +1575,8 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Input style={{ width: '35em', marginLeft: '4.95em' }} placeholder="ขั้นตอนการดำเนินการ" />
+                                    <Input style={{ width: '35em', marginLeft: '4.95em' }}
+                                        placeholder="ขั้นตอนการดำเนินการ" />
                                 </Form.Item>
 
                                 <Form.Item
@@ -1514,14 +1591,20 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Calendar
+                                    {/* <Calendar
                                         id="basic"
                                         placeholder="เลือกวันที่เริ่มต้น"
                                         dateFormat="dd/mm/yy"
                                         name="dateend"
-                                        style={{ width: '35em', marginLeft: '8.1em' }}
+                                        style={{width: '35em', marginLeft: '8.1em'}}
                                         className="form-control"
-                                    />
+                                    /> */}
+                                    <DatePicker
+                                        placeholder="เลือกวันที่เริ่มต้น"
+                                        dateFormat="dd/mm/yy"
+                                        name="dateend"
+                                        className="form-control"
+                                        style={{ width: '20em', marginLeft: '9em' }} />
                                 </Form.Item>
                                 <Form.Item
                                     {...formItemLayout1}
@@ -1535,36 +1618,48 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Calendar
+                                    {/* <Calendar
                                         id="basic"
                                         placeholder="เลือกวันที่สิ้นสุด"
                                         dateFormat="dd/mm/yy"
                                         name="dateend"
-                                        style={{ width: '35em', marginLeft: '8.25em' }}
+                                        style={{width: '35em', marginLeft: '8.25em'}}
                                         className="form-control"
-                                    />
+                                    /> */}
+                                    <DatePicker
+                                        placeholder="เลือกวันที่สิ้นสุด"
+                                        dateFormat="dd/mm/yy"
+                                        name="dateend"
+                                        className="form-control"
+                                        style={{ width: '20em', marginLeft: '9em' }} />
                                 </Form.Item>
                                 <Form.List
                                     name="rowsData"
-
-                                    {...formItemLayout}
                                 >
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
                                             {fields.map((field, index) => (
+                                                // <Form.Item
+                                                //     {...(index === 0
+                                                //         ? formItemLayout
+                                                //         : formItemLayoutWithOutLabel)}
+                                                //     label={index === 0 ? 'ขั้นตอนการดำเนินการ ' : ''}
+                                                //     required={false}
+                                                //     key={field.key}
+                                                // >
                                                 <Form.Item
-                                                    {...(index === 0
-                                                        ? formItemLayout
-                                                        : formItemLayoutWithOutLabel)}
-                                                    label={index === 0 ? 'ขั้นตอนการดำเนินการ ' : ''}
                                                     required={false}
                                                     key={field.key}
+                                                    wrapperCol={{
+                                                        flex: 1,
+                                                    }}
+                                                    {...formItemLayout1}
+                                                    style={{ marginLeft: '2.5em' }}
                                                 >
                                                     <Form.Item
                                                         {...field}
-                                                        Label="steps"
+                                                        label="ขั้นตอนการดำเนินการ"
                                                         name={[field.name, 'steps']}
-                                                        validateTrigger={['onChange', 'onBlur']}
                                                         rules={[
                                                             {
                                                                 required: true,
@@ -1572,20 +1667,18 @@ const Newproject = () => {
                                                                     'กรุณาเพิ่มขั้นตอนการดำเนินการ',
                                                             },
                                                         ]}
-                                                        noStyle
                                                     >
                                                         <Input
                                                             placeholder="ขั้นตอนการดำเนินการ"
                                                             style={{
-                                                                width: '35em', marginBottom: '1em'
+                                                                width: '35em', marginLeft: '4.9em'
                                                             }}
                                                         />
                                                     </Form.Item>
                                                     <Form.Item
                                                         {...field}
-                                                        Label="start"
+                                                        label="วันที่เริ่มต้น"
                                                         name={[field.name, 'start']}
-                                                        validateTrigger={['onChange', 'onBlur']}
                                                         rules={[
                                                             {
                                                                 required: true,
@@ -1593,20 +1686,25 @@ const Newproject = () => {
                                                                     'กรุณาเลือกวันที่เริ่มต้น',
                                                             },
                                                         ]}
-                                                        noStyle
                                                     >
-                                                        <Calendar
+                                                        {/* <Calendar
                                                             id="basic"
                                                             placeholder="เลือกวันที่เริ่มต้น"
                                                             dateFormat="dd/mm/yy"
                                                             name="dateend"
                                                             className="form-control"
-                                                            style={{ width: '30.5em', marginBottom: '1em' }}
-                                                        />
+                                                            style={{width: '30.5em', marginLeft: '8.1em'}}
+                                                        /> */}
+                                                        <DatePicker
+                                                            placeholder="เลือกวันที่เริ่มต้น"
+                                                            dateFormat="dd/mm/yy"
+                                                            name="dateend"
+                                                            className="form-control"
+                                                            style={{ width: '20em', marginLeft: '9em' }} />
                                                     </Form.Item>
                                                     <Form.Item
                                                         {...field}
-                                                        Label="end"
+                                                        label="วันที่สิ้นสุด"
                                                         name={[field.name, 'end']}
                                                         validateTrigger={['onChange', 'onBlur']}
                                                         rules={[
@@ -1616,34 +1714,42 @@ const Newproject = () => {
                                                                     'กรุณาเลือกวันที่สิ้นสุด',
                                                             },
                                                         ]}
-                                                        noStyle
                                                     >
-                                                        <Calendar
+                                                        <DatePicker
+                                                            placeholder="เลือกวันที่สิ้นสุด"
+                                                            dateFormat="dd/mm/yy"
+                                                            name="dateend"
+                                                            className="form-control"
+                                                            style={{ width: '20em', marginLeft: '9em' }} />
+                                                        {/* <Calendar
                                                             id="basic"
                                                             placeholder="เลือกวันที่สิ้นสุด"
                                                             dateFormat="dd/mm/yy"
                                                             name="dateend"
                                                             className="form-control"
-                                                            style={{ width: '30.5em' }}
+                                                            style={{width: '30.5em', marginLeft: '8.25em'}}
+                                                        /> */}
+                                                    </Form.Item>
+
+                                                    <Form.Item {...formItemLayoutWithOutLabel2}>
+                                                        <MinusCircleOutlined
+                                                            className="dynamic-delete-button"
+                                                            onClick={() => remove(field.name)}
+                                                            style={{ marginLeft: '10em' }}
                                                         />
                                                     </Form.Item>
 
-
-                                                    <MinusCircleOutlined
-                                                        className="dynamic-delete-button"
-                                                        onClick={() => remove(field.name)}
-                                                        style={{ marginLeft: '.5em' }}
-                                                    />
-
                                                 </Form.Item>
                                             ))}
-                                            <Form.Item {...formItemLayoutWithOutLabel2}>
+
+                                            <Form.Item {...formItemLayout1} label="เพิ่มข้อมูล"
+                                                style={{ marginLeft: '3.3em' }}>
                                                 <Button
                                                     type="dashed"
                                                     onClick={() => add()}
                                                     block
                                                     icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
-                                                    style={{ width: '35em' }}
+                                                    style={{ width: '35em', marginLeft: '9.4em' }}
                                                 >
                                                     เพิ่มขั้นตอนการดำเนินการ
                                                 </Button>
@@ -1653,8 +1759,9 @@ const Newproject = () => {
                                     )}
                                 </Form.List>
 
+
                                 <Form.Item
-                                    {...formItemLayout}
+                                    {...formItemLayout1}
                                     name="selectedbudget"
                                     label="แหล่งเงิน/ประเภทงบประมาณที่ใช้"
                                     rules={[
@@ -1663,6 +1770,7 @@ const Newproject = () => {
                                             message: 'กรุณาเลือกแหล่งเงิน/ประเภทงบประมาณที่ใช้',
                                         },
                                     ]}
+                                    style={{ marginLeft: '2.5em' }}
                                 >
                                     <Select
                                         size="large"
@@ -1681,7 +1789,7 @@ const Newproject = () => {
                                 </Form.Item>
                                 {selectedbudget === 'งบอื่นๆ' && (
                                     <Form.Item
-                                        {...formItemLayout}
+                                        {...formItemLayout1}
                                         name="budgets"
                                         label="ระบุแหล่งเงิน/ประเภทงบประมาณ"
                                         rules={[
@@ -1691,12 +1799,14 @@ const Newproject = () => {
                                             },
                                         ]}
                                     >
-                                        <Input placeholder="กรุณาระบุแหล่งเงิน/ประเภทงบประมาณที่ใช้" style={{ width: '35em' }} />
+                                        <Input placeholder="กรุณาระบุแหล่งเงิน/ประเภทงบประมาณที่ใช้"
+                                            style={{ width: '35em' }} />
                                     </Form.Item>
                                 )}
                                 {selectedbudget !== 'ไม่ได้ใช้งบประมาณ' && (
                                     <>
-                                        <Form.Item label="ปริมาณการงบประมาณที่ใช้" {...formItemLayout1} style={{ marginLeft: '3.3em' }}>
+                                        <Form.Item label="ปริมาณการงบประมาณที่ใช้" {...formItemLayout1}
+                                            style={{ marginLeft: '3.3em' }}>
                                             <Form.Item
                                                 noStyle
                                                 name="amount"
@@ -1706,7 +1816,7 @@ const Newproject = () => {
                                                         message: 'กรุณากรอกปริมาณการงบประมาณ',
                                                     },
                                                 ]}
-                                               
+
                                             >
                                                 <Input
                                                     style={{ width: 490, marginLeft: '2.9em' }}
@@ -1754,76 +1864,101 @@ const Newproject = () => {
                                                     },
                                                 }),
                                             ]}
-                                            {...formItemLayout1}
                                         >
                                             {(fields, { add, remove }, { errors }) => (
                                                 <>
                                                     <Row>
-                                                        <Col span={24} offset={3}>
-                                                            {fields.map(({ key, name, index, ...restField }) => (
-                                                                <Form.Item required={false} key={key}
+                                                        <Col span={24} style={{ marginLeft: '3.3em' }}>
+                                                            {/*{fields.map(({key, name, index, ...restField}) => (*/}
+                                                            {fields.map((field, index) => (
+                                                                // <Form.Item required={false} key={key}
+                                                                // >
+                                                                <Form.Item
+                                                                    required={false}
+                                                                    key={field.key}
+                                                                    wrapperCol={{
+                                                                        flex: 1,
+                                                                    }}
                                                                 >
                                                                     <Row>
                                                                         <Col span={24}>
                                                                             <Form.Item
-                                                                                {...restField}
+                                                                                {...field}
                                                                                 label="งบรายจ่าย"
-                                                                                name={[name, 'exbudget']}
+                                                                                name={[field.name, 'exbudget']}
+
                                                                             >
                                                                                 <Input
-                                                                                    style={{ width: 170, height: '3.4em', marginLeft: '1em' }}
+                                                                                    style={{
+                                                                                        width: 170,
+                                                                                        height: '3.4em',
+                                                                                        marginLeft: '9.5em'
+                                                                                    }}
                                                                                     placeholder="งบรายจ่าย"
                                                                                 />
                                                                             </Form.Item>
                                                                         </Col>
                                                                         <Form.Item
-                                                                            {...restField}
+                                                                            {...field}
                                                                             label="หมวดรายจ่าย"
-                                                                            name={[name, 'category']}
+                                                                            name={[field.name, 'category']}
                                                                         >
                                                                             <Input
-                                                                                style={{ width: 170, marginRight: '.5em', height: '3.4em' }}
+                                                                                style={{
+                                                                                    width: 170,
+                                                                                    marginLeft: '8.2em',
+                                                                                    height: '3.4em'
+                                                                                }}
                                                                                 placeholder="หมวดรายจ่าย"
                                                                             />
                                                                         </Form.Item>
                                                                         <Form.Item
-                                                                            {...restField}
-                                                                            name={[name, 'แผนการใช้จ่ายไตรมาส 1']}
+                                                                            {...field}
+                                                                            name={[field.name, 'Quarter1']}
                                                                         >
                                                                             <InputNumber
                                                                                 min={0}
                                                                                 controls={false}
-                                                                                style={{ width: 170, marginRight: '.5em' }}
+                                                                                style={{
+                                                                                    width: 170,
+                                                                                    marginRight: '.5em'
+                                                                                }}
                                                                                 placeholder="แผนการใช้จ่ายไตรมาส 1"
                                                                             />
                                                                         </Form.Item>
                                                                         <Form.Item
-                                                                            {...restField}
+                                                                            {...field}
                                                                             // label="Quarter2"
-                                                                            name={[name, 'แผนการใช้จ่ายไตรมาส 2']}
+                                                                            name={[field.name, 'Quarter2']}
                                                                         >
                                                                             <InputNumber
                                                                                 min={0}
                                                                                 controls={false}
-                                                                                style={{ width: 170, marginRight: '.5em' }}
+                                                                                style={{
+                                                                                    width: 170,
+                                                                                    marginRight: '.5em'
+                                                                                }}
                                                                                 placeholder="แผนการใช้จ่ายไตรมาส 2"
                                                                             />
                                                                         </Form.Item>
                                                                         <Form.Item
-                                                                            {...restField}
+                                                                            {...field}
                                                                             // label="Quarter3"
-                                                                            name={[name, 'แผนการใช้จ่ายไตรมาส 3']}
+                                                                            name={[field.name, 'Quarter3']}
                                                                         >
                                                                             <InputNumber
                                                                                 min={0}
                                                                                 controls={false}
-                                                                                style={{ width: 170, marginRight: '.5em' }}
+                                                                                style={{
+                                                                                    width: 170,
+                                                                                    marginRight: '.5em'
+                                                                                }}
                                                                                 placeholder="แผนการใช้จ่ายไตรมาส 3"
                                                                             />
                                                                         </Form.Item>
                                                                         <Form.Item
-                                                                            {...restField}
-                                                                            name={[name, 'แผนการใช้จ่ายไตรมาส 4']}
+                                                                            {...field}
+                                                                            name={[field.name, 'Quarter4']}
                                                                         >
                                                                             <InputNumber
                                                                                 min={0}
@@ -1836,8 +1971,11 @@ const Newproject = () => {
                                                                         {fields.length > 1 ? (
                                                                             <MinusCircleOutlined
                                                                                 className="dynamic-delete-button"
-                                                                                onClick={() => remove(name)}
-                                                                                style={{ marginLeft: '.5em' }}
+                                                                                onClick={() => remove(field.name)}
+                                                                                style={{
+                                                                                    marginLeft: '.5em',
+                                                                                    marginTop: '.5em'
+                                                                                }}
                                                                             />
                                                                         ) : null}
 
@@ -1846,7 +1984,8 @@ const Newproject = () => {
                                                             ))}
                                                         </Col>
                                                     </Row>
-                                                    <Form.Item {...formItemLayout1} label="ประเภทการใช้จ่าย" style={{ marginLeft: '3.3em' }}>
+                                                    <Form.Item {...formItemLayout1} label="ประเภทการใช้จ่าย"
+                                                        style={{ marginLeft: '3.3em' }}>
                                                         <Button
                                                             type="dashed"
                                                             onClick={() => add()}
@@ -1875,55 +2014,59 @@ const Newproject = () => {
                                     ]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Input style={{ width: '35em', marginLeft: '3.3em' }} placeholder="ประโยชน์ที่คาดว่าจะได้รับ" />
+                                    <Input style={{ width: '35em', marginLeft: '3.3em' }}
+                                        placeholder="ประโยชน์ที่คาดว่าจะได้รับ" />
                                 </Form.Item>
-                                <Form.List name="sakes" {...formItemLayout} label="ประโยชน์">
+                                <Form.List name="sakes">
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
                                             {fields.map((field, index) => (
+
                                                 <Form.Item
-                                                    {...(index === 0
-                                                        ? formItemLayout
-                                                        : formItemLayoutWithOutLabel)}
-                                                    label={index === 0 ? 'ประโยชน์ที่คาดว่าจะได้รับ ' : ''}
                                                     required={false}
                                                     key={field.key}
+                                                    wrapperCol={{
+                                                        flex: 1,
+                                                    }}
                                                 >
-                                                    <Form.Item
-                                                        {...field}
-                                                        validateTrigger={['onChange', 'onBlur']}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                whitespace: true, //
-                                                                message:
-                                                                    'กรุณาเพิ่มประโยชน์ที่คาดว่าจะได้รับ',
-                                                            },
-                                                        ]}
-                                                        noStyle
-                                                    >
-                                                        <Input
-                                                            placeholder="ประโยชน์ที่คาดว่าจะได้รับ "
-                                                            style={{
-                                                                width: '35em',
-                                                            }}
-                                                        />
-                                                    </Form.Item>
-                                                    <MinusCircleOutlined
-                                                        className="dynamic-delete-button"
-                                                        onClick={() => remove(field.name)}
-                                                        style={{ marginLeft: '.5em' }}
-                                                    />
-
+                                                    <Row>
+                                                        <Form.Item
+                                                            {...field}
+                                                            {...formItemLayout1}
+                                                            label={`ประโยชน์ที่คาดว่าจะได้รับตัวที่ ${index + 2}`}
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    // whitespace: true, //
+                                                                    message:
+                                                                        'กรุณาเพิ่มประโยชน์ที่คาดว่าจะได้รับ',
+                                                                },
+                                                            ]}
+                                                            style={{ marginLeft: '2.5em' }}
+                                                        >
+                                                            <Input
+                                                                placeholder="ประโยชน์ที่คาดว่าจะได้รับ "
+                                                                style={{
+                                                                    width: '35em', marginLeft: '.5em'
+                                                                }}
+                                                            />
+                                                        </Form.Item>
+                                                        <Form.Item {...formItemLayoutWithOutLabel2}>
+                                                            <MinusCircleOutlined onClick={() => remove(field.name)}
+                                                                style={{ marginLeft: '.5em' }} />
+                                                        </Form.Item>
+                                                    </Row>
                                                 </Form.Item>
                                             ))}
-                                            <Form.Item {...formItemLayoutWithOutLabel2}>
+
+                                            <Form.Item {...formItemLayout1} label="เพิ่มข้อมูล"
+                                                style={{ marginLeft: '3.3em' }}>
                                                 <Button
                                                     type="dashed"
                                                     onClick={() => add()}
                                                     block
                                                     icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
-                                                    style={{ width: '35em' }}
+                                                    style={{ width: '35em', marginLeft: '9.4em' }}
                                                 >
                                                     เพิ่มประโยชน์ที่คาดว่าจะได้รับ
                                                 </Button>
@@ -1939,13 +2082,37 @@ const Newproject = () => {
                                     rules={[{ required: true, message: 'กรุณาเลือกเอกสาร TOR' }]}
                                     style={{ marginLeft: '2.5em' }}
                                 >
-                                    <Radio.Group>
+                                    <Radio.Group onChange={e => setRadioValue(e.target.value)} value={radioValue}>
                                         <Radio value="0" style={{ marginLeft: '8.6em' }}>ไม่มี</Radio>
                                         <Radio value="1">มี</Radio>
                                     </Radio.Group>
                                 </Form.Item>
+                                {/* {radioValue === '1' &&
+                                    <Card>
+                                        <div className="container mr-60">
 
-                                <div className="text-right mt-1">
+                                            <div className="formdesign">
+                                                {isSucces !== null ? <h4> {isSucces} </h4> : null}
+                                                <div className="form-row">
+                                                    <input type="file" className="form-control" name="upload_file" accept=".pdf" maxsize='5MB' onChange={(e) => handleInputChange(e, 1)} />
+                                                </div>
+                                                <div className="form-row">
+                                                    <button type="submit" className="btn btn-dark" onClick={() => submit()} > เพิ่มเอกสารTOR </button>
+                                                </div>
+                                            </div>
+                                            {openFile?.map((item) => {
+                                                return (
+                                                    <Button
+                                                        onClick={() => openfile(item.file)}>
+                                                        Open Document
+                                                    </Button>
+                                                )
+                                            })}
+
+                                        </div>
+                                    </Card>
+                                } */}
+                                <div className="text-center mt-1">
                                     <Button
                                         size="large"
                                         type="primary"

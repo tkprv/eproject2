@@ -7,7 +7,7 @@ const dbConfig = mysql.createConnection({
     password: "",
     database: "test",
     port: '3307',
-    dateStrings: 'date'
+    dateStrings: 'date',
   });
   
   

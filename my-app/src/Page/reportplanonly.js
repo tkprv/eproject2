@@ -175,7 +175,7 @@ export default function Reportplanonly() {
     { field: "result_indic_project", header: "ผลการดำเนินงานตามตัวชี้วัด" },
     { field: "butget", header: "งบประมาณ" },
     { field: "used", header: "ผลการใช้จ่ายเงิน" },
-    { field: "detail", header: "ลายละเอียดผลการดำเนินการ" },
+    { field: "detail", header: "รายละเอียดผลการดำเนินการ" },
     { field: "problem", header: "ปัญหา/อุปสรรค" },
     { field: "section_name", header: "ฝ่ายที่รับผิดชอบ" },
   ]
@@ -255,7 +255,7 @@ export default function Reportplanonly() {
                 { text: "ผลการ \nดำเนิน\nงานตาม\nตัวชี้วัด", style: 'tableHeader' },
                 { text: "งบ\nประมาณ", style: 'tableHeader' },
                 { text: "ผลการใช้\nจ่ายเงิน", style: 'tableHeader' },
-                { text: "ลายละเอียด\nผลการ \nดำเนินการ", style: 'tableHeader' },
+                { text: "รายละเอียด\nผลการ \nดำเนินการ", style: 'tableHeader' },
                 { text: "ปัญหา/อุปสรรค", style: 'tableHeader' },
                 { text: "ฝ่ายที่\nรับผิดชอบ", style: 'tableHeader' },
               ],

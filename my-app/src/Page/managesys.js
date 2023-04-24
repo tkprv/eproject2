@@ -70,14 +70,10 @@ const Managesys = () => {
             getposition()
         }
     }, [globalFilter])
-    
+
     const header = (
         <div className="table-header">
-            {/* <h5 className="mx-0 my-1"> </h5> */}
             <span className="p-input-icon-left">
-                {/* pi-search" /> */}
-                {/* <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." /> */}
-                {/* <Dropdown value={globalFilter} options={position} onChange={(e) => setGlobalFilter(e.target.value)} optionLabel="a_name" placeholder="select" /> */}
             </span>
         </div>
     );
@@ -86,31 +82,10 @@ const Managesys = () => {
         return (
             <div >
                 <Tooltip placement="bottom" title={<span>แก้ไขหน่วยงาน</span>} ><Button type="button" icon="pi pi-pencil" className="p-button-warning" style={{ height: '2.5em', width: '2.5em' }} onClick={() => show(node.section_id)}></Button></Tooltip>
-                {/* <Button type="button" icon="pi pi-trash" className="p-button-danger" onClick={() => {deleteperson(node.section_id)}}></Button> */}
             </div>
         )
 
     }
-
-    const showConfirm = (value) => {
-        confirm({
-            title: 'ต้องการแก้ไขหน่วยงานใช่มั้ย?',
-            icon: <ExclamationCircleFilled />,
-            onOk() {
-                updateposiion(value, dataUpdate)
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-        });
-    };
-
-    const deleteperson = (a_id) => {
-        axios.delete(`http://localhost:3001/delete2/${a_id}`)
-        alert(`Delete id${a_id} sucessful`)
-        getposition()
-    }
-
 
     const addposition = (value) => {
         try {
@@ -132,24 +107,20 @@ const Managesys = () => {
 
         }
         )
-        onHide()
-        getposition()
 
+        getposition()
+        onHide()
     };
 
     const dialogFuncMap = {
         'displayBasic': setDisplayBasic,
 
     }
-    
+
     const show = (id) => {
         setDisplayBasic(true);
         setId(id)
     }
-
-    // const onHide = () => {
-    //     setDisplayBasic(false);
-    // }
 
     const toast = useRef(null);
 
@@ -166,31 +137,6 @@ const Managesys = () => {
         addposition(value)
     }
 
-    const onFinish1 = (value) => {
-        updateposiion(value, dataUpdate)
-    }
-
-    const confirm2 = (id, dataUpdate) => {
-        confirmDialog({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'pi pi-info-circle',
-            acceptClassName: 'p-button-danger',
-            accept,
-            reject
-        });
-        updateposiion(id, dataUpdate)
-    };
-
-    const renderFooter = () => {
-        return (
-            <div>
-                <Button label="ยกเลิก" icon="pi pi-times" style={{ height: '2.5em' }} onClick={onHide} severity="danger" />
-                <Button label="บันทึก" icon="pi pi-check" style={{ height: '2.5em' }} onClick={() => showConfirm(id)} severity="success" autoFocus />
-            </div>
-        );
-    }
-
     return (
         <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
             <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -201,8 +147,6 @@ const Managesys = () => {
                     <Panel header='กำหนดโครงสร้างหน่วยงาน'>
                         <div className='text-left'>
                             <div className='mt-1.5' >
-                                {/* <InputText value={value1} onChange={(e) => setValue1(e.target.value)} style={{ marginRight: '.6em' }}/>
-                <Button label="เพิ่มหน่วยงาน" icon=""className="p-button-success" onClick={()=>addposition(value1)} style={{ marginLeft: '.6em' }}/> */}
                                 <Form
                                     form={form}
                                     onFinish={onFinish}
@@ -240,16 +184,7 @@ const Managesys = () => {
                                     />
                                 </Form>
                             </div>
-
-                            {/* <Dialog style={{ width: '600px' }} header="แก้ไขหน่วยงาน" modal className="p-fluid" visible={displayBasic} footer={renderFooter} onHide={onHide}>
-                                <label htmlFor="description"></label>
-                                <div>
-                                    <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} />
-
-                                </div>
-                            </Dialog> */}
-
-                            <div >
+                            <div>
                                 <div />
                                 <br />
                                 <div >
@@ -267,53 +202,25 @@ const Managesys = () => {
                                     onCancel={onHide}
                                     footer={null}
                                 >
-                                    <Form
-                                        form={form}
-                                        onFinish={onFinish1}
-                                        name="dynamic_rule"
-                                        layout="inline"
-                                        style={{
-                                            justifyItems: 'center',
-                                            maxWidth: '100%',
-                                            border: 'none',
-                                            boxShadow: 'none'
-                                        }}
-                                    >
-
-                                        <Form.Item
-                                            //{...formItemLayout}
-                                            style={{ textAlign: 'center' }}
-                                            label="หน่วยงาน"
-                                            name="agency"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message: "กรุณากรอกหน่วยงาน",
-                                                },
-                                            ]}
+                                    <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} style={{ width: '29em' }} />
+                                    <div className="text-right mt-4">
+                                        <Button
+                                            icon='pi pi-times'
+                                            severity="danger"
+                                            label='ยกเลิก'
+                                            style={{ marginRight: '.5em', height: '2.5em' }}
+                                            onClick={onHide}
                                         >
-                                            <InputText value={dataUpdate} placeholder="ชื่อหน่วยงาน" onChange={(e) => setDataUpdate(e.target.value)} style={{ width: '25em' }} />
-
-                                        </Form.Item>
-                                        <div className="text-right mt-4">
-                                            <Button
-                                                icon='pi pi-times'
-                                                severity="danger"
-                                                label='ยกเลิก'
-                                                style={{ marginRight: '.5em', height: '2.5em', marginLeft: '14.95em' }}
-                                                onClick={onHide}
-                                            >
-                                            </Button>
-                                            <Button
-                                                icon='pi pi-check'
-                                                severity="success"
-                                                label='บันทึก'
-                                                style={{ height: '2.5em' }}
-                                                onClick={() => showConfirm(id)}
-                                            >
-                                            </Button>
-                                        </div>
-                                    </Form>
+                                        </Button>
+                                        <Button
+                                            icon='pi pi-check'
+                                            severity="success"
+                                            label='บันทึก'
+                                            style={{ height: '2.5em' }}
+                                            onClick={() => updateposiion(id, dataUpdate)}
+                                        >
+                                        </Button>
+                                    </div>
                                 </Modal>
                             </div>
                         </div>

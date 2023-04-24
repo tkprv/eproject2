@@ -121,9 +121,14 @@ const updatest = (req, res) => {
     [name, ID],
     (err, result) => {
       if (err) {
-        console.log('3', err)
+        if (err.code === 'ER_DUP_ENTRY') {
+          res.send(err.code)
+          console.log('Duplicate data');
+        } else {
+          console.log(err);
+        }
       } else {
-        res.send(result)
+        res.send('success')
       }
     }
   )
@@ -140,11 +145,12 @@ const createstid = (req, res) => {
       if (err) {
         if (err.code === 'ER_DUP_ENTRY') {
           res.send(err.code)
+          console.log('Duplicate data');
         } else {
-          console.log(err)
+          console.log(err);
         }
       } else {
-        console.log('Data inserted successfully')
+        res.send('success')
       }
     }
 
@@ -162,7 +168,32 @@ const datast = (req, res) => {
   })
 }
 
+const redatast = (req, res) => {
+  const id = req.params.id
+  db.query("SELECT * FROM tbl_strategic JOIN 	tbl_fiscalyear ON tbl_strategic.fiscalyear_id= tbl_fiscalyear.fiscalyear_id WHERE tbl_strategic.fiscalyear_id  = ? ", 
+  [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result)
+    }
+  })
+}
 
+const updateyears = (req, res) => {
+  const ID = req.params.id;
+  const years = req.body.years;
+  db.query(
+    "UPDATE tel_year SET years = ?  WHERE id = ?",
+    [years, ID],
+    (err, result) => {
+      if (err) {
+        console.log('3', err)
+      } else {
+        res.send(result)
+      }
+    }
+  )
+}
 
-
-module.exports = { getstrategic, getyears, createstrategic, updatesstatus, updatestrategic, deletestrategic, getstrategicid, deletestid, updatest, createstid, datast }
+module.exports = { redatast, getstrategic, getyears, createstrategic, updatesstatus, updatestrategic, deletestrategic, getstrategicid, deletestid, updatest, createstid, datast, updateyears }

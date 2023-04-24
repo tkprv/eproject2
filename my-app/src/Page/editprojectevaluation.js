@@ -70,14 +70,6 @@ const Editprojectevaluation = () => {
         setMenu(!menu)
     }
 
-    // const onHide = (name) => {
-    //     dialogFuncMap[`${name}`](false);
-    // }
-
-    // const onhide = () => {
-    //     setVisible1(false)
-    // }
-
     const onHide2 = () => {
         setDisplayBasic2(false)
         form.resetFields()
@@ -98,14 +90,15 @@ const Editprojectevaluation = () => {
         )
     }
 
-    // const renderFooter1 = (id) => {
-    //     return (
-    //         <div>
-    //             <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onhide} />
-    //             <Button label="ตกลง" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showconfirm1(objectiveid)} autoFocus />
-    //         </div>
-    //     );
-    // }
+    const obtain = (node) => {
+        console.log('no', node)
+        if (node.obtain === 1) {
+            return 'บรรลุ'
+        } else if (node.obtain === 0) {
+            return 'ไม่บรรลุ'
+        }
+    }
+
     const getsection = async () => {
         axios
             .get(`http://localhost:3001/dataproject/sectionproject/${location.state.section_id}`, {})
@@ -202,12 +195,6 @@ const Editprojectevaluation = () => {
     }
     console.log('100', workplanproject?.workplan_name)
 
-    // const handlResult = (e) => {
-    //     const choice = e.target.value
-    //     setEditresult(choice)
-    //     form.setFieldsValue({ editresult: choice })
-    // }
-
     const getestimate = () => {
         axios
             .get(`http://localhost:3001/dataevaluation/estimateproject/${location.state.project_id}`)
@@ -233,13 +220,15 @@ const Editprojectevaluation = () => {
         confirm({
             title: 'คุณต้องการแก้ไขเอกสารประเมินโครงการนี้ใช่มั้ย?',
             icon: <ExclamationCircleFilled style={{ verticalAlign: 'middle' }} />,
+            okText: 'ตกลง',
+            cancelText: 'ยกเลิก',
             onOk() {
-                console.log('OK')
+                console.log('ตกลง')
                 editprojectevaluation(value, editexplanation, editresult, editmotive, editconducting, editrealused, editbenefit, editproblem, editimprovement, editdatetime)
                 updatestatusconfirm(value, 0)
             },
             onCancel() {
-                console.log('Cancel')
+                console.log('ยกเลิก')
             },
         })
     }
@@ -259,7 +248,7 @@ const Editprojectevaluation = () => {
             }).then((res) => {
 
             })
-            await updatestatusproject(id, editresult)  
+        await updatestatusproject(id, editresult)
     }
 
     const updatestatusproject = async (id, editresult) => {
@@ -290,25 +279,13 @@ const Editprojectevaluation = () => {
             });
     };
 
-    const showConfirm2 = (value) => {
-        confirm({
-            title: "ต้องการส่งข้อมูลบรรลุวัตถุประสงค์ใช่มั้ย?",
-            icon: <ExclamationCircleFilled />,
-            onOk() {
-                console.log("OK");
-                updateobjective(value, editobjective)
-            },
-            onCancel() {
-                console.log("Cancel");
-            },
-        });
-    }
-
     const updateobjective = (id, editobjective) => {
-        onHide2()
+
         axios.put(`http://localhost:3001/dataevaluation/updateobjective/${id}`, {
             obtain: (editobjective === 'บรรลุ') ? 1 : 0,
         })
+        onHide2()
+        getobjective()
     }
 
     return (
@@ -351,10 +328,10 @@ const Editprojectevaluation = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>ประเด็นยุทธ์ศาสตร์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>ประเด็นยุทธ์ศาสตร์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {strategicproject.map((value) => {
                                             return <h4> {value?.strategic_name} </h4>
                                         })}
@@ -363,10 +340,10 @@ const Editprojectevaluation = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>เป้าประสงค์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>เป้าประสงค์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {goalproject.map((value) => {
                                             return <h4> {value?.goal_name} </h4>
                                         })}
@@ -375,10 +352,10 @@ const Editprojectevaluation = () => {
                             </div>
                             <div className="fit">
                                 <div className="grid p-fluid">
-                                    <div className="col-12 md:col-4">
-                                        <h4 style={{ marginLeft: "9.5em" }}>กลยุทธ์ :</h4>
+                                    <div className="col-12 md:col-3">
+                                        <h4>กลยุทธ์ :</h4>
                                     </div>
-                                    <div className="col-12 md:col-6">
+                                    <div className="col-12 md:col-9">
                                         {tacticproject.map((value) => {
                                             return <h4> {value?.tactic_name} </h4>
                                         })}
@@ -424,6 +401,7 @@ const Editprojectevaluation = () => {
                                         <h4>
                                             <DataTable value={objectiveproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
                                                 <Column field="objective_name" header="วัตถุประสงค์" />
+                                                <Column body={obtain} header="การบรรลุวัตถุประสงค์" />
                                                 <Column body={dataobjective} header="จัดการ" style={{ textAlign: 'center' }} />
                                             </DataTable>
                                         </h4>
@@ -539,10 +517,8 @@ const Editprojectevaluation = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div style={{ marginTop: '2em', marginLeft: '65em' }} >
-                                <h4>
-                                    <Button type="button" icon="pi pi-check" label='บันทึก' className="p-button-success" style={{ marginLeft: '.4em', height: '2.5em' }} onClick={() => { showConfirm(location.state.project_id) }} />
-                                </h4>
+                            <div className="text-right mt-4">
+                                <Button type="button" icon="pi pi-check" label='บันทึก' className="p-button-success" style={{ marginLeft: '.4em', height: '2.5em' }} onClick={() => { showConfirm(location.state.project_id) }} />
                             </div>
                         </Panel>
                     </Card>
@@ -563,7 +539,7 @@ const Editprojectevaluation = () => {
                                                 inputId="editobjective1"
                                                 name="editobjective"
                                                 value="บรรลุ"
-                                                onChange={(e) => setEditobjective(e.target.value)} 
+                                                onChange={(e) => setEditobjective(e.target.value)}
                                                 checked={editobjective === "บรรลุ"}
                                                 style={{ marginRight: '.5em' }}
                                             />
@@ -584,46 +560,11 @@ const Editprojectevaluation = () => {
                                 </div>
                             </div>
                             <div className="text-right mt-4">
-                                <Button type="button" icon="pi pi-download" label='ยกเลิก' className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide2}/>
-                                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => showConfirm2(objectiveid)} autoFocus />
+                                <Button type="button" icon="pi pi-download" label='ยกเลิก' className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide2} />
+                                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => updateobjective(objectiveid, editobjective)} autoFocus />
                             </div>
                         </Modal>
                     </div>
-                    {/* <Dialog
-                        style={{ width: '500px', width: "50vw" }} header="การบรรลุผลวัตถุประสงค์" modal className="p-fluid"
-                        visible={visible1}
-                        footer={renderFooter1}
-                        onHide={onhide}
-                    >
-                        <div className="fit" style={{ marginLeft: '1.5em' }}>
-                            <div className="grid p-fluid">
-                                <div className="col-12 md:col-9">
-                                    <h4>
-                                        <RadioButton
-                                            inputId="editobjective1"
-                                            name="editobjective"
-                                            value="บรรลุ"
-                                            onChange={(e) => setEditobjective(e.target.value)}
-                                            checked={editobjective === "บรรลุ"}
-                                            style={{ marginRight: '.5em' }}
-                                        />
-                                        <label htmlFor="editobjective1" style={{ marginRight: '2em' }}>บรรลุ</label>
-                                    </h4>
-                                    <h4 style={{ marginTop: '.5em' }}>
-                                        <RadioButton
-                                            inputId="editobjective2"
-                                            name="editobjective"
-                                            value="ไม่บรรลุ"
-                                            onChange={(e) => setEditobjective(e.target.value)}
-                                            checked={editobjective === "ไม่บรรลุ"}
-                                            style={{ marginRight: '.5em' }}
-                                        />
-                                        <label htmlFor="editobjective2">ไม่บรรลุ</label>
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </Dialog> */}
                 </div>
             </div >
         </>

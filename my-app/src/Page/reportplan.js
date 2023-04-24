@@ -380,7 +380,7 @@ export default function Reportplan() {
         <Tooltip target=".export-buttons>button" position="bottom" />
 
         <Card>
-          <Panel header="จัดการรายงานแผนปฏิบัติการประจำปี" >
+          <Panel header="รายงานแผนปฏิบัติการประจำปี" >
             <Form
               {...formItemLayout}
               form={form}

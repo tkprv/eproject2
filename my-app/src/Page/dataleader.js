@@ -56,31 +56,31 @@ const Dataleader = () => {
   const Status = (node) => {
     console.log('node', node)
     if (node.status === 0) {
-      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา"></Tag>
     } else if (node.status === 1) {
-      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag>
+      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ"></Tag>
     } else if (node.status === 2) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย"></Tag>
     } else if (node.status === 3) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา"></Tag>
     } else if (node.status === 4) {
-      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ"></Tag>
     } else if (node.status === 5) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร"></Tag>
     } else if (node.status === 6 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา"></Tag>
     } else if (node.status === 7 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา"></Tag>
     } else if (node.status === 8 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน"></Tag>
     } else if (node.status === 9 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก"></Tag>
     } else if (node.status_evaluation === 0 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ"></Tag>
     } else if (node.status_evaluation === 1 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ"></Tag>
     } else if (( node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ"></Tag>
     } else {
       return node.status
     }
@@ -149,23 +149,11 @@ const Dataleader = () => {
 
   const findProject = () => {
 
-    if (status.code === "50") {
-      {
-        console.log('hhhhh');
-        axios.get(`http://localhost:3001/dataproject/findprojectyear/${selectedfiscalyear.fiscalyear}`,)
-          .then((res) => {
-            setProjectleader(res.data)
-            console.log('log', res.data)
-          })
-      }
-    } else {
-      axios.get(`http://localhost:3001/dataproject/findproject/${selectedfiscalyear.fiscalyear}/${status.code}`,
-      ).then((res) => {
-        setProjectleader(res.data)
-        //console.log('log', res.data)
-      })
-    }
-
+    axios.get(`http://localhost:3001/dataproject/findproject/${status.code}`,
+    ).then((res) => {
+      setProjectleader(res.data)
+      //console.log('log', res.data)
+    })
   }
 
   return (
@@ -178,8 +166,7 @@ const Dataleader = () => {
             <Panel header='ข้อมูลโครงการ'>
               <div className="text-left">
                 <div className="fit">
-                  <h4>ปีงบประมาณ
-                    <Dropdown value={selectedfiscalyear} options={fiscalyear} style={{ width: '10em', marginLeft: '1em', marginRight: '4em' }} onChange={onsetFiscalyear} optionLabel="fiscalyear" placeholder="ทุกปี" />
+                  <h4>
                     สถานะ
                     <Dropdown value={status} style={{ width: '30em', marginLeft: '1em' }} onChange={(e) => setStatus(e.target.value)} placeholder="สถานะโครงการ" options={findStatus} optionLabel="name" />
                     <Button label="ค้นหา" onClick={findProject} className="p-button-success" style={{ marginLeft: ".8em" }} />

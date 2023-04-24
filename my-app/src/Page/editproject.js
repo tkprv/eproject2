@@ -18,6 +18,9 @@ import { RadioButton } from "primereact/radiobutton";
 import Header from '../initialpage/Sidebar/header';
 import Sidebar from '../initialpage/Sidebar/sidebar';
 import { Panel } from 'primereact/panel';
+import { ExclamationCircleFilled } from "@ant-design/icons"
+import { Modal } from "antd"
+const { confirm } = Modal
 
 const Editproject = () => {
   const location = useLocation();
@@ -92,17 +95,17 @@ const Editproject = () => {
   const [tactic, setTactic] = useState([]);
   const [Selectedtactic, setSelectedtactic] = useState(null);
   const [pro, setPro] = useState();
-  const [visible1, setVisible1] = useState(false);
-  const [visible2, setVisible2] = useState(false);
-  const [visible3, setVisible3] = useState(false);
-  const [visible4, setVisible4] = useState(false);
-  const [visible5, setVisible5] = useState(false);
-  const [visible6, setVisible6] = useState(false);
-  const [visible7, setVisible7] = useState(false);
-  const [visible8, setVisible8] = useState(false);
-  const [visible9, setVisible9] = useState(false);
-  const [visible10, setVisible10] = useState(false);
-  const [visible11, setVisible11] = useState(false);
+  const [displayBasic, setDisplayBasic] = useState(false)
+  const [displayBasic1, setDisplayBasic1] = useState(false)
+  const [displayBasic2, setDisplayBasic2] = useState(false)
+  const [displayBasic3, setDisplayBasic3] = useState(false)
+  const [displayBasic4, setDisplayBasic4] = useState(false)
+  const [displayBasic5, setDisplayBasic5] = useState(false)
+  const [displayBasic6, setDisplayBasic6] = useState(false)
+  const [displayBasic7, setDisplayBasic7] = useState(false)
+  const [displayBasic8, setDisplayBasic8] = useState(false)
+  const [displayBasic9, setDisplayBasic9] = useState(false)
+  const [displayBasic10, setDisplayBasic10] = useState(false)
   const [menu, setMenu] = useState(false);
   let history = useHistory();
 
@@ -132,22 +135,62 @@ const Editproject = () => {
     getbenefit()
   }, []);
 
-  const onHide = () => {
-    setVisible1(false)
-    setVisible2(false)
-    setVisible3(false)
-    setVisible4(false)
-    setVisible5(false)
-    setVisible6(false)
-    setVisible7(false)
-    setVisible8(false)
-    setVisible9(false)
-    setVisible10(false)
-    setVisible11(false)
-  }
-
   const toggleMobileMenu = () => {
     setMenu(!menu)
+  }
+
+  const onHide1 = () => {
+    setDisplayBasic1(false)
+    form.resetFields()
+  }
+
+  const onHide2 = () => {
+    setDisplayBasic2(false)
+    form.resetFields()
+  }
+  const onHide3 = () => {
+    setDisplayBasic3(false)
+    form.resetFields()
+  }
+
+  const onHide4 = () => {
+    setDisplayBasic4(false)
+    form.resetFields()
+  }
+
+  const onHide5 = () => {
+    setDisplayBasic5(false)
+    form.resetFields()
+  }
+
+  const onHide6 = () => {
+    setDisplayBasic6(false)
+    form.resetFields()
+  }
+
+  const onHide7 = () => {
+    setDisplayBasic7(false)
+    form.resetFields()
+  }
+
+  const onHide8 = () => {
+    setDisplayBasic8(false)
+    form.resetFields()
+  }
+
+  const onHide9 = () => {
+    setDisplayBasic9(false)
+    form.resetFields()
+  }
+
+  const onHide10 = () => {
+    setDisplayBasic10(false)
+    form.resetFields()
+  }
+
+  const onHide = () => {
+    setDisplayBasic(false)
+    form.resetFields()
   }
 
   const editdatauser = (node) => {
@@ -261,25 +304,10 @@ const Editproject = () => {
         <Button
           type="button"
           icon="pi pi-pencil"
-          label='แก้ไขหัวข้อค่าใช้จ่าย'
+          label='แก้ไขประเภทค่าใช้จ่าย'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '20em', height: '2.5em' }}
+          style={{ textAlign: 'center', width: '15em', height: '2.5em' }}
           onClick={() => showchargeshead(node)}
-        ></Button>
-      </div>
-    );
-  }
-
-  const editdatacharges = (node) => {
-    return (
-      <div>
-        <Button
-          type="button"
-          icon="pi pi-pencil"
-          label='แก้ไขประเภทค่าใช้จาย'
-          className="p-button-warning"
-          style={{ textAlign: 'center', width: '20em', height: '2.5em' }}
-          onClick={() => showcharges(node)}
         ></Button>
       </div>
     );
@@ -293,7 +321,7 @@ const Editproject = () => {
           icon="pi pi-pencil"
           label='แก้ไขประโยชน์ที่คาดว่าจะได้รับ'
           className="p-button-warning"
-          style={{ textAlign: 'center', width: '20em' }}
+          style={{ textAlign: 'center', width: '19em' }}
           onClick={() => showbenefit(node)}
         ></Button>
       </div>
@@ -315,104 +343,6 @@ const Editproject = () => {
     );
   }
 
-  const renderFooter1 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateuser(id, Selecteduser)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter2 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateobjective(id, editobjective)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter3 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" onClick={() => updateindic(id, editindic, editunit, editcost)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter4 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestep(id, editstep, editdatest, editdatesp)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter5 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatechrageshead(id, editchargeshead)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter6 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatebenefit(id, editbenefit)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter7 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatechrages(id, editcharges, editcharges1, editcharges2, editcharges3, editcharges4)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter8 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategicplan(id, Selectedplanname)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter9 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategic(id, Selectedstrategic)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter10 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updategoal(id, Selectedgoal)} autoFocus />
-      </div>
-    );
-  }
-
-  const renderFooter11 = (id) => {
-    return (
-      <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" ostyle={{ height: '2.5em' }} nClick={() => updatetactic(id, Selectedtactic)} autoFocus />
-      </div>
-    );
-  }
   const showproject = () => {
     axios
       .get(`http://localhost:3001/dataproject/pro/${location.state.project_id}`, {})
@@ -489,6 +419,7 @@ const Editproject = () => {
   console.log('22', userproject)
 
   const showuser = (item) => {
+    setDisplayBasic1(true)
     setUserid(item.user_project_id)
     axios
       .get(`http://localhost:3001/editproject/showuserpro/${item.user_project_id}`, {})
@@ -498,7 +429,6 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible1(true)
   };
 
   const selectuser = () => {
@@ -517,13 +447,11 @@ const Editproject = () => {
   }
 
   const updateuser = (id, Selecteduser) => {
-    setVisible1(false)
-    console.log('4444', id)
     axios.put(`http://localhost:3001/editproject/updateuserproject/${userid}`, {
       user_id: Selecteduser.user_id
     })
-    alert(`ต้องการแก้ไขผู้รับผิดชอบโครงการใช่มั้ย?`)
-    showuser()
+    onHide1()
+    getuser()
   };
 
   const getfiscalyearandplanname = async () => {
@@ -627,6 +555,7 @@ const Editproject = () => {
   console.log('77', objectiveproject)
 
   const showobjective = (item) => {
+    setDisplayBasic6(true)
     setObjectiveid(item.objective_id)
     axios
       .get(`http://localhost:3001/editproject/showobjective/${item.objective_id}`, {})
@@ -637,17 +566,14 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible2(true)
   };
 
   const updateobjective = (id, editobjective) => {
-    setVisible2(false)
-    console.log('4444', id)
     axios.put(`http://localhost:3001/editproject/updateobjective/${objectiveid}`, {
       objective_name: editobjective
     })
-    alert(`ต้องการแก้ไขวัตถุประสงค์ใช่มั้ย?`)
-    showobjective()
+    onHide6()
+    getobjective()
   };
 
   const getindic = () => {
@@ -663,6 +589,7 @@ const Editproject = () => {
   console.log('88', indicproject)
 
   const showindic = (item) => {
+    setDisplayBasic7(true)
     setIndicid(item.indic_project_id)
     axios
       .get(`http://localhost:3001/editproject/showindicpro/${item.indic_project_id}`, {})
@@ -672,23 +599,19 @@ const Editproject = () => {
         setEditunit(res.data[0].unit)
         setEditcost(res.data[0].cost)
       })
-
       .catch((error) => {
         console.log(error)
       });
-    setVisible3(true)
   };
 
   const updateindic = (id, editindic, editunit, editcost) => {
-    setVisible3(false)
-    console.log('4444', id)
     axios.put(`http://localhost:3001/editproject/updateindicpro/${indicid}`, {
       indic_project: editindic,
       unit: editunit,
       cost: editcost
     })
-    alert(`ต้องการแก้ไขตัวชี้วัด หน่วยนับ และค่าเป้าหมายใช่มั้ย?`)
-    showindic()
+    onHide7()
+    getindic()
   };
 
   const getstep = () => {
@@ -704,6 +627,7 @@ const Editproject = () => {
   console.log('99', stepproject)
 
   const showstep = (item) => {
+    setDisplayBasic8(true)
     setStepid(item.step_id)
     axios
       .get(`http://localhost:3001/editproject/showstep/${item.step_id}`, {})
@@ -716,11 +640,9 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible4(true)
   };
 
   const updatestep = (id, editstep, editdatest, editdatesp) => {
-    setVisible4(false)
     const datest = moment(editdatest).add(543, 'year').format('YYYY-MM-DD')
     const datesp = moment(editdatesp).add(543, 'year').format('YYYY-MM-DD')
     axios.put(`http://localhost:3001/editproject/updatestep/${stepid}`, {
@@ -728,8 +650,8 @@ const Editproject = () => {
       start: datest,
       stop: datesp
     })
-    alert(`ต้องการแก้ไขขั้นตอนดำเนินการใช่มั้ย?`)
-    showstep()
+    onHide8()
+    getstep()
   };
 
   const butget = [
@@ -773,35 +695,13 @@ const Editproject = () => {
   console.log('101', chargesproject)
 
   const showchargeshead = (item) => {
+    setDisplayBasic9(true)
     setChargesid(item.charges_id)
     axios
       .get(`http://localhost:3001/editproject/showchargeshead/${item.charges_id}`, {})
       .then((res) => {
         setDatacharges(res.data[0].charges_id)
         setEditchargeshead(res.data[0].charges_name_head)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-    setVisible5(true)
-  };
-
-  const updatechrageshead = (id, editchargeshead) => {
-    setVisible5(false)
-    console.log('4444', id)
-    axios.put(`http://localhost:3001/editproject/updatechargeshead/${chargesid}`, {
-      charges_name_head: editchargeshead
-    })
-    alert(`ต้องการแก้ไขหัวข้อค่าใช้จ่ายใช่มั้ย?`)
-    showchargeshead()
-  };
-
-  const showcharges = (item) => {
-    setChargesid(item.charges_id)
-    axios
-      .get(`http://localhost:3001/editproject/showchargeshead/${item.charges_id}`, {})
-      .then((res) => {
-        setDatacharges(res.data[0].charges_id)
         setEditcharges(res.data[0].charges_name)
         setEditcharges1(res.data[0].quarter_one)
         setEditcharges2(res.data[0].quarter_two)
@@ -811,21 +711,19 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible7(true)
   };
 
-  const updatechrages = (id, editcharges, editcharges1, editcharges2, editcharges3, editcharges4) => {
-    setVisible7(false)
-    console.log('4444', id)
-    axios.put(`http://localhost:3001/editproject/updatecharges/${chargesid}`, {
+  const updatechrageshead = (id, editchargeshead, editcharges, editcharges1, editcharges2, editcharges3, editcharges4) => {
+    axios.put(`http://localhost:3001/editproject/updatechargeshead/${chargesid}`, {
+      charges_name_head: editchargeshead,
       charges_name: editcharges,
       quarter_one: editcharges1,
       quarter_two: editcharges2,
       quarter_three: editcharges3,
       quarter_four: editcharges4
     })
-    alert(`ต้องการแก้ไขหัวประเภทค่าใช้จ่ายใช่มั้ย?`)
-    showcharges()
+    onHide9()
+    getcharges()
   };
 
   const getbenefit = () => {
@@ -841,6 +739,7 @@ const Editproject = () => {
   console.log('102', benefitproject?.benefit_name)
 
   const showbenefit = (item) => {
+    setDisplayBasic10(true)
     setBenefitid(item.benefit_id)
     axios
       .get(`http://localhost:3001/editproject/showbenefit/${item.benefit_id}`, {})
@@ -852,17 +751,15 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible6(true)
   };
 
   const updatebenefit = (id, editbenefit) => {
-    setVisible6(false)
-    console.log('4444', id)
+
     axios.put(`http://localhost:3001/editproject/updatebenefit/${benefitid}`, {
       benefit_name: editbenefit
     })
-    alert(`ต้องการแก้ไขประโยชน์ที่คาดว่าจะได้รับใช่มั้ย?`)
-    showbenefit()
+    onHide10()
+    getbenefit()
   };
 
   const handlTor = (e) => {
@@ -873,6 +770,7 @@ const Editproject = () => {
   }
 
   const showplan = (item) => {
+    setDisplayBasic2(true)
     setPlanid(item.strategic_project_id)
     axios
       .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
@@ -882,7 +780,6 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible8(true)
   };
 
   const selectstrategicplan = () => {
@@ -902,17 +799,16 @@ const Editproject = () => {
   }
 
   const updatestrategicplan = (id, Selectedplanname) => {
-    console.log('tt', id)
-    console.log('rr', Selectedplanname)
-    setVisible8(false)
     axios
       .put(`http://localhost:3001/editmanager/updatestrategicplan/${planid}`, {
         plan_id: Selectedplanname.fiscalyear_id
       })
-    alert(`ต้องการเปลี่ยนแผนยุทธศาสตร์ใช่มั้ย?`)
+    onHide2()
+    getstrategicplan()
   }
 
   const showstrategic = (item) => {
+    setDisplayBasic3(true)
     setPlanid(item.strategic_project_id)
     axios
       .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
@@ -922,7 +818,6 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible9(true)
   };
 
   const selectstrategic = () => {
@@ -942,17 +837,16 @@ const Editproject = () => {
   }
 
   const updatestrategic = (id, Selectedstrategic) => {
-    console.log('tt', id)
-    console.log('rr', Selectedstrategic)
-    setVisible9(false)
     axios
       .put(`http://localhost:3001/editmanager/updatestrategic/${planid}`, {
         strategic_id: Selectedstrategic.strategic_id
       })
-    alert(`ต้องการเปลี่ยนประเด็นยุทธศาสตร์ใช่มั้ย?`)
+    onHide3()
+    getstrategic()
   }
 
   const showgoal = (item) => {
+    setDisplayBasic4(true)
     setPlanid(item.strategic_project_id)
     axios
       .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
@@ -962,7 +856,6 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible10(true)
   };
 
   const selectgoal = () => {
@@ -982,17 +875,16 @@ const Editproject = () => {
   }
 
   const updategoal = (id, Selectedgoal) => {
-    console.log('tt', id)
-    console.log('rr', Selectedgoal)
-    setVisible10(false)
     axios
       .put(`http://localhost:3001/editmanager/updategoal/${planid}`, {
         goal_id: Selectedgoal.goal_id
       })
-    alert(`ต้องการเปลี่ยนเป้าประสงค์ใช่มั้ย?`)
+    onHide4()
+    getgoal()
   }
 
   const showtactic = (item) => {
+    setDisplayBasic5(true)
     setPlanid(item.strategic_project_id)
     axios
       .get(`http://localhost:3001/editmanager/showplan/${item.strategic_project_id}`, {})
@@ -1002,7 +894,6 @@ const Editproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible11(true)
   };
 
   const selecttactic = () => {
@@ -1022,22 +913,20 @@ const Editproject = () => {
   }
 
   const updatetactic = (id, Selectedtactic) => {
-    console.log('tt', id)
-    console.log('rr', Selectedtactic)
-    setVisible11(false)
     axios
       .put(`http://localhost:3001/editmanager/updatetactic/${planid}`, {
         tactic_id: Selectedtactic.tactic_id
       })
-    alert(`ต้องการเปลี่ยนกุลยุทธ์ใช่มั้ย?`)
+    onHide5()
+    gettactic()
   }
 
   const updateproject = (id, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbudget, edittype) => {
+    onHide()
     axios
       .put(`http://localhost:3001/editproject/updateproject/${id}`, {
         fiscalyear: year.fiscalyear,
         section_id: Selectedsection.section_id,
-
         integration_id: Selectedintegration.integration_id,
         workplan_id: Selectedworkplan.workplan_id,
         type: editkind,
@@ -1052,7 +941,22 @@ const Editproject = () => {
         out_plan: (edittype === 'โครงการนอกแผน') ? 1 : 0,
         status: 0
       })
-    alert(`ต้องการแก้ไขโครงการใช่มั้ย?`)
+  }
+
+  const showConfirm1 = (value) => {
+    confirm({
+      title: "ต้องการแก้ไขโครงการใช่มั้ย?",
+      icon: <ExclamationCircleFilled />,
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
+      onOk() {
+        console.log("ตกลง");
+        updateproject(value, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbutget, edittype)
+      },
+      onCancel() {
+        console.log("ยกเลิก");
+      },
+    });
   }
 
   return (
@@ -1372,17 +1276,12 @@ const Editproject = () => {
                     <h4>
                       <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
                         <Column field="charges_name_head" header="หัวข้อค่าใช้จ่าย" />
-                        <Column body={editdatachargeshead} header="จัดการ" style={{ textAlign: 'center', width: '17em' }} />
-                      </DataTable>
-                    </h4>
-                    <h4>
-                      <DataTable value={chargesproject} columnResizeMode="fit" showGridlines responsiveLayout="scroll" rows={10}>
                         <Column field="charges_name" header="ประเภทค่าใช้จ่าย" />
                         <Column field="quarter_one" header="แผ่นการใช้จ่ายไตรมาส 1" />
                         <Column field="quarter_two" header="แผ่นการใช้จ่ายไตรมาส 2" />
                         <Column field="quarter_three" header="แผ่นการใช้จ่ายไตรมาส 3" />
                         <Column field="quarter_four" header="แผ่นการใช้จ่ายไตรมาส 4" />
-                        <Column body={editdatacharges} header="จัดการ" style={{ textAlign: 'center', width: '17em' }} />
+                        <Column body={editdatachargeshead} header="จัดการ" style={{ textAlign: 'center', width: '17em' }} />
                       </DataTable>
                     </h4>
                   </div>
@@ -1433,370 +1332,423 @@ const Editproject = () => {
                 </div>
               </div>
               <div style={{ marginTop: '2em', marginLeft: '70em' }} >
-                <Button label="บันทึก" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateproject(location.state.project_id, year, Selectedsection, Selectedintegration, Selectedworkplan, editkind, editintegrasubject, editrationale, edittargetgroup, editmoney, moneyText, edittor, selectedbutget, edittype)} />
+                <Button label="บันทึก" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm1(location.state.project_id)} />
               </div>
             </Panel>
           </Card>
 
-          <Dialog
-            style={{ width: '500px', width: "50vw" }} header="เแก้ไขผู้รับผิดชอบโครงการ" modal className="p-fluid"
-            visible={visible1}
-            footer={renderFooter1}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-5">
-                  <h4>ชื่อผู้รับผิดชอบโครงการ :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="fname" placeholder="ชื่อผู้รับผิดชอบโครงการ" />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-5">
-                  <h4>นามสกุลผู้รับผิดชอบโครงการ :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '23em' }} optionLabel="lname" placeholder="นามสกุลผู้รับผิดชอบโครงการ" />
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลผู้รับผิดชอบโครงการ'}</p>}
+              open={displayBasic1}
+              onCancel={onHide1}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-5">
+                    <h4 style={{ marginTop: '.5em' }}>ชื่อผู้รับผิดชอบโครงการ</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '21.5em' }} optionLabel="fname" placeholder="ชื่อผู้รับผิดชอบโครงการ" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '450px', width: "50vw" }} header="เแก้ไขวัตถุประสงค์" modal className="p-fluid"
-            visible={visible2}
-            footer={renderFooter2}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-3">
-                  <h4>วัตถุประสงค์ :</h4>
-                </div>
-                <div className="col-12 md:col-5">
-                  <InputText
-                    value={editobjective}
-                    onChange={(e) => setEditobjective(e.target.value)}
-                    style={{ width: '30.5em' }}
-                    placeholder="วัตถุประสงค์"
-                  />
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-5">
+                    <h4>นามสกุลผู้รับผิดชอบโครงการ</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <Dropdown value={Selecteduser} options={user} onChange={onsetUser} style={{ width: '21.5em' }} optionLabel="lname" placeholder="นามสกุลผู้รับผิดชอบโครงการ" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '450px', width: "50vw" }} header="เแก้ไขตัวชี้วัด หน่วยนับ และค่าเป้าหมาย" modal className="p-fluid"
-            visible={visible3}
-            footer={renderFooter3}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide1} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateuser(userid, Selecteduser)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลแผนยุทธศาสตร์'}</p>}
+              open={displayBasic2}
+              onCancel={onHide2}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4 style={{ marginTop: '.5em' }}>แผนยุทธศาสตร์</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '28.5em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide2} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategicplan(planid, Selectedplanname)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลประเด็นยุทธศาสตร์'}</p>}
+              open={displayBasic3}
+              onCancel={onHide3}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4 style={{ marginTop: '.5em' }}>ประเด็นยุทธศาสตร์</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '28.5em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide3} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestrategic(planid, Selectedstrategic)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลเป้าประสงค์'}</p>}
+              open={displayBasic4}
+              onCancel={onHide4}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-2">
+                    <h4 style={{ marginTop: '.5em' }}>เป้าประสงค์</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '32em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide4} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updategoal(planid, Selectedgoal)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลกลยุทธ์'}</p>}
+              open={displayBasic5}
+              onCancel={onHide5}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-2">
+                    <h4 style={{ marginTop: '.5em' }}>กลยุทธ์</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '32em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide5} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatetactic(planid, Selectedtactic)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลวัตถุประสงค์'}</p>}
+              open={displayBasic6}
+              onCancel={onHide6}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-2">
+                    <h4 style={{ marginTop: '.5em' }}>วัตถุประสงค์</h4>
+                  </div>
+                  <div className="col-12 md:col-5">
+                    <InputText
+                      value={editobjective}
+                      onChange={(e) => setEditobjective(e.target.value)}
+                      style={{ width: '31.5em' }}
+                      placeholder="วัตถุประสงค์"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide6} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateobjective(objectiveid, editobjective)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลตัวชี้วัด หน่วยนับ และค่าเป้าหมาย'}</p>}
+              open={displayBasic7}
+              onCancel={onHide7}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4 style={{ marginTop: '.5em' }}>ตัวชี้วัดความสำเร็จ</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editindic}
+                      onChange={(e) => setEditindic(e.target.value)}
+                      style={{ width: '28.5em' }}
+                      placeholder="ตัวชี้วัดความสำเร็จ"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>หน่วยนับ</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editunit}
+                      onChange={(e) => setEditunit(e.target.value)}
+                      style={{ width: '28.5em' }}
+                      placeholder="หน่วยนับ"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-3">
+                    <h4>ค่าเป้าหมาย</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editcost}
+                      onChange={(e) => setEditcost(e.target.value)}
+                      style={{ width: '28.5em' }}
+                      placeholder="ค่าเป้าหมาย"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide7} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updateindic(indicid, editindic, editunit, editcost)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลขั้นตอนดำเนินการ'}</p>}
+              open={displayBasic8}
+              onCancel={onHide8}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4 style={{ marginTop: '.5em' }}>ขั้นตอนการดำเนินการ</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editstep}
+                      onChange={(e) => setEditstep(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="ขั้นตอนการดำเนินการ"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>เริ่มต้น</h4>
+                  </div>
+                  <div className="col-12 md:col-8">
+                    <Calendar
+                      id="basic"
+                      placeholder="เลือกวันที่เริ่มต้น"
+                      value={editdatest}
+                      onChange={(e) => setEditdatest(e.target.value)}
+                      style={{ width: '25em' }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>สิ้นสุด</h4>
+                  </div>
+                  <div className="col-12 md:col-8">
+                    <Calendar
+                      id="basic"
+                      placeholder="เลือกวันที่สิ้นสุด"
+                      value={editdatesp}
+                      onChange={(e) => setEditdatesp(e.target.value)}
+                      style={{ width: '25em' }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide8} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestep(stepid, editstep, editdatest, editdatesp)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลประเภทค่าใช้จ่าย'}</p>}
+              open={displayBasic9}
+              onCancel={onHide9}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4 style={{ marginTop: '.5em' }}>หัวข้อค่าใช้จ่าย</h4>
+                  </div>
+                  <div className="col-12 md:col-1">
+                    <InputText
+                      value={editchargeshead}
+                      onChange={(e) => setEditchargeshead(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="หัวข้อค่าใช้จ่าย"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>ประเภทค่าใช้จ่าย</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editcharges}
+                      onChange={(e) => setEditcharges(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="ประเภทค่าใช้จ่าย"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>แผนการใช้จ่ายไตรมาส 1</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editcharges1}
+                      onChange={(e) => setEditcharges1(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="แผนการใช้จ่ายไตรมาส 1"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>แผนการใช้จ่ายไตรมาส 2</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editcharges2}
+                      onChange={(e) => setEditcharges2(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="แผนการใช้จ่ายไตรมาส 2"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>แผนการใช้จ่ายไตรมาส 3</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editcharges3}
+                      onChange={(e) => setEditcharges3(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="แผนการใช้จ่ายไตรมาส 3"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
+                <div className="grid p-fluid">
+                  <div className="col-12 md:col-4">
+                    <h4>แผนการใช้จ่ายไตรมาส 4</h4>
+                  </div>
+                  <div className="col-10 md:col-1">
+                    <InputText
+                      value={editcharges4}
+                      onChange={(e) => setEditcharges4(e.target.value)}
+                      style={{ width: '25em' }}
+                      placeholder="แผนการใช้จ่ายไตรมาส 4"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide9} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatechrageshead(chargesid, editchargeshead, editcharges, editcharges1, editcharges2, editcharges3, editcharges4)} autoFocus />
+              </div>
+            </Modal>
+          </div>
+          <div>
+            <Modal
+              title={<p className="m-0">{'แก้ไขข้อมูลประโยช์ที่คาดว่าจะได้รับ'}</p>}
+              open={displayBasic10}
+              onCancel={onHide10}
+              footer={null}
+              width={700}
+            >
+              <div className="fit" style={{ marginLeft: '1.5em' }}>
               <div className="grid p-fluid">
                 <div className="col-12 md:col-4">
-                  <h4>ตัวชี้วัดความสำเร็จ :</h4>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editindic}
-                    onChange={(e) => setEditindic(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="ตัวชี้วัดความสำเร็จ"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>หน่วยนับ :</h4>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editunit}
-                    onChange={(e) => setEditunit(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="หน่วยนับ"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>ค่าเป้าหมาย :</h4>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editcost}
-                    onChange={(e) => setEditcost(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="ค่าเป้าหมาย"
-                  />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '450px', width: "50vw" }} header="เแก้ไขขั้นตอนดำเนินการ" modal className="p-fluid"
-            visible={visible4}
-            footer={renderFooter4}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>ขั้นตอนการดำเนินการ :</h4>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editstep}
-                    onChange={(e) => setEditstep(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="ขั้นตอนการดำเนินการ"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>เริ่มต้น :</h4>
-                </div>
-                <div className="col-12 md:col-8">
-                  <Calendar
-                    id="basic"
-                    placeholder="เลือกวันที่เริ่มต้น"
-                    value={editdatest}
-                    onChange={(e) => setEditdatest(e.target.value)}
-                    style={{ width: '26.5em' }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>สิ้นสุด :</h4>
-                </div>
-                <div className="col-12 md:col-8">
-                  <Calendar
-                    id="basic"
-                    placeholder="เลือกวันที่สิ้นสุด"
-                    value={editdatesp}
-                    onChange={(e) => setEditdatesp(e.target.value)}
-                    style={{ width: '26.5em' }}
-                  />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '450px', width: "50vw" }} header="เแก้ไขหัวข้อค่าใช้จ่าย" modal className="p-fluid"
-            visible={visible5}
-            footer={renderFooter5}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-3">
-                  <h4>หัวข้อค่าใช้จ่าย :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <InputText
-                    value={editchargeshead}
-                    onChange={(e) => setEditchargeshead(e.target.value)}
-                    style={{ width: '30.5em' }}
-                    placeholder="หัวข้อค่าใช้จ่าย"
-                  />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '450px', width: "50vw" }} header="เแก้ไขประโยช์ที่คาดว่าจะได้รับ" modal className="p-fluid"
-            visible={visible6}
-            footer={renderFooter6}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>ประโยช์ที่คาดว่าจะได้รับ :</h4>
+                  <h4 style={{ marginTop: '.5em' }}>ประโยช์ที่คาดว่าจะได้รับ</h4>
                 </div>
                 <div className="col-12 md:col-1">
                   <InputText
                     value={editbenefit}
                     onChange={(e) => setEditbenefit(e.target.value)}
-                    style={{ width: '26.5em' }}
+                    style={{ width: '25em' }}
                     placeholder="ประโยช์ที่คาดว่าจะได้รับ"
                   />
                 </div>
               </div>
             </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '450px', width: "50vw" }} header="เแก้ไขประเภทค่าใช้จ่าย และแผนการใช้จ่ายในแต่ละไตรมาส" modal className="p-fluid"
-            visible={visible7}
-            footer={renderFooter7}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h4>ประเภทค่าใช้จ่าย :</h4>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editcharges}
-                    onChange={(e) => setEditcharges(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="ประเภทค่าใช้จ่าย"
-                  />
-                </div>
+              <div className="text-right mt-4">
+                <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide10} />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatebenefit(benefitid, editbenefit)} autoFocus />
               </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h3>แผนการใช้จ่ายไตรมาส 1 :</h3>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editcharges1}
-                    onChange={(e) => setEditcharges1(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="แผนการใช้จ่ายไตรมาส 1"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h3>แผนการใช้จ่ายไตรมาส 2 :</h3>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editcharges2}
-                    onChange={(e) => setEditcharges2(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="แผนการใช้จ่ายไตรมาส 2"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h3>แผนการใช้จ่ายไตรมาส 3 :</h3>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editcharges3}
-                    onChange={(e) => setEditcharges3(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="แผนการใช้จ่ายไตรมาส 3"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-4">
-                  <h3>แผนการใช้จ่ายไตรมาส 4 :</h3>
-                </div>
-                <div className="col-10 md:col-1">
-                  <InputText
-                    value={editcharges4}
-                    onChange={(e) => setEditcharges4(e.target.value)}
-                    style={{ width: '26.5em' }}
-                    placeholder="แผนการใช้จ่ายไตรมาส 4"
-                  />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '500px', width: "50vw" }} header="เแก้ไขแผนยุทธศาสตร์" modal className="p-fluid"
-            visible={visible8}
-            footer={renderFooter8}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-3">
-                  <h4>แผนยุทธศาสตร์ :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <Dropdown value={Selectedplanname} options={strategicplan} onChange={onsetStrategicplan} style={{ width: '30em' }} optionLabel="plan_name" placeholder="แผนยุทธศาสตร์" />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '500px', width: "50vw" }} header="เแก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
-            visible={visible9}
-            footer={renderFooter9}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-3">
-                  <h4>ประเด็นยุทธศาสตร์ :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <Dropdown value={Selectedstrategic} options={strategic} onChange={onsetStrategic} style={{ width: '30em' }} optionLabel="strategic_name" placeholder="ประเด็นยุทธศาสตร์" />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '500px', width: "50vw" }} header="เแก้ไขเป้าประสงค์" modal className="p-fluid"
-            visible={visible10}
-            footer={renderFooter10}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-3">
-                  <h4>เป้าประสงค์ :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <Dropdown value={Selectedgoal} options={goal} onChange={onsetGoal} style={{ width: '30em' }} optionLabel="goal_name" placeholder="เป้าประสงค์" />
-                </div>
-              </div>
-            </div>
-          </Dialog>
-
-          <Dialog
-            style={{ width: '500px', width: "50vw" }} header="เแก้ไขเกลยุทธ์" modal className="p-fluid"
-            visible={visible11}
-            footer={renderFooter11}
-            onHide={onHide}
-          >
-            <div className="fit" style={{ marginLeft: '1.5em' }}>
-              <div className="grid p-fluid">
-                <div className="col-12 md:col-3">
-                  <h4>กลยุทธ์ :</h4>
-                </div>
-                <div className="col-12 md:col-1">
-                  <Dropdown value={Selectedtactic} options={tactic} onChange={onsetTactic} style={{ width: '30em' }} optionLabel="tactic_name" placeholder="กลยุทธ์" />
-                </div>
-              </div>
-            </div>
-          </Dialog>
+            </Modal>
+          </div>
         </div>
       </div>
     </>

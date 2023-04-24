@@ -65,7 +65,7 @@ const Datareportmanager = () => {
                   <Button label="จัดการรายงานแผนปฏิบัติการประจำปี" link style={{ height: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportplan" })} />
                 </h4>
                 <h4>
-                  <Button label="จัดการรายงานสถาณะโครงการรายไตรมาส" link style={{ height: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportquater" })} />
+                  <Button label="จัดการรายงานสถานะโครงการรายไตรมาส" link style={{ height: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportquater" })} />
                 </h4>
                  <h4>
                   <Button label="จัดการรายงานผลการดำเนินงานตามแผนปฏิบัติการประจำปี" link style={{ height: '2.5em' }} onClick={() => history.push({ pathname: "/home/reportplanonly" })} />

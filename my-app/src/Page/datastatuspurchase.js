@@ -10,7 +10,6 @@ import axios from 'axios'
 import { Dropdown } from 'primereact/dropdown'
 import { useHistory } from "react-router-dom";
 import { Tag } from 'primereact/tag';
-import { Dialog } from 'primereact/dialog';
 import { InputTextarea } from 'primereact/inputtextarea';
 import moment from "moment";
 import Header from '../initialpage/Sidebar/header';
@@ -19,6 +18,7 @@ import { Card } from "primereact/card";
 import { Form, Tooltip } from 'antd';
 import { RedoOutlined } from '@ant-design/icons'
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Panel } from 'primereact/panel';
 import { getLocalId } from '../helper/utill';
 import { Modal } from 'antd';
 const { confirm } = Modal;
@@ -82,7 +82,7 @@ const Datastatuspurchase = () => {
     form.resetFields()
   }
 
- const add = (item) => {
+  const add = (item) => {
     setAddprojectid(item)
     setDisplayBasic1(true)
   }
@@ -109,31 +109,31 @@ const Datastatuspurchase = () => {
   const Status = (node) => {
     console.log('node', node)
     if (node.status === 0) {
-      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา"></Tag>
     } else if (node.status === 1) {
-      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag>
+      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ"></Tag>
     } else if (node.status === 2) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย"></Tag>
     } else if (node.status === 3) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา"></Tag>
     } else if (node.status === 4) {
-      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ"></Tag>
     } else if (node.status === 5) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร"></Tag>
     } else if (node.status === 6 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา"></Tag>
     } else if (node.status === 7 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา"></Tag>
     } else if (node.status === 8 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน"></Tag>
     } else if (node.status === 9 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก"></Tag>
     } else if (node.status_evaluation === 0 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ"></Tag>
     } else if (node.status_evaluation === 1 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ" rounded></Tag>
-    } else if (( node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ"></Tag>
+    } else if ((node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
+      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ"></Tag>
     } else {
       return node.status
     }
@@ -142,44 +142,26 @@ const Datastatuspurchase = () => {
   const Statuspurchase = (node) => {
     if (node.status === 4 && node.status_statuspurchase === 0) {
       return <div>
-        <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" style={{ height: '2.5em', width: '2.5em' }} disabled/></Tooltip>
+        <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>เพิ่มสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => add(node)} /></Tooltip>
-        <Tooltip placement="bottom" title={<span>อัพเดตสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled/></Tooltip>
+        <Tooltip placement="bottom" title={<span>อัพเดตสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
     } else if (node.status === 4 && node.status_statuspurchase === 1) {
       return <div>
         <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" style={{ height: '2.5em', width: '2.5em' }} onClick={() => show(node)} /></Tooltip>
-        <Tooltip placement="bottom" title={<span>เพิ่มสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled/></Tooltip>
+        <Tooltip placement="bottom" title={<span>เพิ่มสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>อัพเดตสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} onClick={() => update(node)} /></Tooltip>
       </div>
     }
-     else {
+    else {
       return <div>
-        <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" style={{ height: '2.5em', width: '2.5em' }} disabled/></Tooltip>
+        <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>เพิ่มสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-plus" className="p-button-success" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
         <Tooltip placement="bottom" title={<span>อัพเดตสถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-pencil" className="p-button-warning" style={{ marginLeft: '.5em', height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
       </div>
     }
 
   }
-
-  // const footerContent1 = () => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => setVisible1(false)} />
-  //       <Button label="เพิ่ม" icon="pi pi-plus" className="p-button-success" style={{ width: '20%' }} onClick={() => addstatusstatuspurchase(statuspurchase)} autoFocus />
-  //     </div>
-  //   );
-  // }
-
-  // const footerContent2 = () => {
-  //   return (
-  //     <div>
-  //       <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" onClick={() => setVisible2(false)} />
-  //       <Button label="อัพเดต" icon="pi pi-download" className="p-button-success" style={{ width: '20%' }} onClick={() => updatestatuspurchase(updatestatus2)} autoFocus />
-  //     </div>
-  //   )
-  // };
 
   const show = (item) => {
     setDisplayBasic3(true)
@@ -226,7 +208,7 @@ const Datastatuspurchase = () => {
   }
 
   const addstatusstatuspurchase = (status) => {
-    onHide1()
+
     const time1 = moment(times1).add(543, 'year').format('hh:mm:ss');
     const date1 = moment(dates1).add(543, 'year').format('YYYY-MM-DD')
     axios
@@ -237,11 +219,13 @@ const Datastatuspurchase = () => {
         date_statuspurchase: date1,
         project_id: addprojectid.project_id
       })
+    onHide1()
     updatestatuspu(addprojectid.project_id)
+    Project()
   }
 
   const updatestatuspurchase = (id) => {
-    onHide2()
+
     const time2 = moment(times2).add(543, 'year').format('hh:mm:ss');
     const date2 = moment(dates2).add(543, 'year').format('YYYY-MM-DD')
     axios
@@ -265,6 +249,8 @@ const Datastatuspurchase = () => {
         )
       }
       )
+    onHide2()
+    Project()
   }
 
   const updatestatuspu = (id) => {
@@ -278,51 +264,11 @@ const Datastatuspurchase = () => {
 
   const findProject = () => {
 
-    if (status.code === "50") {
-      {
-        console.log('hhhhh');
-        axios.get(`http://localhost:3001/dataproject/findprojectyear/${selectedfiscalyear.fiscalyear}`,)
-          .then((res) => {
-            setProject(res.data)
-            console.log('log', res.data)
-          })
-      }
-    } else {
-      axios.get(`http://localhost:3001/dataproject/findproject/${selectedfiscalyear.fiscalyear}/${status.code}`,
-      ).then((res) => {
-        setProject(res.data)
-        //console.log('log', res.data)
-      })
-    }
-
-  }
-
-  const showConfirm1 = (value) => {
-    confirm({
-      title: "ต้องกาเพิ่มสถานะการจัดซื้อจัดจ้างใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        addstatusstatuspurchase(value)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm2 = (value) => {
-    confirm({
-      title: "ต้องการอัพเดตสถานะการจัดซื้อจัดจ้างใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updatestatuspurchase(value)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
+    axios.get(`http://localhost:3001/dataproject/findproject/${status.code}`,
+    ).then((res) => {
+      setProject(res.data)
+      //console.log('log', res.data)
+    })
   }
 
   return (
@@ -331,94 +277,73 @@ const Datastatuspurchase = () => {
       <Sidebar />
       <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
         <div className="page-wrapper">
-          <div style={{ marginTop: '.5em', marginLeft: '1.5em' }}>
-            <h3>จัดการสถานะจัดซื้อจัดจ้าง</h3>
-          </div>
+
           <Card>
-            <div align='left'>
-              <div className="fit">
-                <h4>ปีงบประมาณ
-                  <Dropdown value={selectedfiscalyear} options={fiscalyear} style={{ width: '10em', marginLeft: '1em', marginRight: '4em' }} onChange={onsetFiscalyear} optionLabel="fiscalyear" placeholder="ทุกปี" />
-                  สถานะ
-                  <Dropdown value={status} style={{ width: '30em', marginLeft: '1em' }} onChange={(e) => setStatus(e.target.value)} placeholder="สถานะโครงการ" options={findStatus} optionLabel="name" />
-                  <Button label="ค้นหา" onClick={findProject} className="p-button-success" style={{ marginLeft: ".8em" }} />
-                  <Tooltip title='โครงการทั้งหมด'>
-                    <Button style={{ marginTop: '5px', marginLeft: '3px' }} onClick={Project} type="primary" size="large" icon={<RedoOutlined />} />
-                  </Tooltip>
-                </h4>
-              </div>
-              <div style={{ marginTop: "2.5em" }}>
-                <DataTable value={project} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
-                  <Column field="project_name" header="ชื่อโครงการ" />
-                  <Column body={detailproject} header="รายละเอียดโครงการ" style={{ textAlign: 'center', width: "15%" }} />
-                  <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "22%" }} />
-                  <Column body={Statuspurchase} field="status" header="สถานะการจัดซื้อจัดจ้าง" style={{ textAlign: 'center', width: "16.5%" }} />
-                </DataTable>
-              </div>
+            <Panel header='จัดการสถานะจัดซื้อจัดจ้าง'>
+              <div align='left'>
+                <div className="fit">
+                  <h4>
+                    สถานะ
+                    <Dropdown value={status} style={{ width: '30em', marginLeft: '1em' }} onChange={(e) => setStatus(e.target.value)} placeholder="สถานะโครงการ" options={findStatus} optionLabel="name" />
+                    <Button label="ค้นหา" onClick={findProject} className="p-button-success" style={{ marginLeft: ".8em" }} />
+                    <Tooltip title='โครงการทั้งหมด'>
+                      <Button style={{ marginTop: '5px', marginLeft: '3px' }} onClick={Project} type="primary" size="large" icon={<RedoOutlined />} />
+                    </Tooltip>
+                  </h4>
+                </div>
+                <div style={{ marginTop: "2.5em" }}>
+                  <DataTable value={project} columnResizeMode="fit" showGridlines responsiveLayout="scroll" dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}>
+                    <Column field="project_name" header="ชื่อโครงการ" />
+                    <Column body={detailproject} header="รายละเอียดโครงการ" style={{ textAlign: 'center', width: "15%" }} />
+                    <Column body={Status} field="status" header="สถานะ" style={{ textAlign: 'center', width: "22%" }} />
+                    <Column body={Statuspurchase} field="status" header="สถานะการจัดซื้อจัดจ้าง" style={{ textAlign: 'center', width: "16.5%" }} />
+                  </DataTable>
+                </div>
 
-              <div>
-                <Modal
-                  title={<p className="m-0">{'เพิ่มสถานะการจัดซื้อจัดจ้าง'}</p>}
-                  open={displayBasic1}
-                  onCancel={onHide1}
-                  footer={null}
-                  width={600}
-                >
-                  <InputTextarea value={statuspurchase} planceholder="เพิ่มสถานะการจัดซื้อจัดจ้าง" onChange={(e) => setStatuspurchase(e.target.value)} rows={8} cols={69.2} />
-                  <div className="text-right mt-4">
-                    <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '19.5em' }} onClick={onHide1} />
-                    <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm1(statuspurchase)} autoFocus />
-                  </div>
-                </Modal>
-              </div>
+                <div>
+                  <Modal
+                    title={<p className="m-0">{'เพิ่มสถานะการจัดซื้อจัดจ้าง'}</p>}
+                    open={displayBasic1}
+                    onCancel={onHide1}
+                    footer={null}
+                    width={600}
+                  >
+                    <InputTextarea value={statuspurchase} planceholder="เพิ่มสถานะการจัดซื้อจัดจ้าง" onChange={(e) => setStatuspurchase(e.target.value)} rows={8} cols={69.2} />
+                    <div className="text-right mt-4">
+                      <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide1} />
+                      <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => addstatusstatuspurchase(statuspurchase)} autoFocus />
+                    </div>
+                  </Modal>
+                </div>
 
-              <div>
-                <Modal
-                  title={<p className="m-0">{'อัพเดตสถานะการจัดซื้อจัดจ้าง'}</p>}
-                  open={displayBasic2}
-                  onCancel={onHide2}
-                  footer={null}
-                  width={600}
-                >
-                  <InputTextarea value={newstatuspurchase} planceholder="อัพเดตสถานะการจัดซื้อจัดจ้าง" onChange={(e) => setNewstatuspurchase(e.target.value)} rows={8} cols={69.2} />
-                  <div className="text-right mt-4">
-                    <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '19.5em' }} onClick={onHide2} />
-                    <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm2(updatestatus2)} autoFocus />
-                  </div>
-                </Modal>
+                <div>
+                  <Modal
+                    title={<p className="m-0">{'อัพเดตสถานะการจัดซื้อจัดจ้าง'}</p>}
+                    open={displayBasic2}
+                    onCancel={onHide2}
+                    footer={null}
+                    width={600}
+                  >
+                    <InputTextarea value={newstatuspurchase} planceholder="อัพเดตสถานะการจัดซื้อจัดจ้าง" onChange={(e) => setNewstatuspurchase(e.target.value)} rows={8} cols={69.2} />
+                    <div className="text-right mt-4">
+                      <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em' }} onClick={onHide2} />
+                      <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatestatuspurchase(updatestatus2)} autoFocus />
+                    </div>
+                  </Modal>
+                </div>
+                <div>
+                  <Modal
+                    title={<p className="m-0">{'สถานะการจัดซื้อจัดจ้าง'}</p>}
+                    open={displayBasic3}
+                    onCancel={onHide3}
+                    footer={null}
+                    width={600}
+                  >
+                    <InputTextarea value={showstatuspurchase} planceholder="สถานะการจัดซื้อจัดจ้าง" rows={8} cols={69.2} disabled />
+                  </Modal>
+                </div>
               </div>
-              <div>
-                <Modal
-                  title={<p className="m-0">{'สถานะการจัดซื้อจัดจ้าง'}</p>}
-                  open={displayBasic3}
-                  onCancel={onHide3}
-                  footer={null}
-                  width={600}
-                >
-                  <InputTextarea value={showstatuspurchase} planceholder="สถานะการจัดซื้อจัดจ้าง" rows={8} cols={69.2} disabled />
-                </Modal>
-              </div>
-
-
-              {/* <div className="card flex justify-content-center">
-                <Dialog header="เพิ่มสถานะการจัดซื้อจัดจ้าง" visible={visible1} style={{ width: '40vw' }} breakpoints={{ '950x': '75vw' }} onHide={() => setVisible1(false)} footer={footerContent1('addstatus')}>
-                  <InputTextarea value={statuspurchase} planceholder="เพิ่มสถานะการจัดซื้อจัดจ้าง" onChange={(e) => setStatuspurchase(e.target.value)} rows={8} cols={71} />
-                </Dialog>
-              </div>
-
-              <div className="card flex justify-content-center">
-                <Dialog header="อัพเดตสถานะการจัดซื้อจัดจ้าง" visible={visible2} style={{ width: '40vw' }} onHide={() => setVisible2(false)} footer={footerContent2('updatestatus')}>
-                  <InputTextarea value={newstatuspurchase} planceholder="อัพเดตสถานะการจัดซื้อจัดจ้าง" onChange={(e) => setNewstatuspurchase(e.target.value)} rows={8} cols={71} />
-                </Dialog>
-              </div>
-            </div> */}
-
-              {/* <div className="card flex justify-content-center">
-                <Dialog header="สถานะจัดซื้อจัดจ้าง" visible={visible} style={{ width: '40vw' }} breakpoints={{ '950x': '75vw' }} onHide={() => setVisible(false)}>
-                  <InputTextarea value={showstatuspurchase} planceholder="สถานะการจัดซื้อจัดจ้าง" rows={8} cols={71.5} disabled />
-                </Dialog>
-              </div> */}
-            </div>
+            </Panel>
           </Card>
         </div >
       </div >

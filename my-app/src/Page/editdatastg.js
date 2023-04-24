@@ -1,28 +1,28 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
 import { InputText } from 'primereact/inputtext'
 import Tablegoal from "../Page/Tab/goal"
 import axios from 'axios'
-import { Button, Card, Col, Divider, Form, Input, notification, Typography ,Modal} from 'antd'
-import { MinusCircleOutlined, PlusOutlined,ExclamationCircleFilled } from '@ant-design/icons'
+import { Button, Card, Col, Divider, Form, Input, notification, Typography, Modal } from 'antd'
+import { MinusCircleOutlined, PlusOutlined, ExclamationCircleFilled } from '@ant-design/icons'
 import Header from '../initialpage/Sidebar/header'
 import Sidebar from '../initialpage/Sidebar/sidebar'
 import { Panel } from 'primereact/panel'
 
-const {confirm} = Modal
-const {Title} = Typography
+const { confirm } = Modal
+const { Title } = Typography
 
 
 const formItemLayout = {
     labelAlign: 'left',
     labelCol: {
-        xs: {span: 24},
-        sm: {span: 5},
+        xs: { span: 24 },
+        sm: { span: 5 },
     },
     wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 16},
+        xs: { span: 24 },
+        sm: { span: 16 },
     },
 
 }
@@ -30,16 +30,16 @@ const formItemLayout = {
 const formItemLayout2 = {
     labelAlign: 'right',
     labelCol: {
-        xs: {span: 24},
-        sm: {span: 5},
+        xs: { span: 24 },
+        sm: { span: 5 },
     },
 
 }
 
 const formItemLayoutWithOutLabel2 = {
     wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 16},
+        xs: { span: 24 },
+        sm: { span: 16 },
         offset: 5,
     },
 }
@@ -81,7 +81,7 @@ const Editdatastg = () => {
         goal: null
     }
 
-    
+
 
     useEffect(() => {
         getgoal()
@@ -128,7 +128,6 @@ const Editdatastg = () => {
             }).then((res) => {
                 addindicgoal(res.data.insertId, value)
                 addindicgoal2(res.data.insertId, value.indicList)
-
             })
 
 
@@ -157,9 +156,10 @@ const Editdatastg = () => {
     }
 
 
-    const addindicgoal2 = (id, value) => {
-        if (value.length !== 0 && value.indicatornames !== null) {
-            for (const value of inputValues1) {
+    const addindicgoal2 = (id, data) => {
+
+        if (data.length !== 0 && data.indicatornames !== null) {
+            for (const value of data) {
                 try {
                     axios.post('http://localhost:3001/stg/createindicgoal', {
                         goal_id: id,
@@ -184,7 +184,7 @@ const Editdatastg = () => {
                 tactic_name: value.tactic
             })
             if (valuelist.length !== 0 && valuelist !== null) {
-                for (const value of rowsData) {
+                for (const value of valuelist) {
                     try {
                         axios.post('http://localhost:3001/stg/createtactic', {
                             goal_id: id,
@@ -227,7 +227,7 @@ const Editdatastg = () => {
     const showConfirm = (value) => {
         confirm({
             title: 'ยืนยันการเพิ่มข้อมูลเพิ่มข้อมูล',
-            icon: <ExclamationCircleFilled/>,
+            icon: <ExclamationCircleFilled />,
             content: 'สร้างเป้าประสงค์ ตัวชี้วัด หน่วยนับ ค่าเป้าหมาย กลยุทธ์',
             onOk() {
                 console.log('OK')
@@ -269,7 +269,7 @@ const Editdatastg = () => {
 
     const handleChange = (index, evnt) => {
 
-        const {name, value} = evnt.target
+        const { name, value } = evnt.target
         const rowsInput = [...rowsData]
         rowsInput[index][name] = value
         setRowsData(rowsInput)
@@ -278,7 +278,7 @@ const Editdatastg = () => {
 
     const handleChange2 = (index, evnt) => {
 
-        const {name, value} = evnt.target
+        const { name, value } = evnt.target
         const rowsInput = [...inputValues1]
         rowsInput[index][name] = value
         setInputValues1(rowsInput)
@@ -320,18 +320,13 @@ const Editdatastg = () => {
 
     return (
         <>
-            <Header onMenuClick={(value) => toggleMobileMenu()}/>
-            <Sidebar/>
+            <Header onMenuClick={(value) => toggleMobileMenu()} />
+            <Sidebar />
             <Title level={3}>การสร้างเป้าประสงค์ ตัวชี้วัด ค่าเป้าหมาย กลยุทธ์</Title>
             {/*<div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>*/}
             <div className="page-wrapper">
                 <Card
-
-                    // title="Card title"
-                    //className="mt-5"
-                    // bordered={false}
                 >
-
                     <Panel header="สร้างเป้าประสงค์ ตัวชี้วัด หน่วยนับ ค่าเป้าหมาย กลยุทธ์ ">
                         <Form
                             {...formItemLayout}
@@ -357,7 +352,7 @@ const Editdatastg = () => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="เป้าประสงค์" size={'large'} style={{width: 520}}/>
+                                <Input placeholder="เป้าประสงค์" size={'large'} style={{ width: 520 }} />
                             </Form.Item>
                             <Form.Item
                                 label="ตัวชี้วัด"
@@ -369,7 +364,7 @@ const Editdatastg = () => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="ตัวชี้วัด" size={'large'} style={{width: 520}}/>
+                                <Input placeholder="ตัวชี้วัด" size={'large'} style={{ width: 520 }} />
                             </Form.Item>
                             <Form.Item
                                 label="หน่วยนับ"
@@ -381,7 +376,7 @@ const Editdatastg = () => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="หน่วยนับ " size={'large'} style={{width: 520}}/>
+                                <Input placeholder="หน่วยนับ " size={'large'} style={{ width: 520 }} />
                             </Form.Item>
                             <Form.Item
                                 label="ค่าเป้าหมาย"
@@ -393,13 +388,13 @@ const Editdatastg = () => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="ค่าเป้าหมาย" size={'large'} style={{width: 520}}/>
+                                <Input placeholder="ค่าเป้าหมาย" size={'large'} style={{ width: 520 }} />
                             </Form.Item>
                             <Form.List
                                 name="indicList"
                             >
 
-                                {(fields, {add, remove}, {errors}) => (
+                                {(fields, { add, remove }, { errors }) => (
                                     <>
 
                                         {fields.map((field, index) => (
@@ -484,7 +479,7 @@ const Editdatastg = () => {
                                                             type={'primary'}
                                                             ghost
                                                             onClick={() => remove(field.name)}
-                                                            icon={<MinusCircleOutlined/>}
+                                                            icon={<MinusCircleOutlined />}
                                                         >
                                                             ลบ
                                                         </Button>
@@ -500,11 +495,11 @@ const Editdatastg = () => {
                                                 type="dashed"
                                                 onClick={() => add()}
                                                 // block
-                                                icon={<PlusOutlined/>}
+                                                icon={<PlusOutlined />}
                                             >
                                                 เพิ่มตัวชี้วัด หน่วยนับ ค่าเป้าหมาย
                                             </Button>
-                                            <Form.ErrorList errors={errors}/>
+                                            <Form.ErrorList errors={errors} />
                                         </Form.Item>
 
                                     </>
@@ -521,13 +516,13 @@ const Editdatastg = () => {
                                     },
                                 ]}
                             >
-                                <Input placeholder="กลยุทธ์" size={'large'} style={{width: 520}}/>
+                                <Input placeholder="กลยุทธ์" size={'large'} style={{ width: 520 }} />
                             </Form.Item>
                             <Form.List
                                 name="tacticList"
                             >
 
-                                {(fields, {add, remove}, {errors}) => (
+                                {(fields, { add, remove }, { errors }) => (
                                     <>
 
                                         {fields.map((field, index) => (
@@ -568,7 +563,7 @@ const Editdatastg = () => {
                                                             type={'primary'}
                                                             ghost
                                                             onClick={() => remove(field.name)}
-                                                            icon={<MinusCircleOutlined/>}
+                                                            icon={<MinusCircleOutlined />}
                                                         >
                                                             ลบ
                                                         </Button>
@@ -584,11 +579,11 @@ const Editdatastg = () => {
                                                 type="dashed"
                                                 onClick={() => add()}
                                                 // block
-                                                icon={<PlusOutlined/>}
+                                                icon={<PlusOutlined />}
                                             >
                                                 เพิ่มกลยุทธ์
                                             </Button>
-                                            <Form.ErrorList errors={errors}/>
+                                            <Form.ErrorList errors={errors} />
                                         </Form.Item>
 
                                     </>
@@ -596,27 +591,27 @@ const Editdatastg = () => {
 
                             </Form.List>
                             {/*<Col span={12}>*/}
-                                <div className="text-right mt-2 ">
-                                    <Button
-                                        size="large"
-                                        type="primary"
-                                        htmlType="submit"
-                                        className="login-form-button"
-                                        icon={<PlusOutlined/>}
-                                        // onClick={(value) => setStatus(1)}
+                            <div className="text-left mt-2 ">
+                                <Button
+                                    size="large"
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="login-form-button"
+                                    icon={<PlusOutlined />}
+                                // onClick={(value) => setStatus(1)}
 
-                                    >
-                                        เพิ่ม
-                                    </Button>
-                                </div>
+                                >
+                                    เพิ่ม
+                                </Button>
+                            </div>
                             {/*</Col>*/}
 
                         </Form>
-                <div style={{ marginTop: "3px" }} >
-                < Tablegoal id={location.state.strategic_id} />
-              </div>
-                </Panel>
-            </Card>
+                        <div style={{ marginTop: "3px" }} >
+                            < Tablegoal id={location.state.strategic_id} />
+                        </div>
+                    </Panel>
+                </Card>
             </div>
             {/*</div>*/}
         </>

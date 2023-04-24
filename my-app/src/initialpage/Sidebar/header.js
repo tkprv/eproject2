@@ -56,6 +56,8 @@ const Header = (props) => {
       title: "ออกจากระบบ",
       icon: <ExclamationCircleFilled />,
       content: "โปรดยืนยันออกจากระบบ",
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
       onOk() {
         console.log("ยืนยัน");
         Logout()

@@ -17,6 +17,7 @@ import { Panel } from 'primereact/panel'
 import { RedoOutlined } from '@ant-design/icons'
 import { DeleteOutlined, EditOutlined, ExclamationCircleFilled, } from '@ant-design/icons'
 import { Button, Checkbox, Divider, Form, Modal, Radio, Select, Row, Col, Tooltip } from 'antd'
+import { RadioButton } from "primereact/radiobutton";
 
 const { Option } = Select
 const { confirm } = Modal
@@ -40,13 +41,21 @@ const Manageuser = () => {
     const [menu, setMenu] = useState(false)
     const [role, setRole] = useState('')
     const [checkedList, setCheckedList] = useState([])
-
+    const [flag, setFlag] = useState();
+    const [dataflag, setDataflag] = useState();
+    const [flagid, setFlagid] = useState();
+    const [displayBasic2, setDisplayBasic2] = useState(false)
     const toggleMobileMenu = () => {
         setMenu(!menu)
     }
 
     // const [section, setSection] = useState([])
     let section = []
+
+    const onHide2 = () => {
+        setDisplayBasic2(false)
+        form.resetFields()
+    }
 
     useEffect(() => {
         axios
@@ -104,7 +113,6 @@ const Manageuser = () => {
 
         }
         )
-
         getperson()
 
     }
@@ -118,7 +126,7 @@ const Manageuser = () => {
         }
     }
 
-    const actionTemplate = (node, column) => {
+    const actionTemplate = (node) => {
         return (
             <div>
                 <Tooltip placement="bottom" title={<span>แก้ไขผู้ใช้งาน</span>} ><Button
@@ -136,18 +144,12 @@ const Manageuser = () => {
                     size="large"
                     icon={<DeleteOutlined style={{ verticalAlign: 'middle' }} />}
                     onClick={() => {
-                        showConfirm(node.user_id)
+                        showflag(node)
                     }}
                 ></Button>
                 </Tooltip>
             </div>
         )
-    }
-
-    const deleteperson = (p_id) => {
-        axios.delete(`http://localhost:3001/manageuser/delete/${p_id}`)
-        alert(`Delete id${p_id} sucessful`)
-        getperson()
     }
 
     const section2 = (rowData) => {
@@ -217,11 +219,6 @@ const Manageuser = () => {
         form.resetFields()
     }
 
-
-    // const confirm2 = (id, dataUpdate) => {
-    //     updateuser(id)
-    // }
-
     const onChange = (checkedValues) => {
         setCheckedList(checkedValues)
         if (checkedValues.length <= 3) {
@@ -229,37 +226,43 @@ const Manageuser = () => {
         }
     }
 
-
     const onPositionChange = (e) => {
 
         setSelectedPosition(e.value)
         const q = e.value.section_name
         const setst = personfill.filter((person) => person.section_name === q)
         setPerson(setst)
-
     }
 
-    const updatestatusperson = async (id, n) => {
+    const handlType = (e) => {
+        const choice = e.target.value
+        setDataflag(choice)
+        form.setFieldsValue({ dataflag: choice })
+    }
+
+    const showflag = (item) => {
+        setDisplayBasic2(true)
+        setFlagid(item.user_id)
         axios
-            .put(`http://localhost:3001/manageuser/updatestatusperson/${id}`, {
-                flag: n
+            .get(`http://localhost:3001/manageuser/showflag/${item.user_id}`, {})
+            .then((res) => {
+                setFlag(res.data[0].user_id)
             })
+            .catch((error) => {
+                console.log(error)
+            });
+    };
+
+
+    const updatestatusperson = async (id, dataflag) => {
+        axios
+            .put(`http://localhost:3001/manageuser/updatestatusperson/${flagid}`, {
+                flag: (dataflag === 'สถานะปกติ') ? 1 : 0
+            })
+        onHide2()
         getperson()
     }
-    const showConfirm = (value) => {
-        confirm({
-            title: 'ต้องการเปลี่ยนสถานะผู้ใช้งานใช่มั้ย?',
-            icon: <ExclamationCircleFilled style={{ verticalAlign: 'middle' }} />,
-            onOk() {
-                console.log('OK')
-                updatestatusperson(value, 0)
 
-            },
-            onCancel() {
-                console.log('Cancel')
-            },
-        })
-    }
 
     const showConfirm1 = () => {
         confirm({
@@ -307,7 +310,7 @@ const Manageuser = () => {
                                             </Tooltip>
                                         </Col>
                                         <Col span={'12'} style={{ textAlign: 'right' }}>
-                                            <Adduser />
+                                            <Adduser/>
                                         </Col>
                                     </Row>
                                 </div>
@@ -438,14 +441,73 @@ const Manageuser = () => {
                                                     size="large"
                                                     htmlType="submit"
                                                     style={{ width: '4.5em' }}
-                                                    onClick={() => {
-                                                        showConfirm1()
-                                                    }}
+                                                // onClick={() => {
+                                                //     showConfirm1()
+                                                // }}
                                                 >
                                                     บันทึก
                                                 </Button>
                                             </div>
                                         </Form>
+                                    </Modal>
+                                </div>
+
+                                <div>
+                                    <Modal
+                                        title={<p className="m-0">{'เปลี่ยนสถานะผู้ใช้งาน'}</p>}
+                                        open={displayBasic2}
+                                        onCancel={onHide2}
+                                        footer={null}
+                                        width={700}
+                                    >
+                                        <div className="fit" style={{ marginLeft: '1.5em' }}>
+                                            <div className="grid p-fluid">
+                                                <div className="col-12 md:col-9">
+                                                    <h4>
+                                                        <RadioButton
+                                                            inputId="dataflag1"
+                                                            name="dataflag"
+                                                            value="สถานะปกติ"
+                                                            onChange={handlType}
+                                                            checked={dataflag === "สถานะปกติ"}
+                                                            style={{ marginRight: '.5em' }}
+                                                        />
+                                                        <label htmlFor="dataflag1" style={{ marginRight: '2em', marginTop: '.5em' }}>สถานะปกติ</label>
+                                                    </h4>
+                                                    <h4 style={{ marginTop: '.5em' }}>
+                                                        <RadioButton
+                                                            inputId="dataflag"
+                                                            name="dataflag"
+                                                            value="ลาออกจากหน่วยงาน"
+                                                            onChange={handlType}
+                                                            checked={dataflag === "ลาออกจากหน่วยงาน"}
+                                                            style={{ marginRight: '.5em', marginTop: '.5em' }}
+                                                        />
+                                                        <label htmlFor="dataflag2">ลาออกจากหน่วยงาน</label>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="text-right mt-4">
+                                            <Button
+                                                danger
+                                                ghost
+                                                className="mr-2 "
+                                                type="primary"
+                                                size="large"
+                                                onClick={onHide2} >
+                                                ยกเลิก
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                size="large"
+                                                htmlType="submit"
+                                                style={{ width: '4.5em', marginLeft: '.4em' }}
+
+                                                onClick={() => updatestatusperson(flagid, dataflag)} >
+                                                บันทึก
+                                            </Button>
+                                        </div>
                                     </Modal>
                                 </div>
                                 <div />

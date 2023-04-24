@@ -36,6 +36,7 @@ const Dataproject = () => {
   const [deleteprojectid, setDeleteprojectid] = useState([]);
   const [visible, setVisible] = useState(false);
   const [displayBasic1, setDisplayBasic1] = useState(false);
+  const [displayBasic3, setDisplayBasic3] = useState(false)
   const [form] = Form.useForm();
   const [menu, setMenu] = useState(false)
   let history = useHistory();
@@ -51,6 +52,10 @@ const Dataproject = () => {
 
   const toggleMobileMenu = () => {
     setMenu(!menu)
+  }
+  const onHide3 = () => {
+    setDisplayBasic3(false)
+    form.resetFields()
   }
 
   const [status, setStatus] = useState()
@@ -77,37 +82,38 @@ const Dataproject = () => {
   const Status = (node) => {
     console.log('node', node)
     if (node.status === 0) {
-      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอหัวหน้าฝ่ายพิจารณา"></Tag>
     } else if (node.status === 1) {
-      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ" rounded></Tag>
+      return <Tag className="mr-2" severity="info" value="รอเจ้าหน้าที่ฝ่ายแผนตรวจสอบ"></Tag>
     } else if (node.status === 2) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากหัวหน้าฝ่าย"></Tag>
     } else if (node.status === 3) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารพิจารณา"></Tag>
     } else if (node.status === 4) {
-      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="success" value="อนุมัติโครงการ"></Tag>
     } else if (node.status === 5) {
-      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร" rounded></Tag>
+      return <Tag className="mr-2" severity="danger" value="ไม่ผ่านอนุมัติจากผู้บริหาร"></Tag>
     } else if (node.status === 6 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/เสร็จตามระยะเวลา"></Tag>
     } else if (node.status === 7 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ไม่เป็นไปตามระยะเวลา"></Tag>
     } else if (node.status === 8 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอเลื่อน"></Tag>
     } else if (node.status === 9 && node.status_evaluation === 3) {
-      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก" rounded></Tag>
+      return <Tag className="mr-2" value="ปิดโครงการ/ขอยกเลิก"></Tag>
     } else if (node.status_evaluation === 0 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอเจ้าหน้าที่ฝ่ายแผนอนุมัติปิดโครงการ"></Tag>
     } else if (node.status_evaluation === 1 && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ" rounded></Tag>
-    } else if (( node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
-      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ" rounded></Tag>
+      return <Tag className="mr-2" severity="warning" value="รอผู้บริหารอนุมัติปิดโครงการ"></Tag>
+    } else if ((node.status_evaluation === 2 || node.status_evaluation === 4) && (node.status === 6 || node.status === 7 || node.status === 8 || node.status === 9)) {
+      return <Tag className="mr-2" severity="danger" value="แก้ไขเอกสารประเมินโครงการ"></Tag>
     } else {
       return node.status
     }
   }
 
   const show = (item) => {
+    setDisplayBasic3(true)
     axios
       .get(`http://localhost:3001/supplies/statuspurchase/${item.project_id}`, {})
       .then((res) => {
@@ -116,18 +122,17 @@ const Dataproject = () => {
       .catch((error) => {
         console.log(error)
       });
-    setVisible(true)
   }
 
   const Statuspurchase = (node) => {
-    if(node.status_statuspurchase === 1)
-    return <div>
-      <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" className="p-button-success" style={{ height: '2.5em', width: '2.5em' }} onClick={() => show(node)} /></Tooltip>
-    </div>
+    if (node.status_statuspurchase === 1)
+      return <div>
+        <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" className="p-button-success" style={{ height: '2.5em', width: '2.5em' }} onClick={() => show(node)} /></Tooltip>
+      </div>
     else {
       return <div>
-      <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" className="p-button-success" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
-    </div>
+        <Tooltip placement="bottom" title={<span>สถานะการจัดซื้อจัดจ้าง</span>} ><Button icon="pi pi-inbox" className="p-button-success" style={{ height: '2.5em', width: '2.5em' }} disabled /></Tooltip>
+      </div>
     }
   }
 
@@ -186,41 +191,33 @@ const Dataproject = () => {
   };
 
   const Deletesproject = (ID) => {
-    onHide1()
+
     axios.delete(`http://localhost:3001/dataproject/deleteproject/${ID}`);
-    getdeleteprojectid();
+    onHide1()
+    Project();
   };
 
   const findProject = () => {
 
-    if (status.code === "50") {
-      {
-        console.log('hhhhh');
-        axios.get(`http://localhost:3001/dataproject/findprojectyear/${selectedfiscalyear.fiscalyear}`,)
-          .then((res) => {
-            setProjectuser(res.data)
-            console.log('log', res.data)
-          })
-      }
-    } else {
-      axios.get(`http://localhost:3001/dataproject/findproject/${selectedfiscalyear.fiscalyear}/${status.code}`,
-      ).then((res) => {
-        setProjectuser(res.data)
-        //console.log('log', res.data)
-      })
-    }
+    axios.get(`http://localhost:3001/dataproject/findproject/${status.code}`,
+    ).then((res) => {
+      setProjectuser(res.data)
+      //console.log('log', res.data)
+    })
   }
 
   const showConfirm1 = (value) => {
     confirm({
       title: "ต้องการลบโครงการใช่มั้ย?",
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       icon: <ExclamationCircleFilled />,
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         Deletesproject(value)
       },
       onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
@@ -235,8 +232,7 @@ const Dataproject = () => {
             <Panel header='จัดการข้อมูลโครงการ'>
               <div className="text-left">
                 <div className="fit">
-                  <h4>ปีงบประมาณ
-                    <Dropdown value={selectedfiscalyear} options={fiscalyear} style={{ width: '10em', marginLeft: '1em', marginRight: '4em' }} onChange={onsetFiscalyear} optionLabel="fiscalyear" placeholder="ทุกปี" />
+                  <h4>
                     สถานะ
                     <Dropdown value={status} style={{ width: '30em', marginLeft: '1em' }} onChange={(e) => setStatus(e.target.value)} placeholder="สถานะโครงการ" options={findStatus} optionLabel="name" />
                     <Button label="ค้นหา" onClick={findProject} className="p-button-success" style={{ marginLeft: ".8em" }} />
@@ -255,10 +251,18 @@ const Dataproject = () => {
                   </DataTable>
                 </div>
 
-                <div className="card flex justify-content-center">
-                  <Dialog header="สถานะจัดซื้อจัดจ้าง" visible={visible} style={{ width: '40vw' }} breakpoints={{ '950x': '75vw' }} onHide={() => setVisible(false)}>
-                    <InputTextarea value={showstatuspurchase} planceholder="สถานะการจัดซื้อจัดจ้าง" rows={8} cols={71.5} />
-                  </Dialog>
+                <div>
+                  <Modal
+                    title={<p className="m-0">{'สถานะการจัดซื้อจัดจ้าง'}</p>}
+                    open={displayBasic3}
+                    onCancel={onHide3}
+                    footer={null}
+                    width={600}
+                  >
+                    <div className="text-center">
+                      <InputTextarea value={showstatuspurchase} planceholder="สถานะการจัดซื้อจัดจ้าง" rows={8} cols={69.2} disabled />
+                    </div>
+                  </Modal>
                 </div>
               </div>
             </Panel>

@@ -240,7 +240,6 @@ const Editreportone = () => {
         used: editquarterchargesone,
         period_check: (checked === true) ? 1 : 0
       }).then((res) => {
-
       })
   }
 
@@ -260,11 +259,13 @@ const Editreportone = () => {
   };
 
   const updateresult = (id, editresult, checked1) => {
-    onHide1()
+    
     axios.put(`http://localhost:3001/addreport/createresult/${resultid}`, {
       result: editresult,
       achieve: (checked1 === true) ? 1 : 0
     })
+    onHide1()
+    getindic()
   };
 
   const showdetail = (item) => {
@@ -282,10 +283,12 @@ const Editreportone = () => {
   };
 
   const updatedetail = (id, editdetail) => {
-    onHide2()
+   
     axios.put(`http://localhost:3001/editreport/updatedetail/${detailid}`, {
       detail: editdetail,
     })
+    onHide2()
+    getdetail()
   };
 
   const showproblem = (item) => {
@@ -303,64 +306,26 @@ const Editreportone = () => {
   };
 
   const updateproblem = (id, editproblem) => {
-    onHide3()
+   
     axios.put(`http://localhost:3001/editreport/updateproblem/${problemid}`, {
       problem: editproblem,
     })
+    onHide3()
+    getproblem()
   };
 
   const showConfirm1 = (value) => {
     confirm({
       title: "ต้องการแก้ไขรายงานความก้าวหน้าไตรมาส 1 ใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         updatequarterchargesone(value, editquarterchargesone, checked)
       },
       onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm2 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขผลตามตัวชี้วัด และบรรลุตามตัวชี้วัดใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updateresult(value, editresult, checked1)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm3 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขรายละเอียดความก้าวหน้าใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updatedetail(value, editdetail)
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
-
-  const showConfirm4 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขปัญหา/อุปสรรคใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        updateproblem(value, editdetail)
-      },
-      onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
@@ -373,7 +338,7 @@ const Editreportone = () => {
         <div className="page-wrapper">
           <Card>
             <Panel header='แก้ไขรายงานความก้าวหหน้าไตรมาส 1'>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ชื่อโครงการ :</h4>
@@ -383,7 +348,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>งบประมาณที่จัดสรร :</h4>
@@ -393,7 +358,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลการใช้จ่าย :</h4>
@@ -403,7 +368,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ผลตามตัวชี้วัด :</h4>
@@ -421,7 +386,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ขั้นตอนการดำเนินการ :</h4>
@@ -437,7 +402,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>มีการดำเนินงานตามระยะเวลาที่กำหนด :</h4>
@@ -449,7 +414,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>รายละเอียดความก้าวหน้า :</h4>
@@ -464,7 +429,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div className="fit" style={{ marginLeft: '1.5em' }}>
+              <div className="fit">
                 <div className="grid p-fluid">
                   <div className="col-12 md:col-3">
                     <h4>ปัญหา/อุปสรรค :</h4>
@@ -479,7 +444,7 @@ const Editreportone = () => {
                   </div>
                 </div>
               </div>
-              <div style={{ marginTop: '2em', marginLeft: '70.5em' }} >
+              <div className="text-right mt-4">
                 <Button label="บันทึก" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm1(quartercharges[0].report_id)} />
               </div>
             </Panel>
@@ -522,7 +487,7 @@ const Editreportone = () => {
               </div>
               <div className="text-right mt-4">
                 <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide1} />
-                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => showConfirm2(resultid)} autoFocus />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => updateresult(resultid, editresult, checked1)} autoFocus />
               </div>
             </Modal>
           </div>
@@ -552,7 +517,7 @@ const Editreportone = () => {
               </div>
               <div className="text-right mt-4">
                 <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide2} />
-                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => showConfirm3(detailid)} autoFocus />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => updatedetail(detailid, editdetail)} autoFocus />
               </div>
             </Modal>
           </div>
@@ -582,91 +547,10 @@ const Editreportone = () => {
               </div>
               <div className="text-right mt-4">
                 <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide3} />
-                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => showConfirm4(problemid)} autoFocus />
+                <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ width: '7em', marginLeft: '.4em', height: '2.5em' }} onClick={() => updateproblem(problemid, editproblem)} autoFocus />
               </div>
             </Modal>
           </div>
-
-          {/* <Dialog
-        style={{ width: '450px', width: "50vw" }} header="แก้ไขผลตามตัวชี้วัด และบรรลุตามตัวชี้วัด" modal className="p-fluid"
-        visible={visible1}
-        footer={renderFooter1}
-        onHide={onHide}
-      >
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h4>ผลตามตัวชี้วัด :</h4>
-            </div>
-            <div className="col-12 md:col-3">
-              <InputText
-                value={editresult}
-                onChange={(e) => setEditresult(e.target.value)}
-                style={{ width: '30em' }}
-                placeholder="ผลตามตัวชี้วัด"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h4>บรรลุตามตัวชี้วัด :</h4>
-            </div>
-            <div className="col-12 md:col-3">
-              <h4>
-                <Checkbox onChange={e => setChecked1(e.checked)} checked={checked1} />
-              </h4>
-            </div>
-          </div>
-        </div>
-      </Dialog>
-
-      <Dialog
-        style={{ width: '450px', width: "50vw" }} header="เแก้ไขรายละเอียดความก้าวหน้า" modal className="p-fluid"
-        visible={visible2}
-        footer={renderFooter2}
-        onHide={onHide}
-      >
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-4">
-              <h4>รายละเอียดความก้าวหน้า :</h4>
-            </div>
-            <div className="col-12 md:col-5">
-              <InputText
-                value={editdetail}
-                onChange={(e) => setEditdetail(e.target.value)}
-                style={{ width: '26em' }}
-                placeholder="รายละเอียดความก้าวหน้า"
-              />
-            </div>
-          </div>
-        </div>
-      </Dialog>
-
-      <Dialog
-        style={{ width: '450px', width: "50vw" }} header="เแก้ไขปัญหา/อุปสรรค" modal className="p-fluid"
-        visible={visible3}
-        footer={renderFooter3}
-        onHide={onHide}
-      >
-        <div className="fit" style={{ marginLeft: '1.5em' }}>
-          <div className="grid p-fluid">
-            <div className="col-12 md:col-3">
-              <h4>ปัญหา/อุปสรรค :</h4>
-            </div>
-            <div className="col-12 md:col-2">
-              <InputText
-                value={editproblem}
-                onChange={(e) => setEditproblem(e.target.value)}
-                style={{ width: '26em' }}
-                placeholder="ปัญหา/อุปสรรค"
-              />
-            </div>
-          </div>
-        </div>
-      </Dialog> */}
         </div>
       </div>
     </>

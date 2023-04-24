@@ -3,10 +3,11 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import { Button } from "primereact/button";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Dialog } from 'primereact/dialog';
 import axios from "axios";
+import { Toast } from 'primereact/toast'
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Column } from "primereact/column";
@@ -50,11 +51,14 @@ const StrategicIssues = () => {
   const [stopen, setStopen] = useState();
   const [value1, setValue1] = useState();
   const [value2, setValue2] = useState();
-  const [value3, setValue3] = useState();
-  const [displayBasic, setDisplayBasic] = useState(false);
+  const [name, setName] = useState();
+  const [plandata, setPlandata] = useState(false);
   const [dataUpdate, setDataUpdate] = useState("");
   const [id, setId] = useState()
   const [form] = Form.useForm()
+  const [visible, setVisible] = useState(false);
+  const toast = useRef(null);
+
 
   let history = useHistory();
   const [menu, setMenu] = useState(false)
@@ -82,7 +86,6 @@ const StrategicIssues = () => {
     axios
       .get("http://localhost:3001/plan/strategic", {})
       .then((res) => {
-        ////setStrategic(res.data);
         Stopen(res.data);
       })
       .catch((error) => {
@@ -90,48 +93,87 @@ const StrategicIssues = () => {
       });
   };
 
-  const deletestid = (ID) => {
-    axios.delete(`http://localhost:3001/plan/deletestid/${ID}`)
-    getstrategicid()
-  };
-  const updatest = (ID, dataUpdate) => { 
-    onHide()
-    axios.put(`http://localhost:3001/plan/updatest/${ID}`, {
+
+  const deletestid = async (ID) => {
+    await axios.delete(`http://localhost:3001/plan/deletestid/${ID.strategic_id}`)
+    try {
+      await axios.get(`http://localhost:3001/plan/redatast/${ID.fiscalyear_id}`)
+        .then((res) => {
+          setValue2(res.data)
+        })
+
+    } catch (error) {
+
+    }
+
+
+  }
+  const updatest = async (ID, dataUpdate) => {
+    setVisible(false)
+    await axios.put(`http://localhost:3001/plan/updatest/${ID}`, {
       strategic_name: dataUpdate
     }
     )
+      .then((res) => {
+        if (res.data === 'success') {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: 'แก้ไขข้อมูลสำเร็จ', life: 3000 });
+
+        }
+        if (res.data === 'ER_DUP_ENTRY') {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: 'มีข้อมูลอยู่แล้ว', life: 3000 });
+        }
+        setVisible(false)
+      })
+    try {
+      await axios.get(`http://localhost:3001/plan/redatast/${name.fiscalyear_id}`)
+        .then((res) => {
+          setValue2(res.data)
+
+
+        })
+      setVisible(false)
+    } catch (error) {
+
+    }
+    setVisible(false)
     getstrategicid()
 
   };
 
-  const addstid = (value) => {
+  const addstid = async (value) => {
+    form.setFieldsValue({ staraagic: null })
     try {
-      //order_strategic: value2.length + 1
-      axios.post("http://localhost:3001/plan/createstid", {
+      await axios.post("http://localhost:3001/plan/createstid", {
         fiscalyear_id: value.yearsfi.fiscalyear_id,
         order_strategic: 1,
         strategic_name: value.staraagic,
       }).then((res) => {
-        console.log(res);
+        if (res.data === 'success') {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: 'เพิ่มข้อมูลสำเร็จ', life: 3000 });
+
+        }
         if (res.data === 'ER_DUP_ENTRY') {
-          notification.error({
-            message: `${value.staraagic}`,
-            description: "มีข้อมูลอยู่แล้ว"
+          toast.current.show({ severity: 'error', summary: 'Error', detail: 'มีข้อมูลอยู่แล้ว', life: 3000 });
+        }
+        form.setFieldsValue({ staraagic: null });
+
+      })
+      try {
+        await axios.get(`http://localhost:3001/plan/redatast/${plandata.yearsfi.fiscalyear_id}`)
+          .then((res) => {
+            setValue2(res.data)
+
 
           })
-          getstrategicid()
-          setValue1('')
-        } else {
-          getstrategicid()
-          setValue1('')
-        }
-      })
+        setVisible(false)
+      } catch (error) {
 
-      getstrategicid()
-      setValue1('')
+      }
+
     } catch (e) {
     }
-  };
+  }
+
   const Stopen = (m) => {
     const rows = []
     const collunm = m.find((obj) => {
@@ -145,24 +187,16 @@ const StrategicIssues = () => {
   }
   const onStrategic = (e) => {
     setSelectedSt(e.value)
-    console.log("r", e.value)
+    console.log(selectedSt)
     const setst = strategic.filter((strategic) => strategic.fiscalyear_id === e.value.fiscalyear_id)
-    setValue2(setst);
-    setValue3(e.value)
-  };
+    setValue2(setst)
+  }
+
+
 
   const actionTemplate = (node) => {
     return (
       <div>
-        {/* <Button
-          type="button"
-          icon="pi pi-search"
-          className="p-button-success"
-          style={{ marginRight: ".5em" }}
-          onClick={() =>
-            history.push({ pathname: "/home/goaldetail", state: node })
-          }
-        ></Button> */}
         <Tooltip placement="bottom" title={<span>สร้างเป้าประสงค์ ตัวชี้วัด หน่วยนับ ค่าเป้าหมาย กลยุทธ์</span>} ><Button
           type="button"
           icon="pi pi-pencil"
@@ -178,39 +212,33 @@ const StrategicIssues = () => {
           className="p-button-danger"
           style={{ height: '2.5em', width: '2.5em' }}
           onClick={() => {
-            showConfirm(node.strategic_id)
-            // deletestid(node.strategic_id);
+            showConfirm(node)
           }}
         ></Button></Tooltip>
       </div>
     );
   };
 
-  const dialogFuncMap = {
-    displayBasic: setDisplayBasic,
-  };
-  
-  const show = (id) => {
-    setDisplayBasic(true);
-    setId(id);
+
+
+  const show = (data, id, name) => {
+    setVisible(true);
+    setId(id)
+    setName(data)
+    setDataUpdate(name)
   };
 
-  const onHide = () => {
-    setDisplayBasic(false)
-    form.resetFields()
-  }
 
   const action = (rowData) => {
     return (
       <div>
-        {/* <span className="button-text">{rowData.strategic_name}</span> */}
         <Tooltip placement="bottom" title={<span>แก้ไขประเด็นยุทธศาตร์</span>} >
           <Button
             type="button"
             icon="pi pi-pencil"
             className="p-button-warning"
             style={{ marginRight: ".5em", height: '2.5em', width: '2.5em' }}
-            onClick={() => show(rowData.strategic_id)}
+            onClick={() => show(rowData, rowData.strategic_id, rowData.strategic_name)}
           ></Button></Tooltip>
       </div>
     );
@@ -224,15 +252,15 @@ const StrategicIssues = () => {
     return (
 
       <div>
-        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={onHide} />
-        <Button label="ตกลง" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
+        <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ height: '2.5em' }} onClick={() => setVisible(false)} />
+        <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => updatest(id, dataUpdate)} autoFocus />
       </div>
     );
   }
 
   const onFinish = (value) => {
-    //console.log(value.yearsfi.fiscalyear_id)
-    showConfirm2(value)
+    addstid(value)
+    setPlandata(value)
   }
 
   const showConfirm = (value) => {
@@ -255,31 +283,20 @@ const StrategicIssues = () => {
       title: "ต้องการเพิ่มประเด็นยุทธศาสตร์ใช่มั้ย?",
       icon: <ExclamationCircleFilled />,
       content: `${value.staraagic}`,
+      okText: 'ตกลง',
+      cancelText: 'ยกเลิก',
       onOk() {
-        console.log("OK");
+        console.log("ตกลง");
         addstid(value)
 
       },
       onCancel() {
-        console.log("Cancel");
+        console.log("ยกเลิก");
       },
     });
   }
 
-  const showConfirm3 = (value) => {
-    confirm({
-      title: "ต้องการแก้ไขประเด็นยุทธศาสตร์ใช่มั้ย?",
-      icon: <ExclamationCircleFilled />,
-      onOk() {
-        console.log("OK");
-        confirm2(value, dataUpdate)
 
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  }
 
   return (
     <>
@@ -289,6 +306,7 @@ const StrategicIssues = () => {
         <div className="page-wrapper">
 
           <Card>
+            <Toast ref={toast} />
             <Panel header="จัดการข้อมูลประเด็นยุทธ์ศาสตร์ เป้าประสงค์ กลยุทธ์">
 
               <Form
@@ -318,7 +336,7 @@ const StrategicIssues = () => {
                     onChange={onStrategic}
                     optionLabel="plan_name"
                     placeholder="แผนยุทธศาสตร์"
-                    style={{ height: '2.5em', marginLeft: '1.1em' }}
+                    style={{ height: '2.5em', marginLeft: '1.1em', width: '50em' }}
                   />
                 </Form.Item>
                 <Form.Item
@@ -338,29 +356,27 @@ const StrategicIssues = () => {
                   type="primary"
                   htmlType="submit"
                   className="p-button-success"
-                  style={{ marginLeft: '61em', height: '2.5em' }}
+                  style={{ height: '2.5em' }}
                   icon='pi pi-plus'
                   label="เพิ่มประเด็นยุทธศาสตร์"
-                  onClick={() => showConfirm2()}
+                //onClick={() => onFinish()}
                 />
               </Form>
-              {/* <div className="text-left"> */}
 
 
               <div>
                 <DataTable
                   value={value2}
                   columnResizeMode="fit"
-                  showGridlines //icon={node.flag === 1 ? "pi pi-check" :"pi pi-times" }
+                  showGridlines
                   responsiveLayout="scroll"
                   style={{ marginTop: "30px" }}
                   dataKey="id"
                   paginator rows={10}
                   rowsPerPageOptions={[5, 10, 25]}
                 >
-                  {/* <Column field="" header="ลำดับ" style={{ width: "3%" }} /> */}
-                  <Column field="plan_name" header="แผนยุทธศาสตร์"/>
-                  <Column field="strategic_name" header="ชื่อประเด็นยุทธศาสตร์" sortable/>
+                  <Column field="plan_name" header="แผนยุทธศาสตร์" />
+                  <Column field="strategic_name" header="ชื่อประเด็นยุทธศาสตร์" sortable />
                   <Column body={action}
                     header="แก้ไขประเด็นยุทธศาตร์"
                     style={{ textAlign: "center", width: "17%" }}
@@ -373,22 +389,8 @@ const StrategicIssues = () => {
                 </DataTable>
               </div>
 
-              {/* <Dialog
-                style={{ width: '450px', width: "50vw" }} header="แก้ไขประเด็นยุทธศาสตร์" modal className="p-fluid"
-                visible={displayBasic}
-                footer={renderFooter}
-                onHide={onHide}
-              >
-                <InputText
-                  value={dataUpdate}
-                  onChange={(e) => setDataUpdate(e.target.value)}
-                  placeholder="ชื่อประเด็นยุทธศาสตร์"
-                />
-              </Dialog> */}
-
-              {/* </div> */}
-              <div>
-                <Modal
+              <div className="card flex justify-content-center">
+                {/* <Modal
                   title={<h4 className="m-0">{'จัดการข้อมูลประเด็นยุทธศาสตร์'}</h4>}
                   open={displayBasic}
                   onCancel={onHide}
@@ -400,7 +402,52 @@ const StrategicIssues = () => {
                     <Button label="ยกเลิก" icon="pi pi-times" className="p-button-danger" style={{ marginRight: '.5em', height: '2.5em', marginLeft: '26.2em' }} onClick={onHide} />
                     <Button label="บันทึก" icon="pi pi-check" className="p-button-success" style={{ height: '2.5em' }} onClick={() => showConfirm3(id)} autoFocus />
                   </div>
-                </Modal>
+                </Modal> */}
+                {/* <Modal
+      open={open}
+      title="จัดการข้อมูลประเด็นยุทธศาสตร์"
+      okText="บันทีก"
+      cancelText="ยกเลิก"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCreate(values);
+          })
+          .catch((info) => {
+            console.log('Validate Failed:', info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        name="form_in_modal"
+        initialValues={{
+          modifier: 'public',
+        }}
+      >
+          <Form.Item
+          name="dataUpdate"
+          label="ชื่อประเด็นยุทธศาสตร์"
+          rules={[
+            {
+              required: true,
+              message: 'กรุณากรอกชื่อประเด็นยุทธศาสตร์',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        
+      </Form>
+    </Modal> */}
+                <Dialog header="จัดการข้อมูลประเด็นยุทธศาสตร์" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} footer={renderFooter}>
+                  <InputText value={dataUpdate} onChange={(e) => setDataUpdate(e.target.value)} placeholder="ชื่อประเด็นยุทธศาสตร์" />
+
+                </Dialog>
               </div>
             </Panel>
           </Card>

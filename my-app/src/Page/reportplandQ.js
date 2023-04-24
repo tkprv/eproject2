@@ -195,8 +195,8 @@ export default function ReportplanQ() {
   } else if (newquter.quarter === 4) {
     cols.push({ field: "quarter_four", header: "งบประมาณ" });
   }
-  cols.push({ field: "used", header: "ผลการใชจ่ายเงิน" });
-  cols.push({ field: "detail", header: "ลายละเอียดผลการดำเนินการ" });
+  cols.push({ field: "used", header: "ผลการใช้จ่ายเงิน" });
+  cols.push({ field: "detail", header: "รายละเอียดผลการดำเนินการ" });
   cols.push({ field: "problem", header: "ปัญหา/อุปสรรค" });
   cols.push({ field: "section_name", header: "ฝ่ายที่รับผิดชอบ" });
 
@@ -279,7 +279,7 @@ export default function ReportplanQ() {
                 },
                 { text: "งบ\nประมาณ", style: "tableHeader" },
                 { text: "ผลการใช้\nจ่ายเงิน", style: "tableHeader" },
-                { text: "ลายละเอียด\nผลการ \nดำเนินการ", style: "tableHeader" },
+                { text: "รายละเอียด\nผลการ \nดำเนินการ", style: "tableHeader" },
                 { text: "ปัญหา/อุปสรรค", style: "tableHeader" },
                 { text: "ฝ่ายที่\nรับผิดชอบ", style: "tableHeader" },
               ],
