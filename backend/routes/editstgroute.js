@@ -13,7 +13,7 @@ Router.get('/showgoal/:id',editsg.showgoal)
 Router.put('/updategoal/:id',editsg.updategoal)
 Router.get('/showindic/:id',editsg.showindic)
 Router.put('/updateindic/:id',editsg.updateindic)
-Router.put('/showtactic/:id',editsg.showtactic)
+Router.get('/showtactic/:id',editsg.showtactic)
 Router.put('/updatetactic/:id',editsg.updatetactic)
 Router.get('/tactic2:id',editsg.tactic2)
 

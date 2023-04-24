@@ -173,7 +173,7 @@ const updateindic = (req,res)=> {
 const showtactic = (req,res)=> {
   const ID = req.params.id
   console.log('id', ID)
-  db.query("SELECT * FROM tbl_tactic WHERE tactic_id =?", [ID], (err, result) => {
+  db.query("SELECT * FROM tbl_tactic WHERE tactic_id = ?", [ID], (err, result) => {
     if (err) {
       console.log(err);
     } else {
