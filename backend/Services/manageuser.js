@@ -81,7 +81,8 @@ const createuser = (req,res)=> {
     const displayname = req.body.displayname
     console.log(req.body)
     db.query(
-      "INSERT INTO tbl_user (section_id,username,fname,lname,email,director,manager,supervisor,supplies,responsible,admin,flag,displayname) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO tbl_user (section_id,username,fname,lname,email,director,manager,supervisor,supplies,responsible,admin,flag,displayname) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
       [secid,user,fname,lname,email,director,manager,supervisor,supplies,responsible,admin,flag,displayname],
       (err, result) => {
         if (err) {
