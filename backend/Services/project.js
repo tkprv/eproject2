@@ -63,8 +63,6 @@ const integration = (req, res) => {
 
 const newproject22222 = (req, res) => {
   console.log(req.body)
-
-
   const year = req.body.fiscalyear_id
   const section_id = req.body.section_id
   const integration_id = req.body.integration_id
@@ -84,8 +82,12 @@ const newproject22222 = (req, res) => {
   const status = req.body.status // สถานะเจค 
   const out_plan = req.body.out_plan
   console.log(workplan_id);
-  db.query("INSERT INTO tbl_project (fiscalyear,section_id,integration_id,workplan_id,project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,tor,source_name,status,out_plan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",
-    [year, section_id, integration_id, workplan_id, project_name, type, integra_name, integra_subject, rationale, target_group, butget, butget_char, tor, source_name, status, out_plan],
+  db.query("INSERT INTO tbl_project (fiscalyear,section_id,integration_id,workplan_id,
+  project_name,type,integra_name,integra_subject,rationale,target_group,butget,butget_char,
+  tor,source_name,status,out_plan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",
+  [year, section_id, integration_id, workplan_id, project_name, type, integra_name, 
+  integra_subject, rationale, target_group, butget, butget_char, tor, source_name, status, 
+   out_plan],
     (err, result) => {
       if (err) {
         console.log('5', err);
