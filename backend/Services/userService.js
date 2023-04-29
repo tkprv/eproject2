@@ -22,8 +22,8 @@ const apiLogin = (req,res)=>{
     //   console.log(response.data);
     //   res.status(201).json(response.data);
     if(response.data.api_status === 'success'){
-        db.query('SELECT * FROM tbl_user WHERE username = ? AND email = ?', [response.data.userInfo.username, response.data.userInfo.email],
-        (err, results)=>{
+        db.query('SELECT * FROM tbl_user WHERE username = ? AND email = ?', [response.data.userInfo.username, 
+        response.data.userInfo.email], (err, results)=>{
           if (err) {
             res.send({err: err})
           } 
