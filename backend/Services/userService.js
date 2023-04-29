@@ -18,9 +18,6 @@ const apiLogin = (req,res)=>{
     }
     axios.post('https://api.account.kmutnb.ac.th/api/account-api/user-authen', newdata, config, )
     .then((response) => {
-      //receive response
-    //   console.log(response.data);
-    //   res.status(201).json(response.data);
     if(response.data.api_status === 'success'){
         db.query('SELECT * FROM tbl_user WHERE username = ? AND email = ?', [response.data.userInfo.username, 
         response.data.userInfo.email], (err, results)=>{
